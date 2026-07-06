@@ -2,7 +2,6 @@ import Link from "next/link";
 
 // In Next.js 13/14 App Router, dynamic routes receive `params` as a prop.
 export default function CourseDetailPage({ params }: { params: { course_id: string } }) {
-  console.log("Loading course ID:", params.course_id);
   // TODO: In the backend phase, we will fetch the course data using params.course_id
   // const course = await getCourseById(params.course_id);
 

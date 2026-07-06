@@ -1,12 +1,11 @@
 import Link from "next/link";
 
-export default function DashboardOverview() {
+export default function StudentOverview() {
   return (
     <div className="max-w-[1400px] mx-auto space-y-8 animate-in fade-in duration-500">
       
       {/* --- TOP METRICS GRID --- */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        
         <div className="bg-[#131B2F] border border-white/5 p-6 rounded-2xl shadow-lg shadow-black/20">
           <p className="text-sm font-medium text-slate-400 mb-4">Enrolled courses</p>
           <div className="flex items-end justify-between">
@@ -44,7 +43,6 @@ export default function DashboardOverview() {
             </div>
           </div>
         </div>
-
       </div>
 
       {/* --- MIDDLE SECTION: CONTINUE LEARNING & CHART --- */}
@@ -54,7 +52,8 @@ export default function DashboardOverview() {
         <div className="lg:col-span-2 bg-[#131B2F] border border-white/5 rounded-[24px] p-8 shadow-lg shadow-black/20">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-bold text-white">Continue learning</h3>
-            <Link href="/dashboard/classes" className="text-sm font-medium text-violet-400 hover:text-violet-300">View all</Link>
+            {/* FIXED: Routes to the new student courses library */}
+            <Link href="/student/courses" className="text-sm font-medium text-violet-400 hover:text-violet-300">View all</Link>
           </div>
 
           <div className="space-y-2">
@@ -63,7 +62,7 @@ export default function DashboardOverview() {
               { title: "System Design Deep Dive", lesson: "Lesson 8: Caching strategies", progress: "32%", color: "bg-fuchsia-500" },
               { title: "Applied Machine Learning", lesson: "Lesson 3: Regression basics", progress: "12%", color: "bg-emerald-500" },
             ].map((course, i) => (
-              <div key={i} className="flex items-center justify-between p-4 rounded-xl hover:bg-white/[0.02] transition-colors group cursor-pointer border border-transparent hover:border-white/5">
+              <div key={i} className="flex items-center justify-between p-4 rounded-xl hover:bg-white/[0.02] transition-colors group border border-transparent hover:border-white/5">
                 <div className="flex items-center gap-4 flex-1">
                   <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center shadow-inner">
                     <svg className="w-6 h-6 text-slate-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"></path></svg>
@@ -79,9 +78,10 @@ export default function DashboardOverview() {
                     </div>
                   </div>
                 </div>
-                <button className="px-4 py-2 rounded-lg border border-white/10 text-xs font-bold text-white hover:bg-white/5 transition-colors hidden sm:block">
+                {/* FIXED: Resume correctly goes to the classroom video player */}
+                <Link href="/student/classroom" className="px-4 py-2 rounded-lg border border-white/10 text-xs font-bold text-white hover:bg-white/5 transition-colors hidden sm:block">
                   Resume
-                </button>
+                </Link>
               </div>
             ))}
           </div>
@@ -91,14 +91,11 @@ export default function DashboardOverview() {
         <div className="bg-[#131B2F] border border-white/5 rounded-[24px] p-8 shadow-lg shadow-black/20 flex flex-col">
           <h3 className="text-lg font-bold text-white mb-6">Weekly activity</h3>
           <div className="flex-1 relative w-full h-full min-h-[200px] flex items-end pt-4">
-             {/* Chart grid lines */}
              <div className="absolute inset-0 flex flex-col justify-between pb-8 z-0">
                <div className="w-full border-t border-white/5 border-dashed h-0"></div>
                <div className="w-full border-t border-white/5 border-dashed h-0"></div>
                <div className="w-full border-t border-white/5 border-dashed h-0"></div>
              </div>
-             
-             {/* Abstract Curved Line Chart */}
              <div className="absolute inset-0 pb-8 z-10 w-full">
                <svg viewBox="0 0 400 150" className="w-full h-full overflow-visible preserve-aspect-ratio-none">
                  <defs>
@@ -109,20 +106,16 @@ export default function DashboardOverview() {
                  </defs>
                  <path d="M0,130 C40,110 80,40 120,60 C160,80 200,100 240,40 C280,-20 320,80 360,50 C380,35 400,20 400,20 L400,150 L0,150 Z" fill="url(#gradientArea)" />
                  <path d="M0,130 C40,110 80,40 120,60 C160,80 200,100 240,40 C280,-20 320,80 360,50 C380,35 400,20 400,20" fill="none" stroke="#8B5CF6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                 {/* Data Points */}
                  <circle cx="120" cy="60" r="4" fill="#0B0F19" stroke="#8B5CF6" strokeWidth="2" />
                  <circle cx="240" cy="40" r="4" fill="#0B0F19" stroke="#8B5CF6" strokeWidth="2" />
                  <circle cx="360" cy="50" r="4" fill="#0B0F19" stroke="#8B5CF6" strokeWidth="2" />
                </svg>
              </div>
-
-             {/* X-Axis Labels */}
              <div className="absolute bottom-0 left-0 w-full flex justify-between text-[10px] font-bold text-slate-500 uppercase tracking-wider z-20">
                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
              </div>
           </div>
         </div>
-
       </div>
 
       {/* --- BOTTOM SECTION: LIVE CLASSES & ASSIGNMENTS --- */}
@@ -135,7 +128,8 @@ export default function DashboardOverview() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               Upcoming live classes
             </h3>
-            <Link href="#" className="text-sm font-medium text-violet-400 hover:text-violet-300">View all</Link>
+            {/* FIXED: Routes to Live Classes */}
+            <Link href="/student/live" className="text-sm font-medium text-violet-400 hover:text-violet-300">View all</Link>
           </div>
           
           <div className="space-y-4">
@@ -164,7 +158,8 @@ export default function DashboardOverview() {
         <div className="bg-[#131B2F] border border-white/5 rounded-[24px] p-8 shadow-lg shadow-black/20">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-bold text-white">Assignments</h3>
-            <Link href="#" className="text-sm font-medium text-violet-400 hover:text-violet-300">View all</Link>
+            {/* FIXED: Routes to Assignments */}
+            <Link href="/student/assignments" className="text-sm font-medium text-violet-400 hover:text-violet-300">View all</Link>
           </div>
           
           <div className="space-y-4">
@@ -188,9 +183,7 @@ export default function DashboardOverview() {
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
   );
 }

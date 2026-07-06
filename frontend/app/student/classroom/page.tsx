@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -76,11 +76,12 @@ export default function ClassroomPage() {
           {/* Video Player Area */}
           <div className="w-full bg-black aspect-video relative group">
             {/* Video Placeholder Image */}
-            <img 
-              src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1600&auto=format&fit=crop" 
-              alt="Video Lesson" 
-              className="w-full h-full object-cover opacity-80"
-            />
+<Image 
+  src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1600&auto=format&fit=crop" 
+  alt="Video placeholder" 
+  fill 
+  className="object-cover opacity-50" 
+/>
             
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

@@ -7,9 +7,14 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const [translateY, setTranslateY] = useState(10);
 
   useEffect(() => {
-    // Trigger the animation a split second after the component mounts
-    setOpacity(1);
-    setTranslateY(0);
+    // Wrap in a tiny timeout to ensure it runs AFTER the initial paint
+    const timer = setTimeout(() => {
+      setOpacity(1);
+      setTranslateY(0);
+    }, 10); // 10ms delay is imperceptible but satisfies React's rules
+
+    // Always clean up timers in useEffects!
+    return () => clearTimeout(timer);
   }, []);
 
   return (

@@ -6,7 +6,7 @@ export default function TestimonialsPage() {
       name: "Sarah Jenkins",
       role: "Frontend Developer",
       rating: 5,
-      text: "Lumina completely changed how I approach coding. The React course wasn't just theory—it was actual production-level architecture. I landed a mid-level role 3 weeks after finishing.",
+      text: "Lumina completely changed how I approach coding. The React course wasn&apos;t just theory—it was actual production-level architecture. I landed a mid-level role 3 weeks after finishing.",
       initials: "SJ",
       color: "from-pink-500 to-rose-500"
     },
@@ -22,7 +22,7 @@ export default function TestimonialsPage() {
       name: "Priya Sharma",
       role: "AI Researcher",
       rating: 5,
-      text: "The Machine Learning curriculum is rigorous. It doesn't hold your hand, but the community discussions and the way the video player integrates with notes is a game changer.",
+      text: "The Machine Learning curriculum is rigorous. It doesn&apos;t hold your hand, but the community discussions and the way the video player integrates with notes is a game changer.",
       initials: "PS",
       color: "from-fuchsia-500 to-purple-500"
     },
@@ -87,7 +87,7 @@ export default function TestimonialsPage() {
           Wall of Love
         </div>
         <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
-          Don't just take <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">our word for it.</span>
+          Don&apos;t just take <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">our word for it.</span>
         </h1>
         <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed mb-8">
           Join thousands of learners who have transformed their careers, built incredible projects, and rediscovered the joy of learning.

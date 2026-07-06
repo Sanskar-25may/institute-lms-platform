@@ -53,7 +53,7 @@ export default function FeedbackPage() {
           Help us improve
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
-          Got feedback? We're listening.
+          Got feedback? We&apos;re listening.
         </h1>
         <p className="text-lg text-slate-400 leading-relaxed">
           Whether you found a bug, have a feature idea, or just want to tell us what you love, your feedback shapes Lumina.

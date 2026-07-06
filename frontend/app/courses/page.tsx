@@ -1,174 +1,168 @@
 import Link from "next/link";
+import Image from "next/image"; // ADD THIS
 
-export default function PublicCoursesPage() {
+export default function CourseCatalogPage() {
   const courses = [
     {
-      id: 1,
-      label: "Web Development",
-      title: "Full-Stack MERN Mastery",
-      type: "Bootcamp",
-      provider: "Mr. Satish Kumar",
-      price: "$49.99",
-      duration: "12 Weeks",
-      image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&auto=format&fit=crop",
+      id: "full-stack-react",
+      title: "Full-Stack React & TypeScript",
+      instructor: "Aisha Verma",
+      rating: 4.9,
+      students: "12,480",
+      level: "Intermediate",
+      price: "$149",
+      image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=600&auto=format&fit=crop"
     },
     {
-      id: 2,
-      label: "Engineering",
-      title: "Advanced Aeromodelling & Fixed-Wing Design",
-      type: "Certification",
-      provider: "Institute Drone Lab",
-      price: "$89.99",
-      duration: "8 Weeks",
-      image: "https://images.unsplash.com/photo-1579820010410-dc90ebf849b3?q=80&w=800&auto=format&fit=crop",
+      id: "system-design",
+      title: "System Design Deep Dive",
+      instructor: "Rahul Iyer",
+      rating: 4.8,
+      students: "8,210",
+      level: "Advanced",
+      price: "$199",
+      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format&fit=crop"
     },
     {
-      id: 3,
-      label: "Artificial Intelligence",
-      title: "Mastering RAG & Large Language Models",
-      type: "Advanced Course",
-      provider: "MedAI Tech",
-      price: "$129.99",
-      duration: "10 Weeks",
-      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop",
+      id: "applied-ml",
+      title: "Applied Machine Learning",
+      instructor: "Marcus Chen",
+      rating: 4.9,
+      students: "5,102",
+      level: "Advanced",
+      price: "$179",
+      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600&auto=format&fit=crop"
     },
     {
-      id: 4,
-      label: "Data Science",
-      title: "Python for Machine Learning",
-      type: "Fundamentals",
-      provider: "Institute CS Dept",
-      price: "$59.99",
-      duration: "6 Weeks",
-      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop",
+      id: "ui-ux-foundations",
+      title: "UI/UX Design Foundations",
+      instructor: "Priya Nair",
+      rating: 4.7,
+      students: "18,300",
+      level: "Beginner",
+      price: "$99",
+      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=600&auto=format&fit=crop"
     },
     {
-      id: 5,
-      label: "Business",
-      title: "Digital Marketing & SEO Strategies",
-      type: "Crash Course",
-      provider: "Mani Shanti Experts",
-      price: "$39.99",
-      duration: "4 Weeks",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
+      id: "node-scaling",
+      title: "Advanced Node.js Scaling",
+      instructor: "David Chen",
+      rating: 4.8,
+      students: "3,420",
+      level: "Advanced",
+      price: "$129",
+      image: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=600&auto=format&fit=crop"
     },
     {
-      id: 6,
-      label: "Aviation",
-      title: "Commercial Drone Pilot License Prep",
-      type: "Exam Prep",
-      provider: "SkyGlide Training",
-      price: "$149.99",
-      duration: "6 Weeks",
-      image: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=800&auto=format&fit=crop",
+      id: "figma-react-native",
+      title: "Figma to React Native",
+      instructor: "Sarah Jenkins",
+      rating: 4.9,
+      students: "6,800",
+      level: "Intermediate",
+      price: "$149",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#DDE3F9] font-sans text-[#1D2159] selection:bg-[#3B4CE3] selection:text-white pb-24">
+    <div className="min-h-screen bg-[#0B0F19] font-sans text-slate-300 selection:bg-violet-500/30 overflow-x-hidden pb-24 animate-in fade-in duration-500">
       
-      {/* Unified Navigation Bar */}
-      <nav className="w-full flex items-center justify-between px-8 lg:px-16 py-6 max-w-[1600px] mx-auto">
-        <Link href="/" className="flex items-center gap-3 cursor-pointer">
-          <div className="flex flex-col leading-none">
-            <span className="text-[10px] font-bold text-[#3B4CE3] tracking-widest uppercase">Unlimited Powerfull</span>
-            <span className="text-3xl font-extrabold text-[#3B4CE3] tracking-tight flex items-center gap-1">
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>
-              LEARNING
-            </span>
-          </div>
-        </Link>
-        
-        <div className="hidden lg:flex items-center gap-10 font-bold text-[15px]">
-          <Link href="/" className="text-[#1D2159] hover:text-[#F1592A] transition-colors">Home</Link>
-          <span className="text-[#F1592A] cursor-pointer">Courses</span>
-          <Link href="/#blog" className="text-[#1D2159] hover:text-[#F1592A] transition-colors cursor-pointer">Blog</Link>
-          <Link href="/#about" className="text-[#1D2159] hover:text-[#F1592A] transition-colors cursor-pointer">About Us</Link>
-          <Link href="/#onboarding" className="text-[#1D2159] hover:text-[#F1592A] transition-colors cursor-pointer">Onboarding</Link>
-        </div>
-
-        <div>
-          <Link href="/" className="px-8 py-3.5 bg-[#3B4CE3] text-white font-bold text-sm rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-300/50 transition-all uppercase tracking-wider inline-block">
-            Enroll Now
+      {/* --- UNIFIED NAVBAR --- */}
+      <nav className="w-full border-b border-white/5 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-violet-600 to-fuchsia-600 flex items-center justify-center">
+              <div className="w-3 h-3 bg-white rounded-full"></div>
+            </div>
+            <span className="text-xl font-bold text-white tracking-tight">Lumina</span>
           </Link>
+
+          <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/about" className="hover:text-white transition-colors">About</Link>
+            <Link href="/courses" className="text-white font-bold">Courses</Link>
+            <Link href="/testimonials" className="hover:text-white transition-colors">Testimonials</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <Link href="/auth" className="text-sm font-bold text-white bg-white/5 hover:bg-white/10 px-5 py-2.5 rounded-lg border border-white/10 transition-colors">Sign In</Link>
+          </div>
         </div>
       </nav>
 
-      <header className="max-w-[1500px] mx-auto px-8 lg:px-16 pt-12 pb-16">
-        <div className="inline-block px-4 py-2 bg-[#3B4CE3]/10 text-[#3B4CE3] font-bold text-sm rounded-full mb-4">
-          Explore Curriculum
-        </div>
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-[#1D2159] mb-6">
-          Course Catalog
+      {/* --- HERO SECTION --- */}
+      <header className="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
+          Master the skills of <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">tomorrow.</span>
         </h1>
-        <p className="text-lg text-[#1D2159]/70 font-medium max-w-2xl leading-relaxed">
-          Browse our complete collection of industry-leading programs. Choose your path and start mastering new skills today.
+        <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed mb-8">
+          Browse our world-class curriculum taught by industry leaders. From beginner foundations to advanced engineering.
         </p>
+        
+        {/* Search & Filters */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 max-w-2xl mx-auto">
+          <div className="relative w-full md:w-auto flex-1">
+            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" placeholder="Search for courses, skills, or instructors..." className="w-full pl-12 pr-4 py-3.5 bg-[#131B2F] border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 transition-colors shadow-lg" />
+          </div>
+          <button className="w-full md:w-auto px-6 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+            Filters
+          </button>
+        </div>
       </header>
 
-      <main className="max-w-[1500px] mx-auto px-8 lg:px-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
-          
+      {/* --- COURSE GRID --- */}
+      <section className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {courses.map((course) => (
-            <Link 
-              href={`/courses/${course.id}`} 
-              key={course.id} 
-              className="relative group cursor-pointer hover:-translate-y-3 transition-all duration-500 block"
-            >
+            <Link href={`/courses/${course.id}`} key={course.id} className="bg-[#131B2F] rounded-[24px] border border-white/5 overflow-hidden hover:border-violet-500/30 transition-all duration-300 group flex flex-col shadow-lg">
               
-              <div className="bg-[#3B4CE3] text-white w-max px-6 py-2.5 rounded-t-xl text-xs font-extrabold uppercase tracking-wider relative z-10 shadow-sm ml-8">
-                {course.label}
+             {/* Thumbnail */}
+              <div className="h-48 relative overflow-hidden bg-slate-800">
+                <Image 
+                  src={course.image} 
+                  alt={`Cover image for the course: ${course.title}`} 
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" 
+                />
+                <div className="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider border border-white/10">
+                  {course.level}
+                </div>
               </div>
 
-              <div className="bg-[#EDF0FA] border border-white/60 rounded-[40px] rounded-tl-none shadow-[0_20px_50px_rgba(29,33,89,0.05)] overflow-hidden flex flex-col h-full relative z-0">
-                
-                <div className="p-4 pb-0">
-                  <div className="h-56 w-full rounded-[28px] overflow-hidden relative shadow-[inset_0_4px_12px_rgba(29,33,89,0.2)] bg-slate-200">
-                    <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-[#1D2159]/30 to-transparent z-10 pointer-events-none"></div>
-                    <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out" />
-                    
-                    <div className="absolute bottom-4 left-4 bg-[#F1592A] px-4 py-2 rounded-xl text-xs font-extrabold text-white shadow-lg shadow-orange-500/30">
-                      {course.type}
-                    </div>
+              {/* Content */}
+              <div className="p-6 flex-1 flex flex-col">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-[11px] font-bold text-violet-400 uppercase tracking-wider">
+                    {course.instructor}
+                  </p>
+                  <div className="flex items-center gap-1 text-xs font-bold text-amber-400">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    {course.rating} <span className="text-slate-500 ml-1">({course.students})</span>
                   </div>
                 </div>
+                
+                <h3 className="text-xl font-bold text-white mb-6 group-hover:text-violet-400 transition-colors line-clamp-2">
+                  {course.title}
+                </h3>
 
-                <div className="p-8 flex-1 flex flex-col">
-                  
-                  <p className="text-[11px] font-bold text-[#1D2159]/50 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-[#3B4CE3]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
-                    {course.provider}
-                  </p>
-                  
-                  <h3 className="text-2xl font-extrabold text-[#1D2159] mb-6 line-clamp-2 leading-tight group-hover:text-[#F1592A] transition-colors">
-                    {course.title}
-                  </h3>
-                  
-                  <div className="mt-auto">
-                     <div className="flex items-center justify-between py-4 border-y border-white mb-6 bg-white/40 rounded-2xl px-5">
-                        <div className="flex flex-col">
-                          <span className="text-[10px] text-[#1D2159]/60 font-bold uppercase tracking-wider mb-1">Investment</span>
-                          <span className="text-xl font-extrabold text-[#1D2159]">{course.price}</span>
-                        </div>
-                        <div className="w-px h-10 bg-white shadow-sm"></div>
-                        <div className="flex flex-col text-right">
-                          <span className="text-[10px] text-[#1D2159]/60 font-bold uppercase tracking-wider mb-1">Duration</span>
-                          <span className="text-xl font-extrabold text-[#1D2159]">{course.duration}</span>
-                        </div>
-                     </div>
-                     <div className="flex items-center justify-end text-[#3B4CE3] font-extrabold text-sm group-hover:text-[#F1592A] transition-colors gap-1">
-                       More details 
-                       <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
-                     </div>
-                  </div>
-
+                <div className="mt-auto flex items-center justify-between pt-6 border-t border-white/5">
+                  <span className="text-2xl font-extrabold text-white">{course.price}</span>
+                  <span className="text-sm font-bold text-slate-300 group-hover:text-violet-400 transition-colors flex items-center gap-1">
+                    View Course
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+                  </span>
                 </div>
               </div>
             </Link>
           ))}
-
         </div>
-      </main>
+      </section>
+
     </div>
   );
 }

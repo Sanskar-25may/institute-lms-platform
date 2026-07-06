@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -98,11 +98,13 @@ export default function MyCoursesPage() {
             
             {/* Thumbnail */}
             <div className="h-48 relative overflow-hidden bg-slate-800">
-              <img 
-                src={course.image} 
-                alt={course.title} 
-                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-              />
+  <Image 
+    src={course.image} 
+    alt={course.title} 
+    fill
+    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+    className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" 
+  />
               <div className="absolute inset-0 bg-gradient-to-t from-[#131B2F] to-transparent opacity-80"></div>
               
               {/* Play Button Overlay (Only for active courses) */}

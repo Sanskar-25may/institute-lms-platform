@@ -1,5 +1,3 @@
-"use client";
-
 export default function AdminSettingsPage() {
   return (
     <div className="max-w-[1000px] mx-auto space-y-8 animate-in fade-in duration-500 pb-24">

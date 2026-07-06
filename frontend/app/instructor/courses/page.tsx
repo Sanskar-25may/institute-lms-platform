@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -86,9 +86,9 @@ export default function InstructorCoursesPage() {
                   {/* Course Info */}
                   <td className="p-6">
                     <div className="flex items-center gap-4">
-                      <div className="w-16 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0 border border-white/10">
-                        <img src={course.image} alt={course.title} className="w-full h-full object-cover" />
-                      </div>
+                      <div className="w-16 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0 border border-white/5 relative">
+  <Image src={course.image} alt={course.title} fill sizes="64px" className="object-cover" />
+</div>
                       <div>
                         <h4 className="font-bold text-white group-hover:text-violet-400 transition-colors line-clamp-1">{course.title}</h4>
                         {course.rating > 0 ? (

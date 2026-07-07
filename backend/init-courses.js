@@ -18,7 +18,7 @@ const createCourseTables = async () => {
     -- 2. Create the Courses table
     CREATE TABLE IF NOT EXISTS Courses (
       course_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      instructor_id UUID REFERENCES Users(user_id) ON DELETE CASCADE,
+      faculty_id UUID REFERENCES Users(user_id) ON DELETE CASCADE,
       title VARCHAR(255) NOT NULL,
       description TEXT NOT NULL,
       price DECIMAL(10, 2) DEFAULT 0.00,

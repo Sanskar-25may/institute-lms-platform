@@ -1,23 +1,139 @@
-import DashboardShell, { NavItem } from "@/components/DashboardShell";
-import type { ReactNode } from "react";
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import ThemeToggle from "@/components/ThemeToggle";
+import { useState, useEffect } from "react";
 
-const adminNav: NavItem[] = [
-  { href: "/admin", label: "Overview", icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg> },
-  { href: "/admin/users", label: "Users", icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> },
-  { href: "/admin/courses", label: "Courses", icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg> },
-  { href: "/admin/revenue", label: "Revenue", icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> },
-  { href: "/admin/moderation", label: "Moderation", icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg> },
-];
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: "Overview", href: "/admin" },
+    { name: "Users", href: "/admin/users" },
+    { name: "Courses", href: "/admin/courses" },
+    { name: "Reports", href: "/admin/reports" },
+    { name: "Settings", href: "/admin/settings" },
+  ];
+
   return (
-    <DashboardShell 
-      role="Super Admin" 
-      navItems={adminNav} 
-      settingsHref="/admin/settings" 
-      userInitials="SG"
-    >
-      {children}
-    </DashboardShell>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg-base)' }}>
+       {/* Top Navbar */}
+       <header 
+          className={`sticky top-0 z-40 transition-all duration-300 ${scrolled ? 'backdrop-blur-xl' : ''}`}
+          style={{ 
+             background: scrolled ? 'color-mix(in srgb, var(--bg-card) 90%, transparent)' : 'var(--bg-card)',
+             borderBottom: '1px solid var(--border-soft)'
+          }}
+       >
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+             <div className="flex justify-between items-center h-16">
+                
+                {/* Logo & Branding */}
+                <div className="flex items-center gap-6">
+                   <Link href="/" className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#0EA5E9] p-0.5">
+                         <div className="w-full h-full rounded-full" style={{ background: 'var(--bg-card)' }}></div>
+                      </div>
+                      <span className="heading-font text-xl font-bold tracking-tight hidden sm:block" style={{ color: 'var(--text-primary)' }}>Aushutosh</span>
+                   </Link>
+                   <div className="hidden sm:block h-6 w-px" style={{ background: 'var(--border-soft)' }}></div>
+                   <span className="badge-danger px-2.5 py-1 rounded-md text-xs font-bold hidden sm:block">Admin Console</span>
+                </div>
+
+                {/* Desktop Nav */}
+                <nav className="hidden lg:flex items-center gap-1">
+                   {navLinks.map((link) => {
+                      const isActive = pathname === link.href;
+                      return (
+                         <Link
+                            key={link.name}
+                            href={link.href}
+                            className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 group`}
+                            style={{ 
+                               color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+                               background: isActive ? 'var(--bg-surface)' : 'transparent'
+                            }}
+                         >
+                            <span className={`group-hover:text-[var(--text-primary)] transition-colors`}>{link.name}</span>
+                         </Link>
+                      )
+                   })}
+                </nav>
+
+                {/* Right Actions */}
+                <div className="flex items-center gap-4">
+                   <ThemeToggle />
+                   
+                   <Link href="/admin/settings" className="relative group ml-2">
+                      <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-rose-400 to-rose-600 p-[2px]">
+                         <div className="w-full h-full rounded-full border-2 flex items-center justify-center font-bold text-xs" style={{ background: 'var(--bg-card)', borderColor: 'var(--bg-card)' }}>
+                            AD
+                         </div>
+                      </div>
+                      <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-rose-500 border-2" style={{ borderColor: 'var(--bg-card)' }}></div>
+                   </Link>
+
+                   {/* Mobile Toggle */}
+                   <button 
+                      onClick={() => setMobileMenuOpen(true)}
+                      className="lg:hidden p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5" style={{ color: 'var(--text-primary)' }}
+                   >
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                   </button>
+                </div>
+
+             </div>
+          </div>
+       </header>
+
+       {/* Mobile Menu Drawer */}
+       {mobileMenuOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}></div>
+             <div className="absolute right-0 top-0 bottom-0 w-64 shadow-2xl flex flex-col slide-in-right" style={{ background: 'var(--bg-card)' }}>
+                <div className="p-4 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-soft)' }}>
+                   <span className="font-bold">Menu</span>
+                   <button onClick={() => setMobileMenuOpen(false)} className="p-2" style={{ color: 'var(--text-secondary)' }}>
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                   </button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-4 space-y-2">
+                   {navLinks.map((link) => {
+                      const isActive = pathname === link.href;
+                      return (
+                         <Link
+                            key={link.name}
+                            href={link.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="flex items-center justify-between p-3 rounded-xl font-medium"
+                            style={{
+                               background: isActive ? 'var(--bg-surface)' : 'transparent',
+                               color: isActive ? 'var(--accent-primary)' : 'var(--text-secondary)'
+                            }}
+                         >
+                            <span className="flex items-center gap-3">
+                               {link.name}
+                            </span>
+                         </Link>
+                      )
+                   })}
+                </div>
+             </div>
+          </div>
+       )}
+
+       {/* Main Content Area */}
+       <main className="flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8 animate-fade-in-up">
+          {children}
+       </main>
+    </div>
   );
 }

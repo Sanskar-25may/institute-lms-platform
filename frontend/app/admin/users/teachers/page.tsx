@@ -24,7 +24,7 @@ export default function AdminTeachersPage() {
             <span className="text-fuchsia-400">Teachers</span>
           </div>
           <h1 className="text-3xl font-extrabold text-white mb-2">Teacher Roster</h1>
-          <p className="text-slate-400 font-medium">Manage instructors, approve applications, and view revenue generated.</p>
+          <p className="text-slate-400 font-medium">Manage facultys, approve applications, and view revenue generated.</p>
         </div>
 
         <div className="flex items-center gap-4">
@@ -44,7 +44,7 @@ export default function AdminTeachersPage() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-white/[0.02] border-b border-white/5 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                <th className="p-6 font-medium">Instructor</th>
+                <th className="p-6 font-medium">Faculty</th>
                 <th className="p-6 font-medium">Email</th>
                 <th className="p-6 font-medium text-center">Published Courses</th>
                 <th className="p-6 font-medium text-right">Gross Revenue</th>

@@ -6,8 +6,8 @@ export default function AdminModerationPage() {
   const [activeQueue, setActiveQueue] = useState("courses");
 
   const pendingCourses = [
-    { id: 1, title: "Advanced Node.js Scaling", instructor: "David Chen", submitted: "4 hrs ago", status: "Awaiting Review" },
-    { id: 2, title: "Figma to React Native", instructor: "Sarah Jenkins", submitted: "1 day ago", status: "Awaiting Review" }
+    { id: 1, title: "Advanced Node.js Scaling", faculty: "David Chen", submitted: "4 hrs ago", status: "Awaiting Review" },
+    { id: 2, title: "Figma to React Native", faculty: "Sarah Jenkins", submitted: "1 day ago", status: "Awaiting Review" }
   ];
 
   return (
@@ -35,7 +35,7 @@ export default function AdminModerationPage() {
               <thead>
                 <tr className="bg-white/[0.02] border-b border-white/5 text-xs font-bold text-slate-400 uppercase tracking-wider">
                   <th className="p-6 font-medium">Course Title</th>
-                  <th className="p-6 font-medium">Instructor</th>
+                  <th className="p-6 font-medium">Faculty</th>
                   <th className="p-6 font-medium">Submitted</th>
                   <th className="p-6 font-medium text-right">Actions</th>
                 </tr>
@@ -44,7 +44,7 @@ export default function AdminModerationPage() {
                 {pendingCourses.map((course) => (
                   <tr key={course.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="p-6 font-bold text-white">{course.title}</td>
-                    <td className="p-6 text-slate-300 text-sm">{course.instructor}</td>
+                    <td className="p-6 text-slate-300 text-sm">{course.faculty}</td>
                     <td className="p-6 text-sm text-slate-400">{course.submitted}</td>
                     <td className="p-6 text-right">
                       <div className="flex justify-end gap-2">

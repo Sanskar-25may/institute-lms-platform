@@ -6,9 +6,9 @@ export default function AdminRevenuePage() {
   const [activeTab, setActiveTab] = useState("payouts");
 
   const payouts = [
-    { id: 1, instructor: "Aisha Verma", amount: "$12,450.00", status: "Pending", method: "Bank Transfer", date: "Jul 1, 2026", initials: "AV", color: "from-fuchsia-500 to-pink-600" },
-    { id: 2, instructor: "Marcus Chen", amount: "$8,200.00", status: "Pending", method: "PayPal", date: "Jul 2, 2026", initials: "MC", color: "from-blue-500 to-cyan-500" },
-    { id: 3, instructor: "Priya Nair", amount: "$4,100.00", status: "Processed", method: "Bank Transfer", date: "Jun 15, 2026", initials: "PN", color: "from-emerald-500 to-teal-500" }
+    { id: 1, faculty: "Aisha Verma", amount: "$12,450.00", status: "Pending", method: "Bank Transfer", date: "Jul 1, 2026", initials: "AV", color: "from-fuchsia-500 to-pink-600" },
+    { id: 2, faculty: "Marcus Chen", amount: "$8,200.00", status: "Pending", method: "PayPal", date: "Jul 2, 2026", initials: "MC", color: "from-blue-500 to-cyan-500" },
+    { id: 3, faculty: "Priya Nair", amount: "$4,100.00", status: "Processed", method: "Bank Transfer", date: "Jun 15, 2026", initials: "PN", color: "from-emerald-500 to-teal-500" }
   ];
 
   return (
@@ -16,7 +16,7 @@ export default function AdminRevenuePage() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <h1 className="text-3xl font-extrabold text-white mb-2">Global Revenue</h1>
-          <p className="text-slate-400 font-medium">Manage platform fees, transactions, and instructor payouts.</p>
+          <p className="text-slate-400 font-medium">Manage platform fees, transactions, and faculty payouts.</p>
         </div>
         <button className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-900/50 text-sm">
           Export CSV Report
@@ -44,7 +44,7 @@ export default function AdminRevenuePage() {
       <div className="bg-[#131B2F] border border-white/5 rounded-[24px] shadow-lg overflow-hidden mt-8">
         <div className="flex items-center gap-6 px-8 pt-6 border-b border-white/5">
           <button onClick={() => setActiveTab("payouts")} className={`pb-4 text-sm font-bold transition-colors border-b-2 ${activeTab === "payouts" ? "text-emerald-400 border-emerald-500" : "text-slate-500 border-transparent hover:text-slate-300"}`}>
-            Instructor Payouts
+            Faculty Payouts
           </button>
           <button onClick={() => setActiveTab("transactions")} className={`pb-4 text-sm font-bold transition-colors border-b-2 ${activeTab === "transactions" ? "text-emerald-400 border-emerald-500" : "text-slate-500 border-transparent hover:text-slate-300"}`}>
             All Transactions
@@ -55,7 +55,7 @@ export default function AdminRevenuePage() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-white/[0.02] border-b border-white/5 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                <th className="p-6 font-medium">Instructor</th>
+                <th className="p-6 font-medium">Faculty</th>
                 <th className="p-6 font-medium">Request Date</th>
                 <th className="p-6 font-medium">Method</th>
                 <th className="p-6 font-medium text-right">Amount</th>
@@ -69,7 +69,7 @@ export default function AdminRevenuePage() {
                   <td className="p-6">
                     <div className="flex items-center gap-4">
                       <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${payout.color} flex items-center justify-center text-white font-bold text-xs shadow-md shrink-0`}>{payout.initials}</div>
-                      <span className="font-bold text-white group-hover:text-emerald-400 transition-colors">{payout.instructor}</span>
+                      <span className="font-bold text-white group-hover:text-emerald-400 transition-colors">{payout.faculty}</span>
                     </div>
                   </td>
                   <td className="p-6 text-sm text-slate-400">{payout.date}</td>

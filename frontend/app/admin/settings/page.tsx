@@ -17,7 +17,7 @@ export default function AdminSettingsPage() {
           <form className="space-y-6">
             <div>
               <label className="block text-xs font-bold text-slate-400 mb-2 uppercase">Platform Name</label>
-              <input type="text" defaultValue="Lumina" className="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors" />
+              <input type="text" defaultValue="Aushutosh" className="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors" />
             </div>
             
             <div className="grid grid-cols-2 gap-6">
@@ -38,7 +38,7 @@ export default function AdminSettingsPage() {
             <div>
               <label className="block text-xs font-bold text-slate-400 mb-2 uppercase">Platform Fee (%)</label>
               <input type="number" defaultValue="20" className="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors" />
-              <p className="text-xs text-slate-500 mt-2">The percentage deducted from instructor sales before payouts.</p>
+              <p className="text-xs text-slate-500 mt-2">The percentage deducted from faculty sales before payouts.</p>
             </div>
             
             <div className="pt-6 border-t border-white/5 flex justify-end gap-3">

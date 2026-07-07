@@ -1,113 +1,83 @@
-export default function AdminOverview() {
+import Link from "next/link";
+
+export default function AdminDashboard() {
   return (
-    <div className="max-w-[1400px] mx-auto space-y-8 animate-in fade-in duration-500 pb-12">
-      
-      {/* Top Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-[#131B2F] border border-white/5 p-6 rounded-2xl shadow-lg">
-          <p className="text-sm font-medium text-slate-400 mb-2">Total users</p>
-          <div className="flex items-end justify-between">
-            <h3 className="text-4xl font-extrabold text-white">184,392</h3>
-            <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded">+2,405 this week</span>
+    <div className="space-y-6 pb-20">
+       
+       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <div>
+             <h1 className="heading-font text-3xl font-bold mb-1">Platform Overview</h1>
+             <p style={{ color: 'var(--text-secondary)' }}>System metrics and global activity.</p>
           </div>
-        </div>
-        <div className="bg-[#131B2F] border border-white/5 p-6 rounded-2xl shadow-lg">
-          <p className="text-sm font-medium text-slate-400 mb-2">Active courses</p>
-          <div className="flex items-end justify-between">
-            <h3 className="text-4xl font-extrabold text-white">3,512</h3>
-            <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded">+18</span>
-          </div>
-        </div>
-        <div className="bg-gradient-to-br from-violet-900/40 to-fuchsia-900/20 border border-violet-500/20 p-6 rounded-2xl shadow-lg">
-          <p className="text-sm font-medium text-violet-200 mb-2">Total revenue</p>
-          <h3 className="text-4xl font-extrabold text-white">$1.18M</h3>
-        </div>
-        <div className="bg-[#131B2F] border border-white/5 p-6 rounded-2xl shadow-lg">
-          <p className="text-sm font-medium text-slate-400 mb-2">System uptime</p>
-          <h3 className="text-4xl font-extrabold text-emerald-400">99.98%</h3>
-        </div>
-      </div>
+       </div>
 
-      {/* Middle Section: Chart & Activity Feed */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Revenue Chart */}
-        <div className="lg:col-span-2 bg-[#131B2F] border border-white/5 rounded-[24px] p-8 shadow-lg flex flex-col">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-white">Revenue (6 mo)</h3>
-            <span className="text-xs font-bold text-slate-400 uppercase">USD</span>
-          </div>
-          <div className="flex-1 relative w-full h-full min-h-[250px] flex items-end pt-4">
-             <div className="absolute inset-0 flex flex-col justify-between pb-8 z-0">
-               <div className="w-full border-t border-white/5 border-dashed h-0 flex items-center"><span className="absolute -left-6 text-[10px] text-slate-500">$50k</span></div>
-               <div className="w-full border-t border-white/5 border-dashed h-0 flex items-center"><span className="absolute -left-6 text-[10px] text-slate-500">$40k</span></div>
-               <div className="w-full border-t border-white/5 border-dashed h-0 flex items-center"><span className="absolute -left-6 text-[10px] text-slate-500">$30k</span></div>
-               <div className="w-full border-t border-white/5 border-dashed h-0 flex items-center"><span className="absolute -left-6 text-[10px] text-slate-500">$20k</span></div>
+       {/* Metric Cards */}
+       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          {[
+             { label: "Total Users", value: "24,592", trend: "+1.2k this month", color: "var(--accent-primary)" },
+             { label: "MRR", value: "$284,000", trend: "+5.4%", color: "var(--accent-success)" },
+             { label: "Active Courses", value: "142", trend: "+12 new", color: "var(--accent-warning)" },
+             { label: "System Uptime", value: "99.99%", trend: "Healthy", color: "var(--accent-cyan)" }
+          ].map((stat, i) => (
+             <div key={i} className="p-6 rounded-[24px] card-hover" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
+                <div className="text-sm font-medium mb-4" style={{ color: 'var(--text-secondary)' }}>{stat.label}</div>
+                <div className="heading-font text-3xl font-bold mb-2">{stat.value}</div>
+                <div className="text-xs font-bold" style={{ color: stat.color }}>{stat.trend}</div>
              </div>
-             <div className="absolute inset-0 pb-8 z-10 w-full ml-4">
-               <svg viewBox="0 0 500 200" className="w-full h-full overflow-visible preserve-aspect-ratio-none">
-                 <path d="M0,150 L100,140 L200,100 L300,110 L400,60 L500,20" fill="none" stroke="#8B5CF6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                 <circle cx="0" cy="150" r="4" fill="#0B0F19" stroke="#8B5CF6" strokeWidth="2" />
-                 <circle cx="100" cy="140" r="4" fill="#0B0F19" stroke="#8B5CF6" strokeWidth="2" />
-                 <circle cx="200" cy="100" r="4" fill="#0B0F19" stroke="#8B5CF6" strokeWidth="2" />
-                 <circle cx="300" cy="110" r="4" fill="#0B0F19" stroke="#8B5CF6" strokeWidth="2" />
-                 <circle cx="400" cy="60" r="4" fill="#0B0F19" stroke="#8B5CF6" strokeWidth="2" />
-                 <circle cx="500" cy="20" r="4" fill="#8B5CF6" />
-               </svg>
-             </div>
-             <div className="absolute bottom-0 left-4 w-full flex justify-between text-[10px] font-bold text-slate-500 uppercase tracking-wider z-20">
-               <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
-             </div>
-          </div>
-        </div>
+          ))}
+       </div>
 
-        {/* Recent Activity */}
-        <div className="bg-[#131B2F] border border-white/5 rounded-[24px] p-8 shadow-lg">
-          <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></span>
-            Recent activity
-          </h3>
-          <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs shrink-0">AV</div>
-              <div>
-                <p className="text-sm text-slate-300"><span className="font-bold text-white">Aisha Verma</span> published a new course</p>
-                <p className="text-xs text-slate-500 mt-1">2h ago</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0">SJ</div>
-              <div>
-                <p className="text-sm text-slate-300"><span className="font-bold text-white">Sarah Jenkins</span> started a 7-day trial</p>
-                <p className="text-xs text-slate-500 mt-1">4h ago</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs shrink-0">DA</div>
-              <div>
-                <p className="text-sm text-slate-300"><span className="font-bold text-white">Diego Alvarez</span> graded 12 submissions</p>
-                <p className="text-xs text-slate-500 mt-1">5h ago</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0">$</div>
-              <div>
-                <p className="text-sm text-slate-300">Payments processed <span className="font-bold text-emerald-400">$12.4K</span> in orders</p>
-                <p className="text-xs text-slate-500 mt-1">6h ago</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-              </div>
-              <div>
-                <p className="text-sm text-slate-300"><span className="font-bold text-white">System</span> auto-backup completed</p>
-                <p className="text-xs text-slate-500 mt-1">12h ago</p>
-              </div>
-            </div>
+       {/* Main Layout */}
+       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <div className="rounded-[24px] p-6" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
+             <h2 className="heading-font text-lg font-bold mb-6">Recent Signups</h2>
+             <table className="data-table">
+                <thead>
+                   <tr>
+                      <th>User</th>
+                      <th>Role</th>
+                      <th>Joined</th>
+                   </tr>
+                </thead>
+                <tbody>
+                   <tr>
+                      <td className="font-bold">alice@example.com</td>
+                      <td><span className="badge-primary px-2 py-1 rounded text-xs">Student</span></td>
+                      <td className="text-xs" style={{ color: 'var(--text-secondary)' }}>2 mins ago</td>
+                   </tr>
+                   <tr>
+                      <td className="font-bold">david.m@university.edu</td>
+                      <td><span className="badge-warning px-2 py-1 rounded text-xs">Faculty</span></td>
+                      <td className="text-xs" style={{ color: 'var(--text-secondary)' }}>1 hour ago</td>
+                   </tr>
+                   <tr>
+                      <td className="font-bold">zack@example.com</td>
+                      <td><span className="badge-primary px-2 py-1 rounded text-xs">Student</span></td>
+                      <td className="text-xs" style={{ color: 'var(--text-secondary)' }}>3 hours ago</td>
+                   </tr>
+                </tbody>
+             </table>
+             <Link href="/admin/users" className="block text-center mt-4 text-sm font-bold text-[var(--accent-primary)] hover:underline">View All Users</Link>
           </div>
-        </div>
-      </div>
+
+          <div className="rounded-[24px] p-6" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
+             <h2 className="heading-font text-lg font-bold mb-6">System Alerts</h2>
+             <div className="space-y-4">
+                <div className="flex items-start gap-4 p-4 rounded-xl" style={{ background: 'var(--bg-surface)' }}>
+                   <div className="w-8 h-8 rounded-full bg-rose-500/20 text-rose-500 flex items-center justify-center shrink-0">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                   </div>
+                   <div>
+                      <h4 className="font-bold text-sm">Failed Webhook Deliveries</h4>
+                      <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>Stripe payment webhooks are experiencing a 5% failure rate.</p>
+                      <button className="text-xs font-bold text-rose-500 mt-2">Investigate</button>
+                   </div>
+                </div>
+             </div>
+          </div>
+          
+       </div>
     </div>
   );
 }

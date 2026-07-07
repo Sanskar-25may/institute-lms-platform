@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- ENUMS ---
+enum UserRole {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum CourseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum PaymentState {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+// --- MODELS ---
+
+model User {
+  id           String   @id @default(uuid()) @map("user_id") @db.Uuid
+  fullName     String   @map("full_name") @db.VarChar(255)
+  email        String   @unique @db.VarChar(255)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  role         UserRole @map("role")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp()
+
+  // Relationships
+  courses          Course[]           @relation("FacultyCourses")
+  enrollments      Enrollment[]
+  platformSettings PlatformSettings[]
+
+  @@map("Users")
+}
+
+model Course {
+  id           String       @id @default(uuid()) @map("course_id") @db.Uuid
+  facultyId String       @map("faculty_id") @db.Uuid
+  title        String       @db.VarChar(255)
+  description  String       @db.Text
+  price        Decimal      @db.Decimal(10, 2)
+  status       CourseStatus @map("status")
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamp()
+
+  // Relationships
+  faculty  User         @relation("FacultyCourses", fields: [facultyId], references: [id])
+  lessons     Lesson[]
+  enrollments Enrollment[]
+
+  @@map("Courses")
+}
+
+model Lesson {
+  id         String @id @default(uuid()) @map("lesson_id") @db.Uuid
+  courseId   String @map("course_id") @db.Uuid
+  title      String @db.VarChar(255)
+  videoKey   String @map("video_key") @db.VarChar(255)
+  orderIndex Int    @map("order_index")
+
+  // Relationships
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("Lessons")
+}
+
+model Enrollment {
+  id              String       @id @default(uuid()) @map("enrollment_id") @db.Uuid
+  studentId       String       @map("student_id") @db.Uuid
+  courseId        String       @map("course_id") @db.Uuid
+  transactionId   String?      @unique @map("transaction_id") @db.VarChar(255) 
+  paymentStatus   PaymentState @map("payment_status")
+  progressPercent Int          @default(0) @map("progress_percent")
+  enrolledAt      DateTime     @default(now()) @map("enrolled_at") @db.Timestamp()
+
+  // Relationships
+  student User   @relation(fields: [studentId], references: [id])
+  course  Course @relation(fields: [courseId], references: [id])
+
+  // A student can only enroll in a specific course once
+  @@unique([studentId, courseId])
+  @@map("Enrollments")
+}
+
+model Testimonial {
+  id          String  @id @default(uuid()) @map("testimonial_id") @db.Uuid
+  studentName String  @map("student_name") @db.VarChar(255)
+  reviewText  String  @map("review_text") @db.Text
+  rating      Int
+  isPublished Boolean @default(false) @map("is_published")
+
+  @@map("Testimonials")
+}
+
+model PlatformSettings {
+  id            Int    @id @default(autoincrement())
+  themeConfig   Json   @map("theme_config")
+  globalContent Json   @map("global_content")
+  footerLinks   Json   @map("footer_links")
+  lastUpdatedBy String @map("last_updated_by") @db.Uuid
+
+  // Relationships
+  updatedBy User @relation(fields: [lastUpdatedBy], references: [id])
+
+  @@map("Platform_Settings")
+}

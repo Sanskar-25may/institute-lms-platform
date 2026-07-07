@@ -29,7 +29,7 @@ export default function ContactPage() {
                     <div>
                        <h3 className="font-bold text-lg">Email us</h3>
                        <p style={{ color: 'var(--text-secondary)' }}>Our friendly team is here to help.</p>
-                       <p className="font-medium mt-1">hello@lumina.dev</p>
+                       <p className="font-medium mt-1">hello@aushutosh.dev</p>
                     </div>
                  </div>
                  

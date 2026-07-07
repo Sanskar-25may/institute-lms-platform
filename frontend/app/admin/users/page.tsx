@@ -28,9 +28,9 @@ export default function AdminUsersPage() {
                 <tbody>
                    {[
                       { email: "sanskar@example.com", role: "Student", status: "Active", login: "Just now" },
-                      { email: "marcus.chen@lumina.dev", role: "Faculty", status: "Active", login: "2 hours ago" },
+                      { email: "marcus.chen@aushutosh.dev", role: "Faculty", status: "Active", login: "2 hours ago" },
                       { email: "banned.user@example.com", role: "Student", status: "Suspended", login: "1 month ago" },
-                      { email: "admin.super@lumina.dev", role: "Admin", status: "Active", login: "5 mins ago" },
+                      { email: "admin.super@aushutosh.dev", role: "Admin", status: "Active", login: "5 mins ago" },
                    ].map((u, i) => (
                       <tr key={i}>
                          <td className="font-bold text-sm">{u.email}</td>

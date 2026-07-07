@@ -112,7 +112,7 @@ export default function AuthPage() {
                 
                 <div>
                    <label className="block text-sm font-medium mb-2">Email</label>
-                   <input type="email" required className="input-premium w-full px-4 py-3 rounded-xl" placeholder="jane@example.com" defaultValue="demo@lumina.dev" />
+                   <input type="email" required className="input-premium w-full px-4 py-3 rounded-xl" placeholder="jane@example.com" defaultValue="demo@aushutosh.dev" />
                 </div>
                 
                 <div>

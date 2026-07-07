@@ -23,7 +23,7 @@ export default function AdminSettingsPage() {
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <label className="block text-xs font-bold text-slate-400 mb-2 uppercase">Support Email</label>
-                <input type="email" defaultValue="support@lumina.io" className="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors" />
+                <input type="email" defaultValue="support@aushutosh.io" className="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors" />
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-400 mb-2 uppercase">Global Currency</label>

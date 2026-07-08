@@ -7,8 +7,10 @@ import { signIn } from "next-auth/react";
 import { Suspense } from "react";
 
 function AuthContent() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
+  const [role, setRole] = useState<"student" | "faculty" | "admin">("student");
+  const [email, setEmail] = useState("demo@aushutosh.dev");
+  const [password, setPassword] = useState("password123");
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -110,16 +112,23 @@ function AuthContent() {
                 <p style={{ color: 'var(--text-secondary)' }}>Sign in to continue to your dashboard</p>
              </div>
 
+
+
              {errorMsg && (
                <div className="p-4 mb-6 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-semibold text-center">
                  {errorMsg}
                </div>
              )}
 
-             <div className="space-y-4">
+             <div className="flex bg-black/5 p-1 rounded-xl mb-6" style={{ background: 'var(--bg-surface)' }}>
+                <button onClick={() => setIsLogin(true)} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${isLogin ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={isLogin ? {background: 'var(--bg-card)'} : {}}>Sign In</button>
+                <button onClick={() => setIsLogin(false)} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${!isLogin ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={!isLogin ? {background: 'var(--bg-card)'} : {}}>Sign Up</button>
+             </div>
+
+             <div className="space-y-4 mb-6">
                 <button 
                   onClick={() => signIn("google", { callbackUrl })}
-                  className="w-full flex items-center justify-center gap-3 py-4 rounded-xl border border-gray-300 bg-white text-gray-800 font-bold hover:bg-gray-50 transition-colors shadow-sm"
+                  className="w-full flex items-center justify-center gap-3 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 font-bold hover:bg-gray-50 transition-colors shadow-sm"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -129,47 +138,60 @@ function AuthContent() {
                   </svg>
                   Continue with Google
                 </button>
-
-                {searchParams.get("admin") === "true" && (
-                   <form onSubmit={handleSubmit} className="space-y-5 mt-8 pt-8 border-t" style={{ borderColor: 'var(--border-soft)' }}>
-                      <div className="text-center mb-4">
-                         <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--text-secondary)]">Super Admin Login</h3>
-                      </div>
-                      
-                      <div>
-                         <label className="block text-sm font-medium mb-2">Email</label>
-                         <input 
-                           type="email" 
-                           required 
-                           className="input-premium w-full px-4 py-3 rounded-xl" 
-                           placeholder="admin@example.com" 
-                           value={email}
-                           onChange={(e) => setEmail(e.target.value)}
-                         />
-                      </div>
-                      
-                      <div>
-                         <div className="flex justify-between items-center mb-2">
-                            <label className="block text-sm font-medium">Password</label>
-                         </div>
-                         <input 
-                           type="password" 
-                           required 
-                           className="input-premium w-full px-4 py-3 rounded-xl" 
-                           placeholder="••••••••" 
-                           value={password}
-                           onChange={(e) => setPassword(e.target.value)}
-                         />
-                      </div>
-
-                      <button type="submit" disabled={isLoading} className="btn-primary w-full py-4 rounded-xl text-lg font-bold flex justify-center items-center mt-6">
-                         {isLoading ? (
-                            <svg className="animate-spin h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                         ) : "Admin Login"}
-                      </button>
-                   </form>
-                )}
              </div>
+
+             <div className="relative mb-6">
+               <div className="absolute inset-0 flex items-center">
+                 <div className="w-full border-t border-gray-200" style={{ borderColor: 'var(--border-soft)' }}></div>
+               </div>
+               <div className="relative flex justify-center text-sm">
+                 <span className="px-2" style={{ background: 'var(--bg-base)', color: 'var(--text-secondary)' }}>Or continue with email</span>
+               </div>
+             </div>
+
+             <form onSubmit={handleSubmit} className="space-y-5">
+                {!isLogin && (
+                   <div>
+                      <label className="block text-sm font-medium mb-2">Full Name</label>
+                      <input type="text" required={!isLogin} className="input-premium w-full px-4 py-3 rounded-xl" placeholder="Jane Doe" />
+                   </div>
+                )}
+                
+                <div>
+                   <label className="block text-sm font-medium mb-2">Email</label>
+                   <input 
+                     type="email" 
+                     required 
+                     className="input-premium w-full px-4 py-3 rounded-xl" 
+                     placeholder="jane@example.com" 
+                     value={email}
+                     onChange={(e) => setEmail(e.target.value)}
+                   />
+                </div>
+                
+                <div>
+                   <div className="flex justify-between items-center mb-2">
+                      <label className="block text-sm font-medium">Password</label>
+                      {isLogin && <Link href="#" className="text-xs font-semibold hover:underline" style={{ color: 'var(--accent-primary)' }}>Forgot?</Link>}
+                   </div>
+                   <input 
+                     type="password" 
+                     required 
+                     className="input-premium w-full px-4 py-3 rounded-xl" 
+                     placeholder="••••••••" 
+                     value={password}
+                     onChange={(e) => setPassword(e.target.value)}
+                   />
+                </div>
+
+
+
+                <button type="submit" disabled={isLoading} className="btn-primary w-full py-4 rounded-xl text-lg font-bold flex justify-center items-center mt-6">
+                   {isLoading ? (
+                      <svg className="animate-spin h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                   ) : (isLogin ? "Continue to Dashboard" : "Create Account")}
+                </button>
+             </form>
              
           </div>
        </div>

@@ -72,11 +72,23 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, profile }) {
       if (user) {
         token.role = user.role;
         token.id = user.id;
+        token.email = user.email;
       }
+      
+      // HARD SECURITY CHECK: Only this specific email can ever be ADMIN.
+      // Even if someone hacks the database, NextAuth will forcefully downgrade them if their email doesn't match.
+      const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "gsanskar25@gmail.com"; 
+      if (token.email === superAdminEmail) {
+        token.role = "ADMIN";
+      } else if (token.role === "ADMIN") {
+        // If they are ADMIN in DB but not the super admin email, downgrade them to prevent unauthorized access
+        token.role = "STUDENT";
+      }
+
       return token;
     },
     async session({ session, token }) {

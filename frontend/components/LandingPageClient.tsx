@@ -11,7 +11,7 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
   return (
     <div className="min-h-screen pt-20">
       {/* 1. Hero Section with Video Background and Parallax */}
-      <section className="relative overflow-hidden pt-20 pb-32 min-h-[90vh] flex items-center justify-center">
+      <section className="relative overflow-hidden pt-20 pb-48 md:pb-32 min-h-[100svh] md:min-h-[90vh] flex items-center justify-center">
         
         {/* Specific Hero Video Background */}
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0">

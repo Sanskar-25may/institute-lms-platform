@@ -9,8 +9,8 @@ import { Suspense } from "react";
 function AuthContent() {
   const [isLogin, setIsLogin] = useState(true);
   const [role, setRole] = useState<"student" | "faculty" | "admin">("student");
-  const [email, setEmail] = useState("demo@aushutosh.dev");
-  const [password, setPassword] = useState("password123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -184,8 +184,27 @@ function AuthContent() {
                    />
                 </div>
 
-
-
+                <div className="pt-2 pb-4">
+                   <label className="block text-sm font-medium mb-3">I am a...</label>
+                   <div className="grid grid-cols-2 gap-3">
+                      {[
+                         { id: "student", label: "Student" },
+                         { id: "faculty", label: "Instructor" }
+                      ].map((r) => (
+                         <button
+                            key={r.id}
+                            type="button"
+                            onClick={() => setRole(r.id as any)}
+                            className={`py-3 rounded-xl text-sm font-bold border transition-all ${role === r.id ? 'border-[var(--accent-primary)] text-[var(--accent-primary)]' : 'border-[var(--border-soft)] text-[var(--text-secondary)] hover:border-[var(--text-tertiary)]'}`}
+                            style={{ 
+                               background: role === r.id ? 'color-mix(in srgb, var(--accent-primary) 10%, transparent)' : 'var(--bg-surface)' 
+                            }}
+                         >
+                            {r.label}
+                         </button>
+                      ))}
+                   </div>
+                </div>
                 <button type="submit" disabled={isLoading} className="btn-primary w-full py-4 rounded-xl text-lg font-bold flex justify-center items-center mt-6">
                    {isLoading ? (
                       <svg className="animate-spin h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>

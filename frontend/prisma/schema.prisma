@@ -158,3 +158,13 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
+
+model SiteContent {
+  id        String   @id @default(uuid()) @db.Uuid
+  pageId    String   @unique @map("page_id") // e.g., 'public-home', 'student-dashboard'
+  category  String   // 'public', 'student', 'faculty'
+  content   Json     // Dynamic payload for this page
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("site_content")
+}

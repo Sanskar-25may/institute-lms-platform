@@ -3,7 +3,7 @@ import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
-export default function LandingPageClient() {
+export default function LandingPageClient({ initialData = {} }: { initialData?: any }) {
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 500], [0, 150]);
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
@@ -53,10 +53,10 @@ export default function LandingPageClient() {
           </motion.div>
 
           <h1 className="heading-font text-5xl md:text-7xl font-bold tracking-tight max-w-4xl mb-6 drop-shadow-2xl">
-            Build skills that <br/><span className="shimmer-text">ship real products.</span>
+            {initialData.heroTitle || "Build skills that"} <br/><span className="shimmer-text">{initialData.heroHighlight || "ship real products."}</span>
           </h1>
           <p className="text-lg md:text-xl max-w-2xl mb-10 drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>
-            Project-based engineering courses taught by the industry's top 1%. Join 10,000+ developers building the future of software.
+            {initialData.heroSubtitle || "Project-based engineering courses taught by the industry's top 1%. Join 10,000+ developers building the future of software."}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
@@ -95,12 +95,12 @@ export default function LandingPageClient() {
       <section className="py-12 section-divider backdrop-blur-md border-y" style={{ background: 'color-mix(in srgb, var(--bg-surface) 60%, transparent)', borderColor: 'var(--border-soft)' }}>
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x" style={{ borderColor: 'var(--border-soft)' }}>
-              {[
+              {(initialData.stats || [
                 { label: "Students Worldwide", value: "10,000+" },
                 { label: "Course Satisfaction", value: "98%" },
                 { label: "Average Rating", value: "4.9/5" },
                 { label: "Salary Increase", value: "$34M+" },
-              ].map((stat, i) => (
+              ]).map((stat: any, i: number) => (
                 <motion.div 
                    key={i} 
                    initial={{ opacity: 0, y: 20 }}

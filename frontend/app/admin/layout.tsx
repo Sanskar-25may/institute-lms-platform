@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useState, useEffect } from "react";
+import { signOut } from "next-auth/react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -81,6 +82,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       </div>
                       <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-rose-500 border-2" style={{ borderColor: 'var(--bg-card)' }}></div>
                    </Link>
+
+                   <button 
+                     onClick={() => signOut({ callbackUrl: '/auth' })}
+                     className="hidden sm:flex ml-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors hover:bg-red-500/10 text-red-500 border border-transparent hover:border-red-500/20"
+                   >
+                     Sign out
+                   </button>
 
                    {/* Mobile Toggle */}
                    <button 

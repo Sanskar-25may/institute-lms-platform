@@ -22,6 +22,11 @@ pool.connect()
   .then(() => console.log('✅ Connected to PostgreSQL Database successfully.'))
   .catch((err) => console.error('❌ PostgreSQL Connection Error:', err));
 
+// Add error handler for idle clients to prevent crashing on ECONNRESET
+pool.on('error', (err, client) => {
+  console.error('Unexpected error on idle client', err);
+});
+
 // Import and Use Routes
 const authRoutes = require('./src/routes/authRoutes');
 app.use('/api/v1/auth', authRoutes);

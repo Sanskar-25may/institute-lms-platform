@@ -1,6 +1,13 @@
 import Link from "next/link";
+import { getStudentDashboard } from "@/app/actions";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
-export default function StudentDashboard() {
+export default async function StudentDashboard() {
+  const session = await getServerSession(authOptions);
+  const data = await getStudentDashboard();
+  const userName = session?.user?.name?.split(" ")[0] || "Student";
+
   return (
     <div className="space-y-6 pb-20">
        
@@ -15,7 +22,7 @@ export default function StudentDashboard() {
                    Live Class in 45m
                 </span>
              </div>
-             <h1 className="heading-font text-3xl md:text-4xl font-bold mb-2">Welcome back, Sanskar 👋</h1>
+             <h1 className="heading-font text-3xl md:text-4xl font-bold mb-2">Welcome back, {userName} 👋</h1>
              <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>You're on a 12-day learning streak. Keep it up!</p>
           </div>
           
@@ -30,10 +37,10 @@ export default function StudentDashboard() {
        {/* 2. Metric Cards */}
        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {[
-             { label: "Enrolled Courses", value: "3", icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253", color: "var(--accent-primary)" },
+             { label: "Enrolled Courses", value: data.activeCount.toString(), icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253", color: "var(--accent-primary)" },
              { label: "Learning Streak", value: "12 Days", icon: "M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z", color: "var(--accent-warning)" },
              { label: "Learning Time", value: "48h 20m", icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z", color: "var(--accent-cyan)" },
-             { label: "Certificates", value: "1", icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z", color: "var(--accent-success)" }
+             { label: "Certificates", value: data.completedCount.toString(), icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z", color: "var(--accent-success)" }
           ].map((stat, i) => (
              <div key={i} className="p-6 rounded-[20px] card-hover flex flex-col justify-between" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: `color-mix(in srgb, ${stat.color} 15%, transparent)`, color: stat.color }}>

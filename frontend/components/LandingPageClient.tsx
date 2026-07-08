@@ -118,29 +118,32 @@ export default function LandingPageClient() {
       </section>
 
       {/* 3. Marquee */}
-      <section className="py-20 overflow-hidden relative border-b" style={{ borderColor: 'var(--border-soft)', background: 'color-mix(in srgb, var(--bg-card) 50%, transparent)' }}>
-        <div className="text-center mb-10">
+      <section className="py-20 overflow-hidden border-b" style={{ borderColor: 'var(--border-soft)', background: 'color-mix(in srgb, var(--bg-card) 50%, transparent)' }}>
+        <div className="text-center mb-10 relative z-20">
           <p className="text-sm font-bold uppercase tracking-widest drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>Engineers from top companies learn here</p>
         </div>
         
-        {/* Fade masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 z-10" style={{ background: 'linear-gradient(to right, var(--bg-base), transparent)' }}></div>
-        <div className="absolute right-0 top-0 bottom-0 w-32 z-10" style={{ background: 'linear-gradient(to left, var(--bg-base), transparent)' }}></div>
-        
-        <div className="flex animate-marquee whitespace-nowrap opacity-70 transition-all duration-500 hover:opacity-100">
-           {[1, 2].map((group) => (
-             <div key={group} className="flex items-center gap-16 px-8 text-2xl font-bold font-mono" style={{ color: 'var(--text-secondary)' }}>
-                <span>GOOGLE</span>
-                <span>META</span>
-                <span>STRIPE</span>
-                <span>VERCEL</span>
-                <span>NETFLIX</span>
-                <span>SHOPIFY</span>
-                <span>ATLASSIAN</span>
-                <span>AMAZON</span>
-                <span>GITHUB</span>
-             </div>
-           ))}
+        {/* Marquee scroll area with contained fade masks */}
+        <div className="relative overflow-hidden">
+          {/* Fade masks - only cover the marquee row, not the heading */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--bg-card), transparent)' }}></div>
+          <div className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, var(--bg-card), transparent)' }}></div>
+          
+          <div className="flex animate-marquee whitespace-nowrap opacity-70 transition-all duration-500 hover:opacity-100">
+             {[1, 2].map((group) => (
+               <div key={group} className="flex items-center gap-16 px-8 text-2xl font-bold font-mono" style={{ color: 'var(--text-secondary)' }}>
+                  <span>GOOGLE</span>
+                  <span>META</span>
+                  <span>STRIPE</span>
+                  <span>VERCEL</span>
+                  <span>NETFLIX</span>
+                  <span>SHOPIFY</span>
+                  <span>ATLASSIAN</span>
+                  <span>AMAZON</span>
+                  <span>GITHUB</span>
+               </div>
+             ))}
+          </div>
         </div>
       </section>
 

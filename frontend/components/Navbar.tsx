@@ -10,11 +10,6 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  // Hide on dashboard and auth routes
-  if (pathname === "/auth" || pathname?.startsWith("/student") || pathname?.startsWith("/faculty") || pathname?.startsWith("/admin")) {
-    return null;
-  }
-
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -22,6 +17,11 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Hide on dashboard and auth routes
+  if (pathname === "/auth" || pathname?.startsWith("/student") || pathname?.startsWith("/faculty") || pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   const links = [
     { name: "Courses", href: "/courses" },

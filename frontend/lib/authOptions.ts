@@ -68,7 +68,12 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, profile }) {
+    async jwt({ token, user, trigger, session }) {
+      // Allow client-side session updates
+      if (trigger === "update" && session?.role) {
+        token.role = session.role;
+      }
+
       if (user) {
         token.role = user.role;
         token.id = user.id;

@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useSession } from "next-auth/react";
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const { update } = useSession();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -59,6 +61,9 @@ export default function OnboardingPage() {
       });
 
       if (!res.ok) throw new Error("Failed to save profile");
+
+      // Update the NextAuth session cookie with the new role
+      await update({ role });
 
       router.push(role === "INSTRUCTOR" ? "/faculty" : "/student");
       router.refresh();

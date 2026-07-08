@@ -37,6 +37,8 @@ export const metadata: Metadata = {
   },
 };
 
+import AuthProvider from "@/components/AuthProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -44,9 +46,11 @@ export default function RootLayout({
     <html lang="en" data-theme="dark" className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable}`}>
       <body className="min-h-screen flex flex-col antialiased bg-transparent" style={{ color: "var(--text-primary)" }}>
         <ThemeProvider>
-          <DynamicBackground />
-          <Navbar />
-          <main className="flex-1 flex flex-col relative z-10">{children}</main>
+          <AuthProvider>
+            <DynamicBackground />
+            <Navbar />
+            <main className="flex-1 flex flex-col relative z-10">{children}</main>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

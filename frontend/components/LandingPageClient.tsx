@@ -92,9 +92,9 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
       </section>
 
       {/* 2. Stats strip */}
-      <section className="py-12 section-divider backdrop-blur-md border-y" style={{ background: 'color-mix(in srgb, var(--bg-surface) 60%, transparent)', borderColor: 'var(--border-soft)' }}>
+      <section className="py-12 md:py-16 backdrop-blur-md border-y" style={{ background: 'color-mix(in srgb, var(--bg-surface) 60%, transparent)', borderColor: 'var(--border-soft)' }}>
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x" style={{ borderColor: 'var(--border-soft)' }}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-4 md:gap-8 divide-x" style={{ borderColor: 'var(--border-soft)' }}>
               {(initialData.stats || [
                 { label: "Students Worldwide", value: "10,000+" },
                 { label: "Course Satisfaction", value: "98%" },
@@ -107,10 +107,11 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
                    whileInView={{ opacity: 1, y: 0 }}
                    viewport={{ once: true, margin: "-50px" }}
                    transition={{ delay: i * 0.1, duration: 0.6 }}
-                   className="text-center px-4"
+                   className={`text-center px-2 md:px-4 ${i === 2 ? 'border-l-0 md:border-l' : ''}`}
+                   style={{ borderColor: 'var(--border-soft)' }}
                 >
                   <div className="heading-font text-3xl md:text-4xl font-bold mb-2 gradient-text">{stat.value}</div>
-                  <div className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>{stat.label}</div>
+                  <div className="text-xs md:text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>{stat.label}</div>
                 </motion.div>
               ))}
             </div>

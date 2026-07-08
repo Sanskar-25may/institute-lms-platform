@@ -30,7 +30,13 @@ export async function POST(req: Request) {
     const passwordHash = await bcrypt.hash(password, 10);
 
     // Default to STUDENT if role is missing or invalid
-    const validRole = role === "INSTRUCTOR" ? "INSTRUCTOR" : "STUDENT";
+    let validRole = role === "INSTRUCTOR" ? "INSTRUCTOR" : "STUDENT";
+    
+    // Hardcoded Super Admin Check
+    const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "gsanskargkp25@gmail.com";
+    if (email === superAdminEmail) {
+      validRole = "ADMIN";
+    }
 
     // Create user
     const newUser = await prisma.user.create({

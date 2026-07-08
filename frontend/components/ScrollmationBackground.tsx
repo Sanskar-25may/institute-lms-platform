@@ -67,10 +67,10 @@ export default function ScrollmationBackground() {
       snap: "frame",
       ease: "none",
       scrollTrigger: {
-        trigger: "main.lms-content", // Must wrap content in <main className="lms-content">
+        trigger: document.documentElement,
         start: "top top",
-        end: "bottom bottom",
-        scrub: 0.5,
+        end: "max", // Ensures it maps to the absolute bottom of the scrollable page
+        scrub: 1.5, // Increased scrub for a smoother, slightly heavier cinematic feel
         onUpdate: render,
       },
     });

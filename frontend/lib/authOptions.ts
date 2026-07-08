@@ -81,7 +81,7 @@ export const authOptions: NextAuthOptions = {
       
       // HARD SECURITY CHECK: Only this specific email can ever be ADMIN.
       // Even if someone hacks the database, NextAuth will forcefully downgrade them if their email doesn't match.
-      const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "gsanskar25@gmail.com"; 
+      const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "gsanskargkp25@gmail.com"; 
       if (token.email === superAdminEmail) {
         token.role = "ADMIN";
       } else if (token.role === "ADMIN") {

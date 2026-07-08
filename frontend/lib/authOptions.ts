@@ -14,22 +14,18 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/auth",
+    newUser: "/onboarding",
   },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
       async profile(profile) {
-        // Retrieve role from cookies if it exists
-        const cookieStore = await cookies();
-        const storedRole = cookieStore.get("oauth_role")?.value;
-        const assignedRole = storedRole === "faculty" ? "INSTRUCTOR" : "STUDENT";
-
         return {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
-          role: assignedRole, 
+          role: "STUDENT", 
         }
       }
     }),

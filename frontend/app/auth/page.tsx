@@ -7,9 +7,7 @@ import { signIn } from "next-auth/react";
 import { Suspense } from "react";
 
 function AuthContent() {
-  const [step, setStep] = useState<1 | 2>(1);
   const [isLogin, setIsLogin] = useState(true);
-  const [role, setRole] = useState<"student" | "faculty">("student");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -18,10 +16,9 @@ function AuthContent() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || (role === "student" ? "/student" : "/faculty");
+  const callbackUrl = searchParams.get("callbackUrl") || "/student";
 
   const handleGoogleLogin = () => {
-    document.cookie = "oauth_role=" + role + "; path=/; max-age=3600";
     signIn("google", { callbackUrl });
   };
 
@@ -34,7 +31,7 @@ function AuthContent() {
       const signupRes = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, email, password, phoneNumber, role: role === "faculty" ? "INSTRUCTOR" : "STUDENT" }),
+        body: JSON.stringify({ fullName, email, password, phoneNumber, role: "STUDENT" }),
       });
 
       if (!signupRes.ok) {
@@ -43,8 +40,27 @@ function AuthContent() {
         setIsLoading(false);
         return;
       }
+      
+      // Auto-login after signup
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      setIsLoading(false);
+
+      if (res?.error) {
+        setErrorMsg(res.error);
+      } else {
+        // Force redirect to onboarding for brand new accounts
+        router.push("/onboarding");
+        router.refresh();
+      }
+      return;
     }
 
+    // Normal Login Flow
     const res = await signIn("credentials", {
       redirect: false,
       email,
@@ -124,55 +140,11 @@ function AuthContent() {
           </Link>
 
           <div className="max-w-md w-full animate-fade-in-up">
-            {step === 1 ? (
-              <div className="text-center">
-                 <h2 className="heading-font text-3xl font-bold mb-3">Select your role</h2>
-                 <p style={{ color: 'var(--text-secondary)' }} className="mb-10">How do you want to use the platform?</p>
-                 
-                 <div className="space-y-4">
-                    <button 
-                       onClick={() => { setRole("student"); setStep(2); }}
-                       className="w-full p-6 rounded-2xl border-2 text-left group transition-all"
-                       style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-surface)' }}
-                    >
-                       <div className="flex items-center gap-5">
-                          <div className="w-14 h-14 rounded-full flex items-center justify-center shrink-0 transition-colors" style={{ background: 'color-mix(in srgb, var(--accent-cyan) 15%, transparent)' }}>
-                             <svg className="w-7 h-7" style={{ color: 'var(--accent-cyan)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>
-                          </div>
-                          <div>
-                             <h3 className="font-bold text-lg mb-1 group-hover:text-[var(--accent-cyan)] transition-colors">I am a Student</h3>
-                             <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>I want to learn, take courses, and build projects.</p>
-                          </div>
-                       </div>
-                    </button>
-
-                    <button 
-                       onClick={() => { setRole("faculty"); setStep(2); }}
-                       className="w-full p-6 rounded-2xl border-2 text-left group transition-all"
-                       style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-surface)' }}
-                    >
-                       <div className="flex items-center gap-5">
-                          <div className="w-14 h-14 rounded-full flex items-center justify-center shrink-0 transition-colors" style={{ background: 'color-mix(in srgb, var(--accent-primary) 15%, transparent)' }}>
-                             <svg className="w-7 h-7" style={{ color: 'var(--accent-primary)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
-                          </div>
-                          <div>
-                             <h3 className="font-bold text-lg mb-1 group-hover:text-[var(--accent-primary)] transition-colors">I am an Instructor</h3>
-                             <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>I want to create courses, grade students, and teach.</p>
-                          </div>
-                       </div>
-                    </button>
-                 </div>
-              </div>
-            ) : (
+          <div className="max-w-md w-full animate-fade-in-up">
               <div>
-                 <button onClick={() => setStep(1)} className="mb-6 flex items-center gap-2 text-sm font-semibold hover:underline" style={{ color: 'var(--text-secondary)' }}>
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                    Back to roles
-                 </button>
-
                  <div className="text-center mb-8">
                     <h2 className="heading-font text-3xl font-bold mb-2">
-                       {isLogin ? "Welcome Back" : `Join as ${role === 'student' ? 'Student' : 'Instructor'}`}
+                       {isLogin ? "Welcome Back" : "Create an Account"}
                     </h2>
                     <p style={{ color: 'var(--text-secondary)' }}>{isLogin ? 'Sign in to continue to your dashboard' : 'Create an account to start your journey'}</p>
                  </div>
@@ -254,12 +226,6 @@ function AuthContent() {
                        />
                     </div>
 
-                    {searchParams.get("admin") === "true" && isLogin && (
-                       <div className="p-3 mb-2 rounded-xl border border-[var(--border-strong)] text-xs text-center" style={{ background: 'var(--bg-surface)' }}>
-                          <strong>Super Admin Access Enabled</strong>
-                       </div>
-                    )}
-
                     <button type="submit" disabled={isLoading} className="btn-primary w-full py-4 rounded-xl text-lg font-bold flex justify-center items-center mt-6">
                        {isLoading ? (
                           <svg className="animate-spin h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -267,7 +233,7 @@ function AuthContent() {
                     </button>
                  </form>
               </div>
-            )}
+          </div>
           </div>
        </div>
     </div>

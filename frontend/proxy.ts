@@ -6,6 +6,16 @@ export default withAuth(
     const token = req.nextauth.token;
     const path = req.nextUrl.pathname;
 
+    // If accessing auth page while logged in, redirect to dashboard
+    if (path.startsWith("/auth")) {
+      if (token) {
+        if (token.role === "ADMIN") return NextResponse.redirect(new URL("/admin", req.url));
+        if (token.role === "INSTRUCTOR") return NextResponse.redirect(new URL("/faculty", req.url));
+        return NextResponse.redirect(new URL("/student", req.url));
+      }
+      return NextResponse.next();
+    }
+
     if (!token) {
       return NextResponse.redirect(new URL("/auth", req.url));
     }
@@ -36,11 +46,12 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: ({ token }) => !!token,
+      // Allow the middleware to run even without a token so we can handle /auth
+      authorized: () => true,
     },
   }
 );
 
 export const config = {
-  matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*"],
+  matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*", "/auth"],
 };

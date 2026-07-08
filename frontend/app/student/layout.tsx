@@ -39,7 +39,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
                 
                 {/* Logo & Branding */}
                 <div className="flex items-center gap-6">
-                   <Link href="/" className="flex items-center gap-2">
+                   <Link href="/student" className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#0EA5E9] p-0.5">
                          <div className="w-full h-full rounded-full" style={{ background: 'var(--bg-card)' }}></div>
                       </div>

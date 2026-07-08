@@ -44,7 +44,7 @@ export default function AssignmentsPage() {
           {filtered.map(assignment => (
              <div key={assignment.id} className="p-6 rounded-[24px] flex flex-col h-full card-hover" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
                 <div className="flex justify-between items-start mb-4">
-                   <span className="text-xs font-bold px-2 py-1 rounded bg-black/5 dark:bg-white/5" style={{ color: 'var(--text-secondary)' }}>
+                   <span className="text-xs font-bold px-2 py-1 rounded bg-black/5 dark:bg-surf-elevated" style={{ color: 'var(--text-secondary)' }}>
                       {assignment.course}
                    </span>
                    
@@ -71,7 +71,7 @@ export default function AssignmentsPage() {
                                <span>Progress</span>
                                <span>{assignment.progress}%</span>
                             </div>
-                            <div className="h-1.5 w-full rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
+                            <div className="h-1.5 w-full rounded-full bg-black/5 dark:bg-surf-hover overflow-hidden">
                                <div className="h-full rounded-full bg-[var(--accent-primary)]" style={{ width: `${assignment.progress}%` }}></div>
                             </div>
                          </div>

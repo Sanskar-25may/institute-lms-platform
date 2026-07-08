@@ -106,7 +106,7 @@ export default function CoursesCatalog() {
                            <span className="text-xs font-bold px-2 py-1 rounded-md" style={{ background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-soft)' }}>{course.level}</span>
                            {course.badge && <span className={`text-xs font-bold px-2 py-1 rounded-md ${course.badgeClass}`}>{course.badge}</span>}
                          </div>
-                         <div className="w-10 h-10 rounded-full border-2 shadow-lg flex items-center justify-center font-bold text-white bg-gradient-to-br" style={{ borderColor: 'var(--bg-card)', backgroundImage: `linear-gradient(to bottom right, var(--accent-primary), var(--accent-cyan))` }}>
+                         <div className="w-10 h-10 rounded-full border-2 shadow-lg flex items-center justify-center font-bold text-txt-primary bg-gradient-to-br" style={{ borderColor: 'var(--bg-card)', backgroundImage: `linear-gradient(to bottom right, var(--accent-primary), var(--accent-cyan))` }}>
                            {course.instructor.split(' ').map(n=>n[0]).join('').substring(0,2)}
                          </div>
                       </div>

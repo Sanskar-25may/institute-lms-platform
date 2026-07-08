@@ -57,13 +57,13 @@ export default function MyCoursesPage() {
                 {/* Progress Ring / Thumbnail */}
                 <div className="w-32 h-32 shrink-0 rounded-2xl relative flex items-center justify-center shadow-inner" style={{ background: 'var(--bg-surface)' }}>
                    {course.progress === 100 ? (
-                      <div className="w-full h-full rounded-2xl bg-gradient-to-br flex items-center justify-center text-white" style={{ backgroundImage: `linear-gradient(to bottom right, var(--accent-success), teal)` }}>
+                      <div className="w-full h-full rounded-2xl bg-gradient-to-br flex items-center justify-center text-txt-primary" style={{ backgroundImage: `linear-gradient(to bottom right, var(--accent-success), teal)` }}>
                          <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                       </div>
                    ) : (
                       <>
                          <svg className="w-24 h-24 transform -rotate-90">
-                            <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-black/5 dark:text-white/5" />
+                            <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-black/5 dark:text-txt-primary/5" />
                             <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="6" fill="transparent" strokeDasharray="251.2" strokeDashoffset={251.2 - (251.2 * course.progress) / 100} className="text-[var(--accent-primary)] transition-all duration-1000 ease-out" />
                          </svg>
                          <div className="absolute inset-0 flex items-center justify-center flex-col">

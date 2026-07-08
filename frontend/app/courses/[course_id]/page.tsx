@@ -75,10 +75,10 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
                 <div className="w-full aspect-video rounded-2xl overflow-hidden relative shadow-2xl group cursor-pointer border" style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-card)' }}>
                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-all">
                       <div className="w-16 h-16 rounded-full flex items-center justify-center backdrop-blur-md bg-white/20 border border-white/40 shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform">
-                         <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg>
+                         <svg className="w-8 h-8 text-txt-primary ml-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg>
                       </div>
                    </div>
-                   <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center text-white font-medium text-sm drop-shadow-md">
+                   <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center text-txt-primary font-medium text-sm drop-shadow-md">
                       <span>Preview this course</span>
                       <span>04:12</span>
                    </div>
@@ -158,7 +158,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
                                            {lesson.preview ? (
                                               <svg className="w-4 h-4 text-[var(--accent-primary)]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg>
                                            ) : (
-                                              <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                              <svg className="w-4 h-4 text-txt-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                                            )}
                                            <span className={`text-sm ${lesson.preview ? 'text-[var(--accent-primary)] group-hover:underline cursor-pointer' : ''}`} style={{ color: lesson.preview ? 'var(--accent-primary)' : 'var(--text-secondary)' }}>
                                               {lesson.name}
@@ -183,7 +183,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
                 <div className="p-6 rounded-[24px]" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
                    <h3 className="font-bold mb-6 uppercase tracking-wider text-xs" style={{ color: 'var(--text-tertiary)' }}>Your Instructor</h3>
                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center font-bold text-xl text-white shadow-lg">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center font-bold text-xl text-txt-primary shadow-lg">
                          AV
                       </div>
                       <div>

@@ -107,7 +107,7 @@ export default function SettingsPage() {
                    <h2 className="heading-font text-2xl font-bold border-b pb-4" style={{ borderColor: 'var(--border-soft)' }}>Billing & Plans</h2>
                    
                    <div className="p-6 rounded-xl border border-[var(--accent-primary)] relative overflow-hidden" style={{ background: 'color-mix(in srgb, var(--accent-primary) 5%, var(--bg-card))' }}>
-                      <div className="absolute top-0 right-0 bg-[var(--accent-primary)] text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Active</div>
+                      <div className="absolute top-0 right-0 bg-[var(--accent-primary)] text-txt-primary text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Active</div>
                       <h3 className="font-bold text-xl mb-1">Pro Cohort Plan</h3>
                       <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>$299/month • Renews on March 14, 2024</p>
                       <button className="btn-secondary px-4 py-2 rounded-lg text-sm font-bold bg-[var(--bg-card)]">Manage Subscription</button>

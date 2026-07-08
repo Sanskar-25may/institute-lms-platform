@@ -24,7 +24,7 @@ export default function ClassroomPage() {
           <div className="w-full aspect-video rounded-[24px] bg-black relative flex items-center justify-center overflow-hidden shadow-2xl group border" style={{ borderColor: 'var(--border-soft)' }}>
              {/* Fake Video Controls */}
              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
-                <div className="flex items-center gap-4 text-white">
+                <div className="flex items-center gap-4 text-txt-primary">
                    <button className="hover:text-[var(--accent-primary)]"><svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg></button>
                    <div className="flex-1 h-1.5 bg-white/30 rounded-full cursor-pointer relative">
                       <div className="absolute top-0 left-0 h-full bg-[var(--accent-primary)] rounded-full w-1/3"></div>
@@ -36,7 +36,7 @@ export default function ClassroomPage() {
              </div>
              
              {/* Play Button Overlay */}
-             <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 text-white shadow-2xl cursor-pointer hover:scale-110 hover:bg-white/20 transition-all">
+             <div className="w-20 h-20 rounded-full bg-surf-hover backdrop-blur-md flex items-center justify-center border border-bdr-med text-txt-primary shadow-2xl cursor-pointer hover:scale-110 hover:bg-white/20 transition-all">
                 <svg className="w-10 h-10 ml-2" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg>
              </div>
           </div>
@@ -99,7 +99,7 @@ export default function ClassroomPage() {
           <div className="p-6 border-b" style={{ borderColor: 'var(--border-soft)' }}>
              <h3 className="font-bold mb-2">Course Progress</h3>
              <div className="flex items-center gap-3">
-                <div className="flex-1 h-2 rounded-full bg-black/5 dark:bg-white/5 overflow-hidden">
+                <div className="flex-1 h-2 rounded-full bg-black/5 dark:bg-surf-elevated overflow-hidden">
                    <div className="h-full bg-[var(--accent-primary)] rounded-full" style={{ width: '68%' }}></div>
                 </div>
                 <span className="text-xs font-bold">68%</span>
@@ -109,7 +109,7 @@ export default function ClassroomPage() {
           <div className="flex-1 overflow-y-auto no-scrollbar p-2">
              {/* Section 1 - Completed */}
              <div className="mb-2">
-                <div className="px-4 py-3 flex justify-between items-center cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 rounded-lg">
+                <div className="px-4 py-3 flex justify-between items-center cursor-pointer hover:bg-black/5 dark:hover:bg-surf-elevated rounded-lg">
                    <span className="font-bold text-sm text-[var(--text-primary)]">1. Core Fundamentals</span>
                    <span className="text-xs font-semibold text-[var(--text-tertiary)]">8/8</span>
                 </div>
@@ -117,7 +117,7 @@ export default function ClassroomPage() {
 
              {/* Section 4 - Active */}
              <div className="mb-2">
-                <div className="px-4 py-3 flex justify-between items-center cursor-pointer rounded-lg bg-black/5 dark:bg-white/5">
+                <div className="px-4 py-3 flex justify-between items-center cursor-pointer rounded-lg bg-black/5 dark:bg-surf-elevated">
                    <span className="font-bold text-sm text-[var(--text-primary)]">4. Auth & Security</span>
                    <span className="text-xs font-semibold text-[var(--text-tertiary)]">1/4</span>
                 </div>

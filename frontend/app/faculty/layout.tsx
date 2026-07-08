@@ -65,7 +65,7 @@ export default function FacultyLayout({ children }: { children: React.ReactNode 
                          >
                             <span className={`group-hover:text-[var(--text-primary)] transition-colors`}>{link.name}</span>
                             {link.badge && (
-                               <span className="flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[10px] font-bold text-white rounded-full bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.4)]">
+                               <span className="flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[10px] font-bold text-txt-primary rounded-full bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.4)]">
                                   {link.badge}
                                </span>
                             )}
@@ -78,7 +78,7 @@ export default function FacultyLayout({ children }: { children: React.ReactNode 
                 <div className="flex items-center gap-4">
                    <ThemeToggle />
                    
-                   <div className="relative cursor-pointer w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-black/5 dark:hover:bg-white/5 text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
+                   <div className="relative cursor-pointer w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-black/5 dark:hover:bg-surf-elevated text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
                       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                       <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-500 border-2" style={{ borderColor: 'var(--bg-card)' }}></span>
                    </div>
@@ -95,7 +95,7 @@ export default function FacultyLayout({ children }: { children: React.ReactNode 
                    {/* Mobile Toggle */}
                    <button 
                       onClick={() => setMobileMenuOpen(true)}
-                      className="lg:hidden p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5" style={{ color: 'var(--text-primary)' }}
+                      className="lg:hidden p-2 rounded-md hover:bg-black/5 dark:hover:bg-surf-elevated" style={{ color: 'var(--text-primary)' }}
                    >
                       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                    </button>
@@ -133,7 +133,7 @@ export default function FacultyLayout({ children }: { children: React.ReactNode 
                             <span className="flex items-center gap-3">
                                {link.name}
                             </span>
-                            {link.badge && <span className="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{link.badge}</span>}
+                            {link.badge && <span className="bg-rose-500 text-txt-primary text-[10px] font-bold px-2 py-0.5 rounded-full">{link.badge}</span>}
                          </Link>
                       )
                    })}

@@ -23,7 +23,7 @@ export default function SubmissionsPage() {
              {[1, 2, 3].map(i => (
                 <div key={i} className="p-6 rounded-[24px] flex items-center justify-between card-hover" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg bg-black/5 dark:bg-white/5">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg bg-black/5 dark:bg-surf-elevated">
                          #
                       </div>
                       <div>

@@ -26,7 +26,7 @@ export default function FacultyDashboard() {
              <div key={i} className="p-6 rounded-[24px] card-hover" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
                 <div className="flex justify-between items-start mb-4">
                    <div className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>{stat.label}</div>
-                   <div className="text-xs font-bold px-2 py-1 rounded bg-black/5 dark:bg-white/5" style={{ color: stat.color }}>{stat.trend}</div>
+                   <div className="text-xs font-bold px-2 py-1 rounded bg-black/5 dark:bg-surf-elevated" style={{ color: stat.color }}>{stat.trend}</div>
                 </div>
                 <div className="heading-font text-3xl font-bold mb-4">{stat.value}</div>
                 {/* Fake Sparkline */}
@@ -94,7 +94,7 @@ export default function FacultyDashboard() {
              <div className="p-6 rounded-[24px]" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-soft)' }}>
                 <div className="flex justify-between items-center mb-6">
                    <h3 className="font-bold text-lg">Needs Grading</h3>
-                   <span className="w-6 h-6 rounded-full bg-rose-500 text-white text-xs font-bold flex items-center justify-center shadow-lg">12</span>
+                   <span className="w-6 h-6 rounded-full bg-rose-500 text-txt-primary text-xs font-bold flex items-center justify-center shadow-lg">12</span>
                 </div>
                 
                 <div className="space-y-4">
@@ -103,7 +103,7 @@ export default function FacultyDashboard() {
                       { student: "Sarah Jenkins", task: "Docker Config", time: "5h ago" },
                       { student: "Mike Ross", task: "React Components", time: "1d ago" }
                    ].map((sub, i) => (
-                      <div key={i} className="flex justify-between items-center p-3 rounded-lg bg-black/5 dark:bg-white/5">
+                      <div key={i} className="flex justify-between items-center p-3 rounded-lg bg-black/5 dark:bg-surf-elevated">
                          <div>
                             <div className="font-bold text-sm">{sub.student}</div>
                             <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>{sub.task}</div>

@@ -18,7 +18,7 @@ export default function LiveClassesPage() {
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
              <div>
                 <div className="flex items-center gap-2 mb-4">
-                   <span className="bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-[0_0_15px_rgba(244,63,94,0.5)]">
+                   <span className="bg-rose-500 text-txt-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-[0_0_15px_rgba(244,63,94,0.5)]">
                       <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                       Live Now
                    </span>
@@ -33,7 +33,7 @@ export default function LiveClassesPage() {
                       <img src="https://i.pravatar.cc/150?img=11" className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800 relative z-10" />
                       <img src="https://i.pravatar.cc/150?img=12" className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800 -ml-4 relative z-20" />
                       <img src="https://i.pravatar.cc/150?img=13" className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800 -ml-4 relative z-30" />
-                      <div className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800 -ml-4 relative z-40 bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300">
+                      <div className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800 -ml-4 relative z-40 bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-txt-secondary">
                          +42
                       </div>
                    </div>
@@ -90,9 +90,9 @@ export default function LiveClassesPage() {
                       <div className="w-24 h-20 rounded-xl relative overflow-hidden shrink-0">
                          <img src={rec.img} alt={rec.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                            <svg className="w-8 h-8 text-white opacity-80 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg>
+                            <svg className="w-8 h-8 text-txt-primary opacity-80 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg>
                          </div>
-                         <div className="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
+                         <div className="absolute bottom-1 right-1 bg-black/80 text-txt-primary text-[10px] font-bold px-1.5 py-0.5 rounded">
                             {rec.duration}
                          </div>
                       </div>
@@ -103,7 +103,7 @@ export default function LiveClassesPage() {
                    </div>
                 ))}
              </div>
-             <button className="w-full mt-4 py-3 rounded-xl text-sm font-bold text-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors" style={{ color: 'var(--text-secondary)' }}>
+             <button className="w-full mt-4 py-3 rounded-xl text-sm font-bold text-center hover:bg-black/5 dark:hover:bg-surf-elevated transition-colors" style={{ color: 'var(--text-secondary)' }}>
                 View All Recordings
              </button>
           </div>

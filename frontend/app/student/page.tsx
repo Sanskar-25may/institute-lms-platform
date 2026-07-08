@@ -10,7 +10,7 @@ export default function StudentDashboard() {
           
           <div className="relative z-10 flex-1">
              <div className="flex items-center gap-3 mb-4">
-                <span className="bg-white/10 dark:bg-black/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2" style={{ border: '1px solid var(--border-soft)' }}>
+                <span className="bg-surf-hover dark:bg-black/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2" style={{ border: '1px solid var(--border-soft)' }}>
                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
                    Live Class in 45m
                 </span>
@@ -60,7 +60,7 @@ export default function StudentDashboard() {
                 </div>
                 
                 <div className="flex flex-col md:flex-row gap-6 items-center">
-                   <div className="w-full md:w-48 h-32 rounded-xl shrink-0 bg-gradient-to-br from-violet-600 to-fuchsia-600 p-4 flex flex-col justify-between text-white relative overflow-hidden">
+                   <div className="w-full md:w-48 h-32 rounded-xl shrink-0 bg-gradient-to-br from-violet-600 to-fuchsia-600 p-4 flex flex-col justify-between text-txt-primary relative overflow-hidden">
                       <div className="absolute inset-0 bg-black/20 mix-blend-overlay"></div>
                       <span className="relative z-10 text-xs font-bold uppercase tracking-wider">Module 4</span>
                       <svg className="relative z-10 w-8 h-8 self-end opacity-50" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg>
@@ -71,7 +71,7 @@ export default function StudentDashboard() {
                       <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Lesson 4.2: Implementing Next.js Middleware for Auth</p>
                       
                       <div className="flex items-center gap-4 mb-4">
-                         <div className="flex-1 h-2 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden">
+                         <div className="flex-1 h-2 rounded-full bg-black/10 dark:bg-surf-hover overflow-hidden">
                             <div className="h-full rounded-full bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-cyan)]" style={{ width: '68%' }}></div>
                          </div>
                          <span className="text-sm font-bold" style={{ color: 'var(--text-secondary)' }}>68%</span>
@@ -101,7 +101,7 @@ export default function StudentDashboard() {
                       <div key={i} className="flex flex-col items-center flex-1 gap-3 group">
                          <div className="w-full relative flex justify-center h-full items-end">
                             <div 
-                               className={`w-full max-w-[40px] rounded-t-lg transition-all duration-500 ${bar.active ? 'bg-gradient-to-t from-[var(--accent-primary)] to-[var(--accent-cyan)]' : 'bg-black/10 dark:bg-white/10 group-hover:bg-black/20 dark:group-hover:bg-white/20'}`}
+                               className={`w-full max-w-[40px] rounded-t-lg transition-all duration-500 ${bar.active ? 'bg-gradient-to-t from-[var(--accent-primary)] to-[var(--accent-cyan)]' : 'bg-black/10 dark:bg-surf-hover group-hover:bg-black/20 dark:group-hover:bg-white/20'}`}
                                style={{ height: bar.h }}
                             ></div>
                          </div>

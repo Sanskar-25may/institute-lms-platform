@@ -31,11 +31,11 @@ export default function CalendarPage() {
              <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold">February 2024</h2>
                 <div className="flex gap-2">
-                   <button className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 border transition-colors" style={{ borderColor: 'var(--border-soft)' }}>
+                   <button className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-surf-elevated border transition-colors" style={{ borderColor: 'var(--border-soft)' }}>
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
                    </button>
-                   <button className="px-4 py-2 font-bold text-sm rounded-lg hover:bg-black/5 dark:hover:bg-white/5 border transition-colors" style={{ borderColor: 'var(--border-soft)' }}>Today</button>
-                   <button className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 border transition-colors" style={{ borderColor: 'var(--border-soft)' }}>
+                   <button className="px-4 py-2 font-bold text-sm rounded-lg hover:bg-black/5 dark:hover:bg-surf-elevated border transition-colors" style={{ borderColor: 'var(--border-soft)' }}>Today</button>
+                   <button className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-surf-elevated border transition-colors" style={{ borderColor: 'var(--border-soft)' }}>
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
                    </button>
                 </div>
@@ -48,20 +48,20 @@ export default function CalendarPage() {
                 ))}
                 
                 {calendarDays.map((d, i) => (
-                   <div key={i} className={`min-h-[100px] p-2 transition-colors hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer ${d.isCurrentMonth ? '' : 'opacity-40'}`} style={{ background: 'var(--bg-card)' }}>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mb-1 ${d.date === 14 && d.isCurrentMonth ? 'bg-[var(--accent-primary)] text-white' : ''}`}>
+                   <div key={i} className={`min-h-[100px] p-2 transition-colors hover:bg-black/5 dark:hover:bg-surf-elevated cursor-pointer ${d.isCurrentMonth ? '' : 'opacity-40'}`} style={{ background: 'var(--bg-card)' }}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mb-1 ${d.date === 14 && d.isCurrentMonth ? 'bg-[var(--accent-primary)] text-txt-primary' : ''}`}>
                          {d.date}
                       </div>
                       
                       {/* Mock Events */}
                       {d.date === 14 && d.isCurrentMonth && (
-                         <div className="bg-rose-500 text-white text-[10px] font-bold px-2 py-1 rounded mb-1 truncate">Live Q&A</div>
+                         <div className="bg-rose-500 text-txt-primary text-[10px] font-bold px-2 py-1 rounded mb-1 truncate">Live Q&A</div>
                       )}
                       {d.date === 16 && d.isCurrentMonth && (
-                         <div className="bg-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded truncate">API Due</div>
+                         <div className="bg-amber-500 text-txt-primary text-[10px] font-bold px-2 py-1 rounded truncate">API Due</div>
                       )}
                       {d.date === 22 && d.isCurrentMonth && (
-                         <div className="bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded truncate">Cohort Sync</div>
+                         <div className="bg-blue-500 text-txt-primary text-[10px] font-bold px-2 py-1 rounded truncate">Cohort Sync</div>
                       )}
                    </div>
                 ))}

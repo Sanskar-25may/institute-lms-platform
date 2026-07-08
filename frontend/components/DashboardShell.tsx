@@ -32,21 +32,21 @@ export default function DashboardShell({
   const pathname = usePathname();
 
   return (
-    <div className="flex h-screen bg-[#0B0F19] font-sans text-slate-300 selection:bg-violet-500/30 overflow-hidden">
+    <div className="flex h-screen bg-[#0B0F19] font-sans text-txt-secondary selection:bg-violet-500/30 overflow-hidden">
       
       {/* Animated Background Blob behind Sidebar */}
       <div className="absolute top-0 left-0 w-64 h-full bg-violet-900/10 blur-[100px] pointer-events-none z-0"></div>
 
       {/* --- SIDEBAR NAVIGATION --- */}
-      <aside className="w-[260px] bg-[#0B0F19]/80 backdrop-blur-2xl border-r border-white/5 h-full flex flex-col hidden lg:flex relative z-20 shrink-0 shadow-2xl">
-        <div className="pt-8 pb-6 px-6 border-b border-white/5">
+      <aside className="w-[260px] bg-[#0B0F19]/80 backdrop-blur-2xl border-r border-bdr-soft h-full flex flex-col hidden lg:flex relative z-20 shrink-0 shadow-2xl">
+        <div className="pt-8 pb-6 px-6 border-b border-bdr-soft">
           <Link href="/" className="flex items-center gap-3 mb-6 group">
             <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-violet-600 to-fuchsia-600 flex items-center justify-center shadow-[0_0_15px_rgba(139,92,246,0.3)] group-hover:shadow-[0_0_25px_rgba(139,92,246,0.6)] transition-all transform group-hover:scale-105">
               <div className="w-3 h-3 bg-white rounded-full"></div>
             </div>
-            <span className="text-2xl font-bold text-white tracking-tight heading-font">Aushutosh</span>
+            <span className="text-2xl font-bold text-txt-primary tracking-tight heading-font">Aushutosh</span>
           </Link>
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] font-bold text-violet-300 uppercase tracking-widest shadow-inner">
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-surf-elevated border border-bdr-soft text-[10px] font-bold text-violet-300 uppercase tracking-widest shadow-inner">
             <span className="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
             {role}
           </div>
@@ -62,8 +62,8 @@ export default function DashboardShell({
                 aria-current={isActive ? "page" : undefined}
                 className={`relative flex items-center justify-between px-4 py-3 rounded-xl font-medium transition-all duration-300 group overflow-hidden ${
                   isActive
-                    ? "text-white bg-white/10 border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.2)]"
-                    : "text-slate-400 hover:text-white hover:bg-white/5 border border-transparent"
+                    ? "text-txt-primary bg-surf-hover border border-bdr-soft shadow-[0_4px_20px_rgba(0,0,0,0.2)]"
+                    : "text-txt-secondary hover:text-txt-primary hover:bg-surf-elevated border border-transparent"
                 }`}
               >
                 {/* Active Indicator Bar */}
@@ -98,10 +98,10 @@ export default function DashboardShell({
           })}
 
           {settingsHref && (
-            <div className="pt-4 mt-6 border-t border-white/5">
+            <div className="pt-4 mt-6 border-t border-bdr-soft">
               <Link
                 href={settingsHref}
-                className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl font-medium transition-all group border border-transparent"
+                className="flex items-center gap-3 px-4 py-3 text-txt-secondary hover:text-txt-primary hover:bg-surf-elevated rounded-xl font-medium transition-all group border border-transparent"
               >
                 <svg className="w-5 h-5 opacity-70 group-hover:opacity-100 group-hover:rotate-45 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -117,10 +117,10 @@ export default function DashboardShell({
       {/* --- MAIN CONTENT WRAPPER --- */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
         
-        <header className="h-20 bg-[#0B0F19]/90 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-8 z-30 sticky top-0 shadow-sm">
+        <header className="h-20 bg-[#0B0F19]/90 backdrop-blur-xl border-b border-bdr-soft flex items-center justify-between px-8 z-30 sticky top-0 shadow-sm">
           <div className="flex items-center gap-4">
             {welcomeName && (
-              <h2 className="text-2xl font-bold text-white tracking-tight hidden md:block heading-font animate-fade-in-up">
+              <h2 className="text-2xl font-bold text-txt-primary tracking-tight hidden md:block heading-font animate-fade-in-up">
                 Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">{welcomeName}</span> 👋
               </h2>
             )}
@@ -129,7 +129,7 @@ export default function DashboardShell({
           <div className="flex items-center gap-6">
             <div className="relative hidden md:block group">
               <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-violet-400 transition-colors"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-txt-tertiary group-focus-within:text-violet-400 transition-colors"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -144,15 +144,15 @@ export default function DashboardShell({
                 id="dashboard-search"
                 type="text"
                 placeholder="Search courses, students..."
-                className="w-72 pl-11 pr-12 py-2.5 bg-[#131B2F] border border-white/10 rounded-full text-sm text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all shadow-inner"
+                className="w-72 pl-11 pr-12 py-2.5 bg-[#131B2F] border border-bdr-soft rounded-full text-sm text-txt-primary placeholder-slate-500 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all shadow-inner"
               />
               <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-50">
-                <kbd className="px-1.5 py-0.5 rounded-md bg-white/10 border border-white/10 text-[10px] font-mono">⌘</kbd>
-                <kbd className="px-1.5 py-0.5 rounded-md bg-white/10 border border-white/10 text-[10px] font-mono">K</kbd>
+                <kbd className="px-1.5 py-0.5 rounded-md bg-surf-hover border border-bdr-soft text-[10px] font-mono">⌘</kbd>
+                <kbd className="px-1.5 py-0.5 rounded-md bg-surf-hover border border-bdr-soft text-[10px] font-mono">K</kbd>
               </div>
             </div>
 
-            <button aria-label="Notifications" className="relative text-slate-400 hover:text-white transition-colors group p-2 rounded-full hover:bg-white/5">
+            <button aria-label="Notifications" className="relative text-txt-secondary hover:text-txt-primary transition-colors group p-2 rounded-full hover:bg-surf-elevated">
               <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                 <path
                   strokeLinecap="round"
@@ -163,8 +163,8 @@ export default function DashboardShell({
               <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-rose-500 border-2 border-[#0B0F19] rounded-full shadow-[0_0_8px_rgba(244,63,94,0.6)] animate-pulse" />
             </button>
 
-            <div className="flex items-center gap-3 cursor-pointer pl-6 border-l border-white/5">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-violet-600 to-fuchsia-600 flex items-center justify-center text-white font-bold text-sm shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-shadow border border-white/10 transform hover:scale-105">
+            <div className="flex items-center gap-3 cursor-pointer pl-6 border-l border-bdr-soft">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-violet-600 to-fuchsia-600 flex items-center justify-center text-txt-primary font-bold text-sm shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-shadow border border-bdr-soft transform hover:scale-105">
                 {userInitials}
               </div>
             </div>

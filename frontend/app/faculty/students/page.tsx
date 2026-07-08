@@ -56,7 +56,7 @@ export default function StudentsPage() {
                          <td className="text-sm text-[var(--text-secondary)]">{s.date}</td>
                          <td>
                             <div className="flex items-center gap-2">
-                               <div className="w-24 h-1.5 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden">
+                               <div className="w-24 h-1.5 rounded-full bg-black/10 dark:bg-surf-hover overflow-hidden">
                                   <div className="h-full rounded-full bg-[var(--accent-primary)]" style={{ width: `${s.progress}%` }}></div>
                                </div>
                                <span className="text-xs font-bold w-8">{s.progress}%</span>

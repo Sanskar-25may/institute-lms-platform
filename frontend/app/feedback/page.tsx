@@ -47,7 +47,7 @@ export default function FeedbackPage() {
                               className="focus:outline-none transition-transform hover:scale-110"
                            >
                               <svg 
-                                 className={`w-10 h-10 ${star <= (hovered || rating) ? 'text-amber-400' : 'text-gray-300'}`} 
+                                 className={`w-10 h-10 ${star <= (hovered || rating) ? 'text-amber-400' : 'text-txt-secondary'}`} 
                                  fill="currentColor" 
                                  viewBox="0 0 20 20"
                               >

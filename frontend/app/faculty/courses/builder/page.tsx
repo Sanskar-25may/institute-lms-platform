@@ -36,7 +36,7 @@ export default function CourseBuilderPage() {
              <div className="flex-1 overflow-y-auto p-2">
                 {[1, 2, 3, 4].map(section => (
                    <div key={section} className="mb-2">
-                      <div className="px-3 py-2 flex justify-between items-center cursor-pointer rounded-lg hover:bg-black/5 dark:hover:bg-white/5" onClick={() => setActiveSection(section)}>
+                      <div className="px-3 py-2 flex justify-between items-center cursor-pointer rounded-lg hover:bg-black/5 dark:hover:bg-surf-elevated" onClick={() => setActiveSection(section)}>
                          <span className="font-bold text-sm">Section {section}</span>
                          <svg className="w-4 h-4 transition-transform" style={{ transform: activeSection === section ? 'rotate(180deg)' : '' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>
                       </div>
@@ -56,7 +56,7 @@ export default function CourseBuilderPage() {
                                   <button className="opacity-0 hover:opacity-100 p-1"><svg className="w-3 h-3 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                                </div>
                             ))}
-                            <button className="text-xs font-bold w-full text-left p-2 mt-1 rounded text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5">+ Add Lesson</button>
+                            <button className="text-xs font-bold w-full text-left p-2 mt-1 rounded text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-surf-elevated">+ Add Lesson</button>
                          </div>
                       )}
                    </div>
@@ -87,7 +87,7 @@ export default function CourseBuilderPage() {
                 
                 {/* Fake Video Preview */}
                 <div className="w-full aspect-video rounded-xl bg-black relative flex items-center justify-center border" style={{ borderColor: 'var(--border-soft)' }}>
-                   <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
+                   <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-txt-primary">
                       <svg className="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg>
                    </div>
                 </div>

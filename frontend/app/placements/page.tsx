@@ -62,7 +62,7 @@ export default function PlacementsPage() {
                              <span>{alumni.prev}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                             <span className="px-2 py-1 rounded font-semibold text-white" style={{ background: 'var(--accent-primary)' }}>After</span>
+                             <span className="px-2 py-1 rounded font-semibold text-txt-primary" style={{ background: 'var(--accent-primary)' }}>After</span>
                              <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{alumni.now}</span>
                           </div>
                        </div>

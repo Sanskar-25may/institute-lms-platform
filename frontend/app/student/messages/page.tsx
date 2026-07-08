@@ -18,7 +18,7 @@ export default function MessagesPage() {
        <div className="w-full lg:w-96 flex flex-col min-h-0 rounded-[24px]" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
           <div className="p-6 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-soft)' }}>
              <h2 className="heading-font text-2xl font-bold">Messages</h2>
-             <button className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5" style={{ background: 'var(--bg-surface)' }}>
+             <button className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-surf-elevated" style={{ background: 'var(--bg-surface)' }}>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/></svg>
              </button>
           </div>
@@ -32,7 +32,7 @@ export default function MessagesPage() {
                 <div 
                    key={chat.id} 
                    onClick={() => setActiveChat(chat.id)}
-                   className={`p-4 border-b flex items-center gap-4 cursor-pointer transition-colors ${activeChat === chat.id ? 'bg-[var(--bg-surface)]' : 'hover:bg-black/5 dark:hover:bg-white/5'}`}
+                   className={`p-4 border-b flex items-center gap-4 cursor-pointer transition-colors ${activeChat === chat.id ? 'bg-[var(--bg-surface)]' : 'hover:bg-black/5 dark:hover:bg-surf-elevated'}`}
                    style={{ borderColor: 'var(--border-soft)' }}
                 >
                    <img src={`https://i.pravatar.cc/150?img=${chat.img}`} className="w-12 h-12 rounded-full shrink-0" />
@@ -44,7 +44,7 @@ export default function MessagesPage() {
                       <p className={`text-xs truncate ${chat.unread > 0 ? 'font-bold text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}>{chat.msg}</p>
                    </div>
                    {chat.unread > 0 && (
-                      <div className="w-5 h-5 rounded-full bg-[var(--accent-primary)] text-white text-[10px] font-bold flex items-center justify-center shrink-0">
+                      <div className="w-5 h-5 rounded-full bg-[var(--accent-primary)] text-txt-primary text-[10px] font-bold flex items-center justify-center shrink-0">
                          {chat.unread}
                       </div>
                    )}
@@ -92,7 +92,7 @@ export default function MessagesPage() {
              {/* Sent */}
              <div className="flex gap-4 justify-end">
                 <div className="max-w-[70%] flex flex-col items-end">
-                   <div className="p-4 rounded-2xl rounded-tr-sm text-sm text-white" style={{ background: 'var(--accent-primary)' }}>
+                   <div className="p-4 rounded-2xl rounded-tr-sm text-sm text-txt-primary" style={{ background: 'var(--accent-primary)' }}>
                       Thanks Marcus! I'll look into adding a composite index for user_id and created_at. Do you think that's the right approach?
                    </div>
                    <div className="text-[10px] mt-1 font-semibold" style={{ color: 'var(--text-tertiary)' }}>11:15 AM</div>
@@ -106,7 +106,7 @@ export default function MessagesPage() {
                 <button className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-tertiary)' }}>
                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
                 </button>
-                <input type="text" placeholder="Type a message..." className="w-full bg-black/5 dark:bg-white/5 py-3 pl-12 pr-12 rounded-xl focus:outline-none focus:ring-2 ring-[var(--accent-primary)] text-sm" />
+                <input type="text" placeholder="Type a message..." className="w-full bg-black/5 dark:bg-surf-elevated py-3 pl-12 pr-12 rounded-xl focus:outline-none focus:ring-2 ring-[var(--accent-primary)] text-sm" />
                 <button className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--accent-primary)] hover:text-[var(--accent-light)] transition-colors">
                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
                 </button>

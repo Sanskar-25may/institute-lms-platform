@@ -150,7 +150,10 @@ export default function OnboardingPage() {
               <p className="text-lg mb-8" style={{ color: "var(--text-secondary)" }}>Which of these best describes your current status?</p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {["Current Student", "Working Professional", "Tech Enthusiast", "Business Owner"].map((stage) => (
+                {(role === "INSTRUCTOR" 
+                  ? ["Industry Professional", "Academic Professor", "Freelance Educator", "Subject Matter Expert"]
+                  : ["Current Student", "Working Professional", "Tech Enthusiast", "Business Owner"]
+                ).map((stage) => (
                   <button 
                     key={stage}
                     onClick={() => setLifeStage(stage)}
@@ -173,20 +176,28 @@ export default function OnboardingPage() {
               <h1 className="heading-font text-3xl font-bold mb-2">A few more details</h1>
               <p className="mb-8" style={{ color: "var(--text-secondary)" }}>Help us tailor your experience.</p>
 
-              {(lifeStage === "Current Student" || lifeStage === "") && (
+              {(lifeStage === "Current Student" || lifeStage === "Academic Professor" || lifeStage === "") && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium mb-2">College / University Name</label>
-                    <input type="text" value={organization} onChange={e => setOrganization(e.target.value)} className="input-premium w-full px-4 py-3 rounded-xl" placeholder="e.g. Stanford University" />
+                    <label className="block text-sm font-medium mb-2">{role === "INSTRUCTOR" ? "University / Institution" : "College / University Name"}</label>
+                    <input type="text" value={organization} onChange={e => setOrganization(e.target.value)} className="input-premium w-full px-4 py-3 rounded-xl" placeholder={role === "INSTRUCTOR" ? "e.g. MIT" : "e.g. Stanford University"} />
                   </div>
+                  {role === "STUDENT" && (
                   <div>
                     <label className="block text-sm font-medium mb-2">Degree Pursued</label>
                     <input type="text" value={degree} onChange={e => setDegree(e.target.value)} className="input-premium w-full px-4 py-3 rounded-xl" placeholder="e.g. B.S. Computer Science" />
                   </div>
+                  )}
+                  {role === "INSTRUCTOR" && (
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Years of Experience</label>
+                    <input type="number" value={experienceYears} onChange={e => setExperienceYears(e.target.value)} className="input-premium w-full px-4 py-3 rounded-xl" placeholder="e.g. 5" />
+                  </div>
+                  )}
                 </>
               )}
 
-              {lifeStage === "Working Professional" && (
+              {(lifeStage === "Working Professional" || lifeStage === "Industry Professional" || lifeStage === "Subject Matter Expert") && (
                 <>
                   <div>
                     <label className="block text-sm font-medium mb-2">Current Company</label>
@@ -199,12 +210,20 @@ export default function OnboardingPage() {
                 </>
               )}
 
-              {(lifeStage === "Tech Enthusiast" || lifeStage === "Business Owner") && (
+              {(lifeStage === "Tech Enthusiast" || lifeStage === "Business Owner" || lifeStage === "Freelance Educator") && (
                 <>
+                  {lifeStage !== "Freelance Educator" && (
                   <div>
                     <label className="block text-sm font-medium mb-2">Organization / Project Name</label>
                     <input type="text" value={organization} onChange={e => setOrganization(e.target.value)} className="input-premium w-full px-4 py-3 rounded-xl" placeholder="e.g. Acme Corp or Personal Project" />
                   </div>
+                  )}
+                  {lifeStage === "Freelance Educator" && (
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Years of Experience</label>
+                    <input type="number" value={experienceYears} onChange={e => setExperienceYears(e.target.value)} className="input-premium w-full px-4 py-3 rounded-xl" placeholder="e.g. 5" />
+                  </div>
+                  )}
                 </>
               )}
 

@@ -2,26 +2,46 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { Suspense } from "react";
 
-export default function AuthPage() {
+function AuthContent() {
   const [isLogin, setIsLogin] = useState(true);
   const [role, setRole] = useState<"student" | "faculty" | "admin">("student");
+  const [email, setEmail] = useState("demo@aushutosh.dev");
+  const [password, setPassword] = useState("password123");
+  const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/student";
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMsg("");
     
-    // Fake authentication delay
-    setTimeout(() => {
-      setIsLoading(false);
-      // Route based on selected role
-      if (role === "student") router.push("/student");
-      if (role === "faculty") router.push("/faculty");
-      if (role === "admin") router.push("/admin");
-    }, 1500);
+    // Instead of a fake timeout, we call NextAuth's signIn
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    setIsLoading(false);
+
+    if (res?.error) {
+      setErrorMsg(res.error);
+    } else {
+      // Upon successful login, the middleware will automatically redirect
+      // to the correct role dashboard if we hit a generic protected route,
+      // but we can manually route based on role for a faster UX if needed.
+      // Since `signIn` doesn't return the user's role here, we'll just go to the callbackUrl
+      // and let the middleware sort out if they shouldn't be there.
+      router.push(callbackUrl);
+      router.refresh(); // Refresh to update server components with session
+    }
   };
 
   return (
@@ -94,8 +114,14 @@ export default function AuthPage() {
 
              <div className="p-4 mb-8 rounded-xl flex gap-3 bg-amber-500/10 border border-amber-500/20 text-amber-600 text-sm">
                 <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span><strong>Demo Mode:</strong> Select a role below and click Continue. No password required.</span>
+                <span><strong>Demo Mode:</strong> Click a role below to auto-fill the correct email, then hit Continue.</span>
              </div>
+
+             {errorMsg && (
+               <div className="p-4 mb-6 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-semibold text-center">
+                 {errorMsg}
+               </div>
+             )}
 
              <div className="flex bg-black/5 p-1 rounded-xl mb-8" style={{ background: 'var(--bg-surface)' }}>
                 <button onClick={() => setIsLogin(true)} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${isLogin ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={isLogin ? {background: 'var(--bg-card)'} : {}}>Sign In</button>
@@ -112,7 +138,14 @@ export default function AuthPage() {
                 
                 <div>
                    <label className="block text-sm font-medium mb-2">Email</label>
-                   <input type="email" required className="input-premium w-full px-4 py-3 rounded-xl" placeholder="jane@example.com" defaultValue="demo@aushutosh.dev" />
+                   <input 
+                     type="email" 
+                     required 
+                     className="input-premium w-full px-4 py-3 rounded-xl" 
+                     placeholder="jane@example.com" 
+                     value={email}
+                     onChange={(e) => setEmail(e.target.value)}
+                   />
                 </div>
                 
                 <div>
@@ -120,7 +153,14 @@ export default function AuthPage() {
                       <label className="block text-sm font-medium">Password</label>
                       {isLogin && <Link href="#" className="text-xs font-semibold hover:underline" style={{ color: 'var(--accent-primary)' }}>Forgot?</Link>}
                    </div>
-                   <input type="password" required className="input-premium w-full px-4 py-3 rounded-xl" placeholder="••••••••" defaultValue="password123" />
+                   <input 
+                     type="password" 
+                     required 
+                     className="input-premium w-full px-4 py-3 rounded-xl" 
+                     placeholder="••••••••" 
+                     value={password}
+                     onChange={(e) => setPassword(e.target.value)}
+                   />
                 </div>
 
                 <div className="pt-2">
@@ -134,7 +174,12 @@ export default function AuthPage() {
                          <button
                             key={r.id}
                             type="button"
-                            onClick={() => setRole(r.id as any)}
+                            onClick={() => {
+                               setRole(r.id as any);
+                               if (r.id === "student") setEmail("demo@aushutosh.dev");
+                               if (r.id === "faculty") setEmail("sarah@aushutosh.dev");
+                               if (r.id === "admin") setEmail("admin@aushutosh.dev");
+                            }}
                             className={`py-3 rounded-xl text-sm font-bold border transition-all ${role === r.id ? 'border-[var(--accent-primary)] text-[var(--accent-primary)]' : 'border-[var(--border-soft)] text-[var(--text-secondary)] hover:border-[var(--text-tertiary)]'}`}
                             style={{ 
                                background: role === r.id ? 'color-mix(in srgb, var(--accent-primary) 10%, transparent)' : 'var(--bg-surface)' 
@@ -156,5 +201,13 @@ export default function AuthPage() {
           </div>
        </div>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <AuthContent />
+    </Suspense>
   );
 }

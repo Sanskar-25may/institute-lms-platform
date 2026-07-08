@@ -78,9 +78,6 @@ export default function Navbar() {
           {/* Right actions */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            <Link href="/auth" className="btn-secondary px-5 py-2.5 text-sm rounded-xl">
-              Sign In
-            </Link>
             <Link href="/auth" className="btn-primary px-5 py-2.5 text-sm rounded-xl">
               Get Started
             </Link>
@@ -128,13 +125,6 @@ export default function Navbar() {
               )
             })}
             <div className="pt-4 flex flex-col gap-3 px-3">
-              <Link
-                href="/auth"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center btn-secondary py-3 rounded-xl"
-              >
-                Sign In
-              </Link>
               <Link
                 href="/auth"
                 onClick={() => setMobileMenuOpen(false)}

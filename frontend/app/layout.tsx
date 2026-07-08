@@ -3,7 +3,7 @@ import { Inter, Space_Grotesk, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/lib/ThemeContext";
-import DynamicBackground from "@/components/DynamicBackground";
+import ScrollmationBackground from "@/components/ScrollmationBackground";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -44,9 +44,9 @@ export default function RootLayout({
     <html lang="en" data-theme="dark" className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable}`}>
       <body className="min-h-screen flex flex-col antialiased bg-transparent" style={{ color: "var(--text-primary)" }}>
         <ThemeProvider>
-          <DynamicBackground />
+          <ScrollmationBackground />
           <Navbar />
-          <main className="flex-1 flex flex-col relative z-10">{children}</main>
+          <main className="flex-1 flex flex-col relative z-10 lms-content">{children}</main>
         </ThemeProvider>
       </body>
     </html>

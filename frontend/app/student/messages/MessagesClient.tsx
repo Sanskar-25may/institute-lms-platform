@@ -58,9 +58,9 @@ export default function MessagesClient({ cmsData }: { cmsData: any }) {
           
           {/* Header */}
           <div className="p-6 border-b flex items-center gap-4" style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-surface)' }}>
-             <img src="https://i.pravatar.cc/150?img=11" className="w-12 h-12 rounded-full shrink-0" />
+             <img src={`https://i.pravatar.cc/150?img=${chats.find(c => c.id === activeChat)?.img}`} className="w-12 h-12 rounded-full shrink-0" />
              <div>
-                <h3 className="font-bold">Marcus Chen</h3>
+                <h3 className="font-bold">{chats.find(c => c.id === activeChat)?.name}</h3>
                 <p className="text-xs text-emerald-500 font-semibold">Online</p>
              </div>
           </div>
@@ -71,19 +71,10 @@ export default function MessagesClient({ cmsData }: { cmsData: any }) {
              
              {/* Received */}
              <div className="flex gap-4">
-                <img src="https://i.pravatar.cc/150?img=11" className="w-8 h-8 rounded-full shrink-0 mt-1" />
+                <img src={`https://i.pravatar.cc/150?img=${chats.find(c => c.id === activeChat)?.img}`} className="w-8 h-8 rounded-full shrink-0 mt-1" />
                 <div className="max-w-[70%]">
                    <div className="p-4 rounded-2xl rounded-tl-sm text-sm" style={{ background: 'var(--bg-surface)' }}>
-                      Hey Sanskar! I reviewed your E-commerce API submission.
-                   </div>
-                </div>
-             </div>
-
-             <div className="flex gap-4">
-                <img src="https://i.pravatar.cc/150?img=11" className="w-8 h-8 rounded-full shrink-0 mt-1" />
-                <div className="max-w-[70%]">
-                   <div className="p-4 rounded-2xl rounded-tl-sm text-sm" style={{ background: 'var(--bg-surface)' }}>
-                      Great work on the database schema! I left a few comments in the PR regarding indexing on the orders table. It might become a bottleneck at scale.
+                      {chats.find(c => c.id === activeChat)?.msg}
                    </div>
                    <div className="text-[10px] mt-1 font-semibold" style={{ color: 'var(--text-tertiary)' }}>10:42 AM</div>
                 </div>
@@ -93,7 +84,7 @@ export default function MessagesClient({ cmsData }: { cmsData: any }) {
              <div className="flex gap-4 justify-end">
                 <div className="max-w-[70%] flex flex-col items-end">
                    <div className="p-4 rounded-2xl rounded-tr-sm text-sm text-txt-primary" style={{ background: 'var(--accent-primary)' }}>
-                      Thanks Marcus! I'll look into adding a composite index for user_id and created_at. Do you think that's the right approach?
+                      Sounds good, I'll take a look!
                    </div>
                    <div className="text-[10px] mt-1 font-semibold" style={{ color: 'var(--text-tertiary)' }}>11:15 AM</div>
                 </div>

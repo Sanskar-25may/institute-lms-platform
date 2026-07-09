@@ -17,19 +17,7 @@ export default function DynamicBackground() {
        {/* Base Color */}
        <div className="absolute inset-0 transition-colors duration-1000" style={{ background: 'var(--bg-base)' }}></div>
        
-       {/* Abstract Video Loop */}
-       <div className="absolute inset-0 mix-blend-overlay opacity-10 dark:opacity-20 transition-opacity duration-1000">
-          <video 
-             autoPlay 
-             loop 
-             muted 
-             playsInline
-             className="w-full h-full object-cover"
-          >
-             {/* Note: Using a lightweight stock video URL for demonstration */}
-             <source src="https://cdn.pixabay.com/video/2020/05/21/40003-424075179_tiny.mp4" type="video/mp4" />
-          </video>
-       </div>
+       {/* Abstract Video Loop Removed (causing 404s) */}
 
        {/* Moving Gradients (CSS Animation) */}
        <div className={`absolute -top-[50%] -left-[50%] w-[200%] h-[200%] opacity-20 blur-[120px] animate-spin-slow ${theme === 'dark' ? 'mix-blend-screen' : 'mix-blend-multiply'}`}>

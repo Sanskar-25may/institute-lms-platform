@@ -12,6 +12,11 @@ export default function AdminStudentsPage() {
     { id: 3, name: "Liam Nguyen", email: "liam@example.com", status: "Inactive", joined: "Oct 2025", courses: 0, initials: "LN", color: "from-slate-500 to-slate-600" },
   ];
 
+  const filteredStudents = students.filter(s => 
+    s.name.toLowerCase().includes(search.toLowerCase()) || 
+    s.email.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="max-w-[1400px] mx-auto space-y-8 animate-in fade-in duration-500 pb-24">
       
@@ -50,7 +55,12 @@ export default function AdminStudentsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {students.map((student) => (
+              {filteredStudents.length === 0 && (
+                 <tr>
+                   <td colSpan={6} className="p-6 text-center text-txt-secondary">No students found matching "{search}"</td>
+                 </tr>
+              )}
+              {filteredStudents.map((student) => (
                 <tr key={student.id} className="hover:bg-white/[0.02] transition-colors group">
                   <td className="p-6">
                     <div className="flex items-center gap-4">
@@ -68,7 +78,7 @@ export default function AdminStudentsPage() {
                   </td>
                   <td className="p-6 text-sm text-txt-secondary">{student.joined}</td>
                   <td className="p-6 text-right">
-                    <button className="px-4 py-2 bg-surf-elevated hover:bg-blue-600 hover:text-txt-primary text-txt-secondary text-xs font-bold rounded-lg transition-colors border border-bdr-soft hover:border-blue-500">View Profile</button>
+                    <Link href={`/admin/users/students/${student.id}`} className="px-4 py-2 bg-surf-elevated hover:bg-blue-600 hover:text-txt-primary text-txt-secondary text-xs font-bold rounded-lg transition-colors border border-bdr-soft hover:border-blue-500 inline-block">View Profile</Link>
                   </td>
                 </tr>
               ))}

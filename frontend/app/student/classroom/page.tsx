@@ -2,8 +2,52 @@
 import { useState } from "react";
 import Link from "next/link";
 
+const SECTIONS = [
+  {
+    id: "s1",
+    title: "1. Core Fundamentals",
+    completed: 8,
+    total: 8,
+    lessons: []
+  },
+  {
+    id: "s4",
+    title: "4. Auth & Security",
+    completed: 1,
+    total: 4,
+    lessons: [
+      { id: "l1", title: "4.1 Introduction to JWTs", type: "completed" },
+      { id: "l2", title: "4.2 Implementing Next.js Middleware", type: "active" },
+      { id: "l3", title: "4.3 OAuth with GitHub", type: "upcoming" },
+      { id: "l4", title: "4.4 Role-Based Access Control", type: "upcoming" },
+    ]
+  },
+  {
+    id: "s5",
+    title: "5. Database Design",
+    completed: 0,
+    total: 12,
+    locked: true,
+    lessons: []
+  }
+];
+
+const LESSONS = [
+  { id: "l1", title: "4.1 Introduction to JWTs", section: "Module 4: Authentication & Security" },
+  { id: "l2", title: "4.2 Implementing Next.js Middleware", section: "Module 4: Authentication & Security" },
+  { id: "l3", title: "4.3 OAuth with GitHub", section: "Module 4: Authentication & Security" },
+  { id: "l4", title: "4.4 Role-Based Access Control", section: "Module 4: Authentication & Security" },
+];
+
 export default function ClassroomPage() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [currentLessonIndex, setCurrentLessonIndex] = useState(1);
+  const [expandedSection, setExpandedSection] = useState("s4");
+
+  const currentLesson = LESSONS[currentLessonIndex];
+
+  const goPrev = () => setCurrentLessonIndex(i => Math.max(0, i - 1));
+  const goNext = () => setCurrentLessonIndex(i => Math.min(LESSONS.length - 1, i + 1));
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 pb-20" style={{ height: 'calc(100vh - 120px)' }}>
@@ -44,15 +88,23 @@ export default function ClassroomPage() {
           {/* Title & Actions */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
              <div>
-                <h1 className="heading-font text-2xl font-bold mb-1">4.2 Implementing Next.js Middleware for Auth</h1>
-                <p style={{ color: 'var(--text-secondary)' }}>Module 4: Authentication & Security</p>
+                <h1 className="heading-font text-2xl font-bold mb-1">{currentLesson.title}</h1>
+                <p style={{ color: 'var(--text-secondary)' }}>{currentLesson.section}</p>
              </div>
              <div className="flex gap-2 shrink-0">
-                <button className="btn-secondary px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+                <button 
+                  onClick={goPrev}
+                  disabled={currentLessonIndex === 0}
+                  className={`btn-secondary px-4 py-2 rounded-lg text-sm flex items-center gap-2 ${currentLessonIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
                    Prev
                 </button>
-                <button className="btn-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+                <button 
+                  onClick={goNext}
+                  disabled={currentLessonIndex === LESSONS.length - 1}
+                  className={`btn-primary px-4 py-2 rounded-lg text-sm flex items-center gap-2 ${currentLessonIndex === LESSONS.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
                    Next
                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
                 </button>
@@ -77,7 +129,7 @@ export default function ClassroomPage() {
           <div className="py-4 text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
              {activeTab === 'overview' && (
                 <div className="space-y-4">
-                   <p>In this lesson, we implement route protection using Next.js Middleware. You will learn how to intercept requests, verify JWT tokens on the edge, and redirect unauthenticated users before rendering the page.</p>
+                   <p>In this lesson, we implement route protection. You will learn how to intercept requests, verify JWT tokens on the edge, and redirect unauthenticated users before rendering the page.</p>
                    <h3 className="font-bold text-lg mt-6 text-[var(--text-primary)]">Key Concepts:</h3>
                    <ul className="list-disc pl-5 space-y-2">
                       <li>Edge computing constraints in Next.js Middleware</li>
@@ -89,6 +141,16 @@ export default function ClassroomPage() {
              {activeTab === 'notes' && (
                 <div className="p-4 rounded-xl" style={{ background: 'var(--bg-surface)' }}>
                    <textarea className="w-full bg-transparent resize-none focus:outline-none" rows={10} placeholder="Take your notes here... They will automatically sync to your profile."></textarea>
+                </div>
+             )}
+             {activeTab === 'resources' && (
+                <div className="p-4 rounded-xl space-y-4" style={{ background: 'var(--bg-surface)' }}>
+                   <a href="#" className="flex items-center gap-3 text-[var(--accent-primary)] hover:underline"><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg> Starter Code (.zip)</a>
+                </div>
+             )}
+             {activeTab === 'q&a' && (
+                <div className="p-4 rounded-xl text-center" style={{ background: 'var(--bg-surface)' }}>
+                   No questions yet. Be the first to ask!
                 </div>
              )}
           </div>
@@ -107,50 +169,51 @@ export default function ClassroomPage() {
           </div>
           
           <div className="flex-1 overflow-y-auto no-scrollbar p-2">
-             {/* Section 1 - Completed */}
-             <div className="mb-2">
-                <div className="px-4 py-3 flex justify-between items-center cursor-pointer hover:bg-black/5 dark:hover:bg-surf-elevated rounded-lg">
-                   <span className="font-bold text-sm text-[var(--text-primary)]">1. Core Fundamentals</span>
-                   <span className="text-xs font-semibold text-[var(--text-tertiary)]">8/8</span>
-                </div>
-             </div>
-
-             {/* Section 4 - Active */}
-             <div className="mb-2">
-                <div className="px-4 py-3 flex justify-between items-center cursor-pointer rounded-lg bg-black/5 dark:bg-surf-elevated">
-                   <span className="font-bold text-sm text-[var(--text-primary)]">4. Auth & Security</span>
-                   <span className="text-xs font-semibold text-[var(--text-tertiary)]">1/4</span>
-                </div>
-                <div className="py-2 pl-2 border-l-2 ml-4 mt-2 space-y-1" style={{ borderColor: 'var(--border-soft)' }}>
-                   <div className="flex items-start gap-3 p-2 rounded-lg cursor-pointer text-sm text-[var(--text-secondary)]">
-                      <svg className="w-4 h-4 shrink-0 mt-0.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
-                      <span>4.1 Introduction to JWTs</span>
+             {SECTIONS.map((section) => (
+               <div key={section.id} className={`mb-2 ${section.locked ? 'opacity-50 pointer-events-none' : ''}`}>
+                 <div 
+                   onClick={() => !section.locked && setExpandedSection(expandedSection === section.id ? "" : section.id)}
+                   className={`px-4 py-3 flex justify-between items-center cursor-pointer rounded-lg ${expandedSection === section.id ? 'bg-black/5 dark:bg-surf-elevated' : 'hover:bg-black/5 dark:hover:bg-surf-elevated'}`}
+                 >
+                    <div className="flex items-center gap-2">
+                       {section.locked && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>}
+                       <span className="font-bold text-sm text-[var(--text-primary)]">{section.title}</span>
+                    </div>
+                    <span className="text-xs font-semibold text-[var(--text-tertiary)]">{section.completed}/{section.total}</span>
+                 </div>
+                 
+                 {expandedSection === section.id && section.lessons.length > 0 && (
+                   <div className="py-2 pl-2 border-l-2 ml-4 mt-2 space-y-1" style={{ borderColor: 'var(--border-soft)' }}>
+                      {section.lessons.map((lesson, j) => {
+                         const isCurrentlyActive = LESSONS[currentLessonIndex].id === lesson.id;
+                         return (
+                           <div 
+                             key={lesson.id} 
+                             onClick={() => {
+                               const idx = LESSONS.findIndex(l => l.id === lesson.id);
+                               if(idx !== -1) setCurrentLessonIndex(idx);
+                             }}
+                             className={`flex items-start gap-3 p-2 rounded-lg cursor-pointer text-sm ${
+                               isCurrentlyActive 
+                               ? 'font-semibold text-[var(--accent-primary)] bg-[var(--accent-primary)]/10' 
+                               : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                             }`}
+                           >
+                              {lesson.type === 'completed' ? (
+                                <svg className="w-4 h-4 shrink-0 mt-0.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
+                              ) : isCurrentlyActive ? (
+                                <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                              ) : (
+                                <svg className="w-4 h-4 shrink-0 mt-0.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                              )}
+                              <span>{lesson.title}</span>
+                           </div>
+                         );
+                      })}
                    </div>
-                   <div className="flex items-start gap-3 p-2 rounded-lg cursor-pointer text-sm font-semibold text-[var(--accent-primary)] bg-[var(--accent-primary)]/10">
-                      <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                      <span>4.2 Implementing Next.js Middleware</span>
-                   </div>
-                   <div className="flex items-start gap-3 p-2 rounded-lg cursor-pointer text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
-                      <svg className="w-4 h-4 shrink-0 mt-0.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                      <span>4.3 OAuth with GitHub</span>
-                   </div>
-                   <div className="flex items-start gap-3 p-2 rounded-lg cursor-pointer text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
-                      <svg className="w-4 h-4 shrink-0 mt-0.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                      <span>4.4 Role-Based Access Control</span>
-                   </div>
-                </div>
-             </div>
-
-             {/* Section 5 - Locked */}
-             <div className="mb-2 opacity-50 pointer-events-none">
-                <div className="px-4 py-3 flex justify-between items-center cursor-pointer rounded-lg">
-                   <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                      <span className="font-bold text-sm text-[var(--text-primary)]">5. Database Design</span>
-                   </div>
-                   <span className="text-xs font-semibold">0/12</span>
-                </div>
-             </div>
+                 )}
+               </div>
+             ))}
           </div>
        </div>
     </div>

@@ -191,3 +191,18 @@ model SiteContent {
 
   @@map("site_content")
 }
+
+model CareerGuidanceForm {
+  id                     String   @id @default(uuid()) @db.Uuid
+  personalInfo           String   @db.Text
+  educationalInfo        String   @db.Text
+  shortTermGoal          String   @db.Text
+  longTermGoal           String   @db.Text
+  weaknesses             String   @db.Text // CSV
+  strengths              String   @db.Text // CSV
+  hobbies                String   @db.Text
+  remarkableAchievements String   @db.Text
+  createdAt              DateTime @default(now()) @map("created_at") @db.Timestamp()
+
+  @@map("career_guidance_forms")
+}

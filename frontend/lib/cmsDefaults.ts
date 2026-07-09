@@ -34,9 +34,15 @@ export const CMS_SCHEMAS: PageSchema[] = [
           { id: "public-courses", isHidden: false },
           { id: "public-placements", isHidden: false },
           { id: "public-testimonials", isHidden: false },
+          { id: "public-insights", isHidden: false },
+          { id: "public-careers", isHidden: false },
           { id: "public-contact", isHidden: false },
           { id: "public-feedback", isHidden: false },
-          { id: "public-auth", isHidden: false }
+          { id: "public-auth", isHidden: false },
+          { id: "public-privacy", isHidden: false },
+          { id: "public-terms", isHidden: false },
+          { id: "public-cookie", isHidden: false },
+          { id: "public-refund", isHidden: false }
         ]
       },
       studentOrder: {
@@ -82,7 +88,8 @@ export const CMS_SCHEMAS: PageSchema[] = [
           isHidden: { type: "boolean", label: "Hidden in CMS?", default: false }
         },
         default: [
-          { id: "global-settings", isHidden: false }
+          { id: "global-settings", isHidden: false },
+          { id: "global-footer", isHidden: false }
         ]
       },
       adminOrder: {
@@ -506,6 +513,139 @@ export const CMS_SCHEMAS: PageSchema[] = [
     category: "admin",
     schema: {
       heading: { type: "string", label: "Heading", default: "Financial Reports" }
+    }
+  },
+  {
+    id: "global-footer",
+    name: "Footer Settings",
+    category: "global",
+    schema: {
+      brandDescription: { type: "text", label: "Brand Description", default: "Engineering education for the future. Built by engineers, for engineers." },
+      copyright: { type: "string", label: "Copyright Text", default: "© 2026 JavaCoders Education Inc. All rights reserved." },
+      learnLinks: {
+        type: "array",
+        label: "Learn Section Links",
+        itemSchema: {
+          label: { type: "string", label: "Label", default: "" },
+          url: { type: "string", label: "URL", default: "" }
+        },
+        default: [
+          { label: "Courses", url: "/courses" },
+          { label: "Placements", url: "/placements" },
+          { label: "Testimonials", url: "/testimonials" },
+          { label: "Insights", url: "/insights" }
+        ]
+      },
+      companyLinks: {
+        type: "array",
+        label: "Company Section Links",
+        itemSchema: {
+          label: { type: "string", label: "Label", default: "" },
+          url: { type: "string", label: "URL", default: "" }
+        },
+        default: [
+          { label: "About Us", url: "/about" },
+          { label: "Careers", url: "/careers" },
+          { label: "Contact", url: "/contact" },
+          { label: "Feedback", url: "/feedback" }
+        ]
+      },
+      legalLinks: {
+        type: "array",
+        label: "Legal Section Links",
+        itemSchema: {
+          label: { type: "string", label: "Label", default: "" },
+          url: { type: "string", label: "URL", default: "" }
+        },
+        default: [
+          { label: "Privacy Policy", url: "/legal/privacy" },
+          { label: "Terms of Service", url: "/legal/terms" },
+          { label: "Cookie Policy", url: "/legal/cookies" },
+          { label: "Refund Policy", url: "/legal/refund" }
+        ]
+      }
+    }
+  },
+  {
+    id: "public-insights",
+    name: "Insights Feed",
+    category: "public",
+    schema: {
+      heading: { type: "string", label: "Heading", default: "Platform Insights" },
+      subheading: { type: "string", label: "Subheading", default: "Stay up-to-date with the latest content, blogs, and course posters." },
+      posts: {
+        type: "array",
+        label: "Feed Posts",
+        itemSchema: {
+          id: { type: "string", label: "Post ID", default: "1" },
+          title: { type: "string", label: "Title", default: "" },
+          content: { type: "text", label: "Content Text", default: "" },
+          codeSnippet: { type: "text", label: "Code Snippet", default: "" },
+          imageUrl: { type: "string", label: "Image URL", default: "" },
+          videoUrl: { type: "string", label: "Video URL", default: "" },
+          author: { type: "string", label: "Author Name", default: "Super Admin" },
+          date: { type: "string", label: "Date", default: "Today" },
+          likes: { type: "number", label: "Likes Count", default: 0 }
+        },
+        default: [
+          {
+            id: "demo-post-1",
+            title: "Welcome to JavaCoders Insights",
+            content: "This is our new public feed where we share the latest updates, tutorials, and course posters.",
+            codeSnippet: "console.log('Hello, World!');",
+            imageUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
+            videoUrl: "",
+            author: "Founder",
+            date: "Jul 9, 2026",
+            likes: 42
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: "public-careers",
+    name: "Careers Page",
+    category: "public",
+    schema: {
+      heading: { type: "string", label: "Heading", default: "Join Our Team" },
+      subheading: { type: "text", label: "Subheading", default: "Fill out the career guidance form below to explore opportunities with us." }
+    }
+  },
+  {
+    id: "public-privacy",
+    name: "Privacy Policy",
+    category: "public",
+    schema: {
+      heading: { type: "string", label: "Heading", default: "Privacy Policy" },
+      content: { type: "text", label: "Content", default: "This is our privacy policy. It can be updated here." }
+    }
+  },
+  {
+    id: "public-terms",
+    name: "Terms of Service",
+    category: "public",
+    schema: {
+      heading: { type: "string", label: "Heading", default: "Terms of Service" },
+      content: { type: "text", label: "Content", default: "These are our terms of service. They can be updated here." }
+    }
+  },
+  {
+    id: "public-cookie",
+    name: "Cookie Policy",
+    category: "public",
+    schema: {
+      heading: { type: "string", label: "Heading", default: "Cookie Policy" },
+      content: { type: "text", label: "Content", default: "This is our cookie policy. It can be updated here." }
+    }
+  },
+  {
+    id: "public-refund",
+    name: "Refund Policy",
+    category: "public",
+    schema: {
+      heading: { type: "string", label: "Heading", default: "Refund Policy" },
+      content: { type: "text", label: "Content", default: "This is our refund policy. It can be updated here." }
     }
   }
 ];

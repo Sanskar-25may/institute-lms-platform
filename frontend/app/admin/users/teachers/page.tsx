@@ -12,6 +12,11 @@ export default function AdminTeachersPage() {
     { id: 3, name: "Priya Nair", email: "priya@example.com", status: "Pending Approval", courses: 0, revenue: "$0", initials: "PN", color: "from-amber-500 to-orange-600" },
   ];
 
+  const filteredTeachers = teachers.filter(t => 
+    t.name.toLowerCase().includes(search.toLowerCase()) || 
+    t.email.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="max-w-[1400px] mx-auto space-y-8 animate-in fade-in duration-500 pb-24">
       
@@ -32,9 +37,9 @@ export default function AdminTeachersPage() {
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-txt-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             <input type="text" placeholder="Search teachers..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-64 md:w-80 pl-10 pr-4 py-2.5 bg-[#131B2F] border border-bdr-soft rounded-xl text-sm text-txt-primary placeholder-slate-500 focus:outline-none focus:border-fuchsia-500 transition-colors" />
           </div>
-          <button className="px-6 py-2.5 bg-fuchsia-600 hover:bg-fuchsia-700 text-txt-primary font-bold rounded-xl transition-all shadow-lg shadow-fuchsia-900/50 text-sm">
+          <Link href="/admin/users/teachers/invite" className="px-6 py-2.5 bg-fuchsia-600 hover:bg-fuchsia-700 text-txt-primary font-bold rounded-xl transition-all shadow-lg shadow-fuchsia-900/50 text-sm">
             Invite Teacher
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -53,7 +58,12 @@ export default function AdminTeachersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {teachers.map((teacher) => (
+              {filteredTeachers.length === 0 && (
+                 <tr>
+                   <td colSpan={6} className="p-6 text-center text-txt-secondary">No teachers found matching "{search}"</td>
+                 </tr>
+              )}
+              {filteredTeachers.map((teacher) => (
                 <tr key={teacher.id} className="hover:bg-white/[0.02] transition-colors group">
                   <td className="p-6">
                     <div className="flex items-center gap-4">
@@ -72,7 +82,7 @@ export default function AdminTeachersPage() {
                     </span>
                   </td>
                   <td className="p-6 text-right">
-                    <button className="px-4 py-2 bg-surf-elevated hover:bg-fuchsia-600 hover:text-txt-primary text-txt-secondary text-xs font-bold rounded-lg transition-colors border border-bdr-soft hover:border-fuchsia-500">Manage</button>
+                    <Link href={`/admin/users/teachers/${teacher.id}`} className="px-4 py-2 bg-surf-elevated hover:bg-fuchsia-600 hover:text-txt-primary text-txt-secondary text-xs font-bold rounded-lg transition-colors border border-bdr-soft hover:border-fuchsia-500 inline-block">Manage</Link>
                   </td>
                 </tr>
               ))}

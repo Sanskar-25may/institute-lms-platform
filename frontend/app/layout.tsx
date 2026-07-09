@@ -39,6 +39,7 @@ export const metadata: Metadata = {
 
 import AuthProvider from "@/components/AuthProvider";
 import { getSiteContent } from "@/lib/cms";
+import Footer from "@/components/Footer";
 
 export default async function RootLayout({
   children,
@@ -46,6 +47,7 @@ export default async function RootLayout({
   // Fetch global settings and navbar config
   const globalSettings = await getSiteContent("global-settings");
   const navbarConfig = await getSiteContent("public-navbar");
+  const footerConfig = await getSiteContent("global-footer");
 
   return (
     <html lang="en" data-theme="dark" className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable}`}>
@@ -55,6 +57,7 @@ export default async function RootLayout({
             <DynamicBackground />
             <Navbar siteName={globalSettings.siteName} links={navbarConfig.links} logoUrl={globalSettings.logoUrl} />
             <main className="flex-1 flex flex-col relative z-10">{children}</main>
+            <Footer cmsData={footerConfig} siteName={globalSettings.siteName} />
           </AuthProvider>
         </ThemeProvider>
       </body>

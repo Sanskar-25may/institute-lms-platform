@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getSiteContent } from "@/lib/cms";
 
 export default async function AdminUsersPage() {
@@ -13,7 +14,7 @@ export default async function AdminUsersPage() {
           
           <div className="flex gap-2 w-full md:w-auto">
              <input type="text" placeholder="Search email..." className="input-premium px-4 py-2 rounded-lg text-sm flex-1 md:w-64" />
-             <button className="btn-primary px-4 py-2 rounded-lg text-sm font-bold">Add User</button>
+             <Link href="/admin/users/add" className="btn-primary px-4 py-2 rounded-lg text-sm font-bold flex items-center">Add User</Link>
           </div>
        </div>
 
@@ -52,8 +53,8 @@ export default async function AdminUsersPage() {
                          <td className="text-xs" style={{ color: 'var(--text-secondary)' }}>{u.login}</td>
                          <td>
                             <div className="flex gap-2">
-                               <button className="text-xs font-bold text-[var(--accent-primary)] hover:underline">Edit</button>
-                               <button className="text-xs font-bold text-rose-500 hover:underline">Suspend</button>
+                               <Link href={`/admin/users/edit/${i}`} className="text-xs font-bold text-[var(--accent-primary)] hover:underline">Edit</Link>
+                               <Link href={`/admin/users/suspend/${i}`} className="text-xs font-bold text-rose-500 hover:underline">Suspend</Link>
                             </div>
                          </td>
                       </tr>

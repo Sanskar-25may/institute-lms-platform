@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import CurriculumAccordion from "./CurriculumAccordion";
 export async function generateStaticParams() {
   return [
     { course_id: 'full-stack-react' },
@@ -60,7 +60,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
                 </div>
                 
                 <div className="flex flex-wrap gap-4">
-                   <Link href="/auth" className="btn-primary px-8 py-4 rounded-xl text-lg flex items-center gap-2">
+                   <Link href={`/checkout/${course_id}`} className="btn-primary px-8 py-4 rounded-xl text-lg flex items-center gap-2">
                       Enroll Now — $149
                    </Link>
                    <button className="btn-secondary px-8 py-4 rounded-xl text-lg flex items-center gap-2">
@@ -129,49 +129,14 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
                       <span>18h 30m total length</span>
                    </div>
                    
-                   <div className="border rounded-2xl overflow-hidden" style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-surface)' }}>
-                      {[
+                   <CurriculumAccordion 
+                      initialSections={[
                          { title: "Getting Started with the Fundamentals", lessons: 8, time: "2h 15m", expanded: true },
                          { title: "Building the Core Infrastructure", lessons: 12, time: "5h 40m", expanded: false },
                          { title: "Advanced Patterns and Architecture", lessons: 14, time: "6h 20m", expanded: false },
                          { title: "Deployment and CI/CD Pipeline", lessons: 8, time: "4h 15m", expanded: false }
-                      ].map((section, i) => (
-                         <div key={i} className="border-b last:border-b-0" style={{ borderColor: 'var(--border-soft)' }}>
-                            <div className="px-6 py-5 flex items-center justify-between cursor-pointer hover:bg-black/5 transition-colors">
-                               <div className="flex items-center gap-3">
-                                  <svg className={`w-5 h-5 transition-transform ${section.expanded ? 'rotate-180' : ''}`} style={{ color: 'var(--text-tertiary)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                                  <h3 className="font-bold">{section.title}</h3>
-                               </div>
-                               <span className="text-xs font-semibold" style={{ color: 'var(--text-tertiary)' }}>{section.lessons} lessons • {section.time}</span>
-                            </div>
-                            
-                            {section.expanded && (
-                               <div className="px-6 py-2 border-t bg-black/5" style={{ borderColor: 'var(--border-soft)' }}>
-                                  {[
-                                     { name: "Introduction to the Course", time: "04:12", preview: true },
-                                     { name: "Setting up the Development Environment", time: "12:45", preview: true },
-                                     { name: "Architecture Overview", time: "18:20", preview: false },
-                                     { name: "First Code Challenge", time: "05:00", preview: false }
-                                  ].map((lesson, j) => (
-                                     <div key={j} className="py-3 flex items-center justify-between group">
-                                        <div className="flex items-center gap-3">
-                                           {lesson.preview ? (
-                                              <svg className="w-4 h-4 text-[var(--accent-primary)]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg>
-                                           ) : (
-                                              <svg className="w-4 h-4 text-txt-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                                           )}
-                                           <span className={`text-sm ${lesson.preview ? 'text-[var(--accent-primary)] group-hover:underline cursor-pointer' : ''}`} style={{ color: lesson.preview ? 'var(--accent-primary)' : 'var(--text-secondary)' }}>
-                                              {lesson.name}
-                                           </span>
-                                        </div>
-                                        <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{lesson.time}</span>
-                                     </div>
-                                  ))}
-                               </div>
-                            )}
-                         </div>
-                      ))}
-                   </div>
+                      ]}
+                   />
                 </div>
 
              </div>
@@ -217,7 +182,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
 
        {/* Mobile Sticky CTA */}
        <div className="fixed bottom-0 left-0 right-0 p-4 border-t lg:hidden z-50 glass-strong" style={{ borderColor: 'var(--border-soft)' }}>
-          <Link href="/auth" className="btn-primary w-full py-4 rounded-xl text-center font-bold text-lg block">
+          <Link href={`/checkout/${course_id}`} className="btn-primary w-full py-4 rounded-xl text-center font-bold text-lg block">
              Enroll Now — $149
           </Link>
        </div>

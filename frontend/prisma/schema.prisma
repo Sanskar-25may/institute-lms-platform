@@ -194,8 +194,14 @@ model SiteContent {
 
 model CareerGuidanceForm {
   id                     String   @id @default(uuid()) @db.Uuid
-  personalInfo           String   @db.Text
-  educationalInfo        String   @db.Text
+  firstName              String   @db.Text
+  lastName               String   @db.Text
+  email                  String   @db.Text
+  phone                  String   @db.Text
+  location               String   @db.Text
+  degree                 String   @db.Text
+  university             String   @db.Text
+  graduationYear         String   @db.Text
   shortTermGoal          String   @db.Text
   longTermGoal           String   @db.Text
   weaknesses             String   @db.Text // CSV

@@ -6,8 +6,14 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
 
     const {
-      personalInfo,
-      educationalInfo,
+      firstName,
+      lastName,
+      email,
+      phone,
+      location,
+      degree,
+      university,
+      graduationYear,
       shortTermGoal,
       longTermGoal,
       weaknesses,
@@ -16,14 +22,20 @@ export async function POST(req: NextRequest) {
       remarkableAchievements,
     } = data;
 
-    if (!personalInfo || !educationalInfo) {
+    if (!firstName || !email) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
 
     const form = await prisma.careerGuidanceForm.create({
       data: {
-        personalInfo,
-        educationalInfo,
+        firstName,
+        lastName,
+        email,
+        phone,
+        location,
+        degree,
+        university,
+        graduationYear,
         shortTermGoal: shortTermGoal || "",
         longTermGoal: longTermGoal || "",
         weaknesses: weaknesses || "",

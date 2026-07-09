@@ -312,6 +312,9 @@ code, pre, .font-mono {
   background: var(--bg-surface);
   border: 1px solid var(--border-med);
   color: var(--text-primary);
+  padding: 14px 16px;
+  border-radius: 12px;
+  width: 100%;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 .input-premium:focus {
@@ -331,6 +334,9 @@ code, pre, .font-mono {
   border: 1px solid var(--border-med);
   color: var(--text-primary);
   appearance: none;
+  padding: 14px 16px;
+  border-radius: 12px;
+  width: 100%;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .select-premium:focus {

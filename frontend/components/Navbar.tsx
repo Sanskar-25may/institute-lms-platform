@@ -20,8 +20,8 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Hide on dashboard and auth routes
-  if (pathname === "/auth" || pathname?.startsWith("/student") || pathname?.startsWith("/faculty") || pathname?.startsWith("/admin")) {
+  // Hide on dashboard, auth, and onboarding routes
+  if (pathname === "/auth" || pathname === "/onboarding" || pathname?.startsWith("/student") || pathname?.startsWith("/faculty") || pathname?.startsWith("/admin")) {
     return null;
   }
 

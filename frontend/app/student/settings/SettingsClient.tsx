@@ -1,8 +1,78 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function SettingsClient({ cmsData }: { cmsData: any }) {
   const [activeTab, setActiveTab] = useState("profile");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    bio: "",
+  });
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch("/api/user/profile");
+      if (res.ok) {
+        const data = await res.json();
+        
+        let firstName = "";
+        let lastName = "";
+        if (data.name) {
+          const parts = data.name.split(" ");
+          firstName = parts[0] || "";
+          lastName = parts.slice(1).join(" ") || "";
+        }
+
+        setFormData({
+          firstName,
+          lastName,
+          email: data.email || "",
+          bio: data.profile?.bio || "",
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setMessage("");
+
+    try {
+      const res = await fetch("/api/user/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setMessage("Profile updated successfully!");
+      } else {
+        setMessage("Failed to update profile.");
+      }
+    } catch (err) {
+      setMessage("An unexpected error occurred.");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div className="space-y-8 pb-20 max-w-5xl">
@@ -35,13 +105,13 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
           {/* Main Content Area */}
           <div className="flex-1 p-8 rounded-[24px]" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
              
-             {activeTab === "profile" && (
+               {activeTab === "profile" && (
                 <div className="space-y-8 animate-fade-in-up">
                    <h2 className="heading-font text-2xl font-bold border-b pb-4" style={{ borderColor: 'var(--border-soft)' }}>Profile Details</h2>
                    
                    <div className="flex items-center gap-6">
                       <div className="w-24 h-24 rounded-full flex items-center justify-center font-bold text-3xl" style={{ background: 'var(--bg-surface)' }}>
-                         SG
+                         {formData.firstName?.[0] || ""}{formData.lastName?.[0] || ""}
                       </div>
                       <div>
                          {cmsData?.allowProfileEdit !== false ? (
@@ -55,32 +125,46 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
                       </div>
                    </div>
 
-                   <form className="space-y-6 max-w-lg">
-                      <div className="grid grid-cols-2 gap-4">
-                         <div>
-                            <label className="block text-sm font-medium mb-2">First Name</label>
-                            <input type="text" className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" defaultValue="Sanskar" disabled={cmsData?.allowProfileEdit === false} />
-                         </div>
-                         <div>
-                            <label className="block text-sm font-medium mb-2">Last Name</label>
-                            <input type="text" className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" defaultValue="G" disabled={cmsData?.allowProfileEdit === false} />
-                         </div>
-                      </div>
-                      
-                      <div>
-                         <label className="block text-sm font-medium mb-2">Email</label>
-                         <input type="email" className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" defaultValue="sanskar@example.com" disabled />
-                      </div>
+                   {loading ? (
+                     <div className="animate-pulse space-y-4">
+                       <div className="h-10 bg-[var(--bg-surface)] rounded-xl w-full"></div>
+                       <div className="h-24 bg-[var(--bg-surface)] rounded-xl w-full"></div>
+                     </div>
+                   ) : (
+                     <form className="space-y-6 max-w-lg" onSubmit={handleSubmit}>
+                        {message && (
+                          <div className={`p-4 rounded-xl font-bold ${message.includes("success") ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>
+                            {message}
+                          </div>
+                        )}
+                        <div className="grid grid-cols-2 gap-4">
+                           <div>
+                              <label className="block text-sm font-medium mb-2">First Name</label>
+                              <input required type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" disabled={cmsData?.allowProfileEdit === false} />
+                           </div>
+                           <div>
+                              <label className="block text-sm font-medium mb-2">Last Name</label>
+                              <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" disabled={cmsData?.allowProfileEdit === false} />
+                           </div>
+                        </div>
+                        
+                        <div>
+                           <label className="block text-sm font-medium mb-2">Email</label>
+                           <input type="email" value={formData.email} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" disabled />
+                        </div>
 
-                      <div>
-                         <label className="block text-sm font-medium mb-2">Bio</label>
-                         <textarea className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" rows={4} placeholder="Tell us about yourself..." disabled={cmsData?.allowProfileEdit === false}></textarea>
-                      </div>
+                        <div>
+                           <label className="block text-sm font-medium mb-2">Bio</label>
+                           <textarea name="bio" value={formData.bio} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" rows={4} placeholder="Tell us about yourself..." disabled={cmsData?.allowProfileEdit === false}></textarea>
+                        </div>
 
-                      {cmsData?.allowProfileEdit !== false && (
-                         <button className="btn-primary px-6 py-2.5 rounded-lg font-bold">Save Changes</button>
-                      )}
-                   </form>
+                        {cmsData?.allowProfileEdit !== false && (
+                           <button type="submit" disabled={saving} className="btn-primary px-6 py-2.5 rounded-lg font-bold">
+                             {saving ? "Saving..." : "Save Changes"}
+                           </button>
+                        )}
+                     </form>
+                   )}
                 </div>
              )}
 

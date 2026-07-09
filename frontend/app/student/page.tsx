@@ -3,12 +3,21 @@ import { getStudentDashboard } from "@/app/actions";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { getSiteContent } from "@/lib/cms";
+import { prisma } from "@/lib/prisma";
 
 export default async function StudentDashboard() {
   const session = await getServerSession(authOptions);
   const data = await getStudentDashboard();
   const cmsData = await getSiteContent("student-dashboard");
-  const userName = session?.user?.name?.split(" ")[0] || "Student";
+  
+  let userName = "Student";
+  if (session?.user?.id) {
+    const dbUser = await prisma.user.findUnique({ where: { id: session.user.id }, select: { name: true, fullName: true } });
+    if (dbUser) {
+      userName = (dbUser.name || dbUser.fullName || "Student").split(" ")[0];
+    }
+  }
+
   const welcomePrefix = cmsData?.welcomeMessage || "Welcome back,";
   const showQuickStats = cmsData?.showQuickStats !== false;
 

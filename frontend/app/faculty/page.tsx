@@ -1,15 +1,29 @@
 import Link from "next/link";
 import { getSiteContent } from "@/lib/cms";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
+import { prisma } from "@/lib/prisma";
 
 export default async function FacultyDashboard() {
+  const session = await getServerSession(authOptions);
   const cmsData = await getSiteContent("faculty-dashboard");
+  
+  let userName = "Instructor";
+  if (session?.user?.id) {
+    const dbUser = await prisma.user.findUnique({ where: { id: session.user.id }, select: { name: true, fullName: true } });
+    if (dbUser) {
+      userName = (dbUser.name || dbUser.fullName || "Instructor").split(" ")[0];
+    }
+  }
+
+  const welcomePrefix = cmsData?.welcomeMessage || `Welcome back, ${userName}`;
   
   return (
     <div className="space-y-6 pb-20">
        
        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-             <h1 className="heading-font text-3xl font-bold mb-1">{cmsData?.welcomeMessage || "Instructor Dashboard"}</h1>
+             <h1 className="heading-font text-3xl font-bold mb-1">{welcomePrefix}</h1>
              <p style={{ color: 'var(--text-secondary)' }}>Overview of your courses and student performance.</p>
           </div>
           <Link href="/faculty/create" className="btn-primary px-5 py-2.5 rounded-lg text-sm font-bold flex items-center gap-2">

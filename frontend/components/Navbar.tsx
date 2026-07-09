@@ -80,15 +80,9 @@ export default function Navbar() {
           {/* Right actions */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            {session ? (
-              <Link href="/auth" className="btn-primary px-5 py-2.5 text-sm rounded-xl">
-                Dashboard
-              </Link>
-            ) : (
-              <Link href="/auth" className="btn-primary px-5 py-2.5 text-sm rounded-xl">
-                Get Started
-              </Link>
-            )}
+            <Link href="/auth" className="btn-primary px-5 py-2.5 text-sm rounded-xl">
+              Get Started
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -133,23 +127,13 @@ export default function Navbar() {
               )
             })}
             <div className="pt-4 flex flex-col gap-3 px-3">
-              {session ? (
-                <Link
-                  href="/auth"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center btn-primary py-3 rounded-xl"
-                >
-                  Dashboard
-                </Link>
-              ) : (
-                <Link
-                  href="/auth"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center btn-primary py-3 rounded-xl"
-                >
-                  Get Started
-                </Link>
-              )}
+              <Link
+                href="/auth"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full text-center btn-primary py-3 rounded-xl"
+              >
+                Get Started
+              </Link>
             </div>
           </div>
         </div>

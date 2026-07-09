@@ -83,7 +83,19 @@ export default function OnboardingPage() {
           </div>
           <span className="heading-font font-bold text-xl tracking-tight">Aushutosh</span>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => {
+              // Sign out and redirect to home
+              import("next-auth/react").then(mod => mod.signOut({ callbackUrl: '/' }))
+            }}
+            className="text-sm font-semibold hover:opacity-70 transition-opacity"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            Sign Out
+          </button>
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* Main Content */}

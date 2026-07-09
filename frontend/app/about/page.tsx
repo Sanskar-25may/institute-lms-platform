@@ -49,22 +49,34 @@ export default async function AboutPage() {
         </div>
 
         {/* Team */}
-        {cmsData.team && cmsData.team.filter((t: any) => t.isActive !== false).length > 0 && (
-          <div className="mb-24">
-            <h2 className="heading-font text-3xl font-bold text-center mb-12">The Team Behind {cmsData.heading ? cmsData.heading.replace('About ', '') : 'Aushutosh'}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              {cmsData.team.filter((t: any) => t.isActive !== false).map((person: any, i: number) => (
+        <div className="mb-24">
+          <h2 className="heading-font text-3xl font-bold text-center mb-12">The Team Behind {cmsData.heading ? cmsData.heading.replace('About ', '') : 'Aushutosh'}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {cmsData.team && cmsData.team.filter((t: any) => t.isActive !== false).length > 0 ? (
+              cmsData.team.filter((t: any) => t.isActive !== false).map((person: any, i: number) => (
                 <div key={i} className="text-center group">
-                   <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4" style={{ borderColor: 'var(--bg-surface)' }}>
-                     <img src={person.imageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&size=200`} alt={person.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                   <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4 flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-xs text-center p-4" style={{ borderColor: 'var(--bg-surface)', color: 'var(--text-secondary)' }}>
+                     {person.imageUrl ? (
+                       <img src={person.imageUrl} alt={person.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                     ) : (
+                       <span>No image from CMS</span>
+                     )}
                    </div>
-                   <h3 className="font-bold text-xl">{person.name}</h3>
-                   <p style={{ color: 'var(--text-tertiary)' }}>{person.role}</p>
+                   <h3 className="font-bold text-xl">{person.name || "No name from CMS"}</h3>
+                   <p style={{ color: 'var(--text-tertiary)' }}>{person.role || "No role"}</p>
                 </div>
-              ))}
-            </div>
+              ))
+            ) : (
+              <div className="text-center group col-span-1 md:col-start-2 lg:col-start-auto">
+                 <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4 flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-xs text-center p-4" style={{ borderColor: 'var(--bg-surface)', color: 'var(--text-secondary)' }}>
+                   <span>No image from CMS</span>
+                 </div>
+                 <h3 className="font-bold text-xl">No name from CMS</h3>
+                 <p style={{ color: 'var(--text-tertiary)' }}>No role from CMS</p>
+              </div>
+            )}
           </div>
-        )}
+        </div>
 
         {/* CTA */}
         <div className="text-center p-12 rounded-[32px]" style={{ background: 'linear-gradient(135deg, var(--bg-card), var(--bg-surface))', border: '1px solid var(--border-soft)' }}>

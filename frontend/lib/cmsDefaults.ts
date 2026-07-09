@@ -87,13 +87,7 @@ export const CMS_SCHEMAS: PageSchema[] = [
           href: { type: "string", label: "URL Path", default: "/" },
           isActive: { type: "boolean", label: "Is Active?", default: true }
         },
-        default: [
-          { name: "Courses", href: "/courses", isActive: true },
-          { name: "About", href: "/about", isActive: true },
-          { name: "Placements", href: "/placements", isActive: true },
-          { name: "Testimonials", href: "/testimonials", isActive: true },
-          { name: "Contact", href: "/contact", isActive: true },
-        ]
+        default: []
       }
     }
   },
@@ -113,12 +107,48 @@ export const CMS_SCHEMAS: PageSchema[] = [
           value: { type: "string", label: "Stat Value", default: "10,000+" },
           isActive: { type: "boolean", label: "Show this stat?", default: true }
         },
-        default: [
-          { label: "Students Worldwide", value: "10,000+", isActive: true },
-          { label: "Course Satisfaction", value: "98%", isActive: true },
-          { label: "Average Rating", value: "4.9/5", isActive: true },
-          { label: "Salary Increase", value: "$34M+", isActive: true },
-        ]
+        default: []
+      },
+      marquee: {
+        type: "array",
+        label: "Marquee Companies",
+        itemSchema: {
+          name: { type: "string", label: "Company Name", default: "GOOGLE" },
+          isActive: { type: "boolean", label: "Show?", default: true }
+        },
+        default: []
+      },
+      features: {
+        type: "array",
+        label: "Features List",
+        itemSchema: {
+          title: { type: "string", label: "Feature Title", default: "Feature" },
+          description: { type: "text", label: "Feature Description", default: "Description" },
+          isActive: { type: "boolean", label: "Show?", default: true }
+        },
+        default: []
+      },
+      howItWorks: {
+        type: "array",
+        label: "How It Works Steps",
+        itemSchema: {
+          step: { type: "string", label: "Step Number", default: "1" },
+          title: { type: "string", label: "Step Title", default: "Title" },
+          description: { type: "string", label: "Step Description", default: "Description" },
+          isActive: { type: "boolean", label: "Show?", default: true }
+        },
+        default: []
+      },
+      testimonials: {
+        type: "array",
+        label: "Testimonials",
+        itemSchema: {
+          name: { type: "string", label: "Name", default: "Jane Doe" },
+          role: { type: "string", label: "Role", default: "Engineer" },
+          quote: { type: "text", label: "Quote", default: "This is great!" },
+          isActive: { type: "boolean", label: "Show?", default: true }
+        },
+        default: []
       }
     }
   },

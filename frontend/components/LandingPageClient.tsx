@@ -95,12 +95,7 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
       <section className="py-12 md:py-16 backdrop-blur-md border-y" style={{ background: 'color-mix(in srgb, var(--bg-surface) 60%, transparent)', borderColor: 'var(--border-soft)' }}>
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-4 md:gap-8 divide-x" style={{ borderColor: 'var(--border-soft)' }}>
-              {(initialData.stats || [
-                { label: "Students Worldwide", value: "10,000+" },
-                { label: "Course Satisfaction", value: "98%" },
-                { label: "Average Rating", value: "4.9/5" },
-                { label: "Salary Increase", value: "$34M+" },
-              ]).filter((s: any) => s.isActive !== false).map((stat: any, i: number) => (
+              {(initialData.stats || []).filter((s: any) => s.isActive !== false).map((stat: any, i: number) => (
                 <motion.div 
                    key={i} 
                    initial={{ opacity: 0, y: 20 }}
@@ -133,15 +128,13 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
           <div className="flex animate-marquee whitespace-nowrap opacity-70 transition-all duration-500 hover:opacity-100">
              {[1, 2].map((group) => (
                <div key={group} className="flex items-center gap-16 px-8 text-2xl font-bold font-mono" style={{ color: 'var(--text-secondary)' }}>
-                  <span>GOOGLE</span>
-                  <span>META</span>
-                  <span>STRIPE</span>
-                  <span>VERCEL</span>
-                  <span>NETFLIX</span>
-                  <span>SHOPIFY</span>
-                  <span>ATLASSIAN</span>
-                  <span>AMAZON</span>
-                  <span>GITHUB</span>
+                  {(initialData.marquee && initialData.marquee.filter((m: any) => m.isActive !== false).length > 0) ? (
+                    initialData.marquee.filter((m: any) => m.isActive !== false).map((company: any, i: number) => (
+                      <span key={i}>{company.name}</span>
+                    ))
+                  ) : (
+                    <span className="opacity-50 italic">No companies added to CMS</span>
+                  )}
                </div>
              ))}
           </div>
@@ -162,66 +155,31 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
            </motion.div>
 
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Feature 1 (Tall, 2 cols) */}
-              <motion.div 
-                 initial={{ opacity: 0, scale: 0.95 }}
-                 whileInView={{ opacity: 1, scale: 1 }}
-                 whileHover={{ y: -5, scale: 1.01 }}
-                 viewport={{ once: true, margin: "-100px" }}
-                 transition={{ duration: 0.4 }}
-                 className="md:col-span-2 rounded-[32px] p-8 md:p-12 relative overflow-hidden backdrop-blur-md card-glow border" 
-                 style={{ minHeight: '400px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}
-              >
-                 <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] opacity-30" style={{ background: 'var(--accent-primary)' }}></div>
-                 <div className="relative z-10 flex flex-col justify-between h-full">
-                   <div>
-                     <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-lg" style={{ background: 'color-mix(in srgb, var(--accent-primary) 80%, transparent)', color: '#fff' }}>
-                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+              {(initialData.features && initialData.features.filter((f: any) => f.isActive !== false).length > 0) ? (
+                initialData.features.filter((f: any) => f.isActive !== false).map((feature: any, i: number) => (
+                  <motion.div 
+                     key={i}
+                     initial={{ opacity: 0, scale: 0.95 }}
+                     whileInView={{ opacity: 1, scale: 1 }}
+                     whileHover={{ y: -5, scale: i === 0 ? 1.01 : 1.02 }}
+                     viewport={{ once: true, margin: "-100px" }}
+                     transition={{ delay: i * 0.1, duration: 0.4 }}
+                     className={`${i === 0 ? 'md:col-span-2' : ''} rounded-[32px] p-8 md:p-12 relative overflow-hidden backdrop-blur-md card-glow flex flex-col border`}
+                     style={{ minHeight: i === 0 ? '400px' : 'auto', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}
+                  >
+                     <div className={`absolute ${i === 0 ? 'top-0 right-0' : i === 1 ? 'bottom-0 right-0' : 'top-0 left-0'} w-32 h-32 blur-[60px] opacity-30`} style={{ background: i === 0 ? 'var(--accent-primary)' : i === 1 ? 'var(--accent-cyan)' : 'var(--accent-success)' }}></div>
+                     <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-lg" style={{ background: `color-mix(in srgb, ${i === 0 ? 'var(--accent-primary)' : i === 1 ? 'var(--accent-cyan)' : 'var(--accent-success)'} 80%, transparent)`, color: '#fff' }}>
+                        <span className="font-bold text-xl">{i + 1}</span>
                      </div>
-                     <h3 className="heading-font text-2xl font-bold mb-3">Project-Based Learning</h3>
-                     <p className="text-lg max-w-md drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>Stop watching toy examples. You will build production-ready applications, implement CI/CD, and deploy to real infrastructure.</p>
-                   </div>
-                   <div className="mt-8 transition-transform duration-700 hover:scale-105">
-                     <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800" alt="Code editor" className="rounded-xl border shadow-2xl mix-blend-luminosity hover:mix-blend-normal transition-all duration-500" style={{ borderColor: 'var(--border-soft)' }}/>
-                   </div>
-                 </div>
-              </motion.div>
-
-              {/* Feature 2 */}
-              <motion.div 
-                 initial={{ opacity: 0, scale: 0.95 }}
-                 whileInView={{ opacity: 1, scale: 1 }}
-                 whileHover={{ y: -5, scale: 1.02 }}
-                 viewport={{ once: true, margin: "-100px" }}
-                 transition={{ delay: 0.1, duration: 0.4 }}
-                 className="rounded-[32px] p-8 md:p-12 relative overflow-hidden backdrop-blur-md card-glow flex flex-col border"
-                 style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}
-              >
-                 <div className="absolute bottom-0 right-0 w-32 h-32 blur-[60px] opacity-30" style={{ background: 'var(--accent-cyan)' }}></div>
-                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-lg" style={{ background: 'color-mix(in srgb, var(--accent-cyan) 80%, transparent)', color: '#fff' }}>
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                 </div>
-                 <h3 className="heading-font text-xl font-bold mb-3">Live Cohorts</h3>
-                 <p className="drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>Weekly office hours, code reviews, and pair programming with senior engineers.</p>
-              </motion.div>
-
-              {/* Feature 3 */}
-              <motion.div 
-                 initial={{ opacity: 0, scale: 0.95 }}
-                 whileInView={{ opacity: 1, scale: 1 }}
-                 whileHover={{ y: -5, scale: 1.02 }}
-                 viewport={{ once: true, margin: "-100px" }}
-                 transition={{ delay: 0.2, duration: 0.4 }}
-                 className="rounded-[32px] p-8 md:p-12 relative overflow-hidden backdrop-blur-md card-glow flex flex-col border"
-                 style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}
-              >
-                 <div className="absolute top-0 left-0 w-32 h-32 blur-[60px] opacity-30" style={{ background: 'var(--accent-success)' }}></div>
-                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-lg" style={{ background: 'color-mix(in srgb, var(--accent-success) 80%, transparent)', color: '#fff' }}>
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
-                 </div>
-                 <h3 className="heading-font text-xl font-bold mb-3">Verified Credentials</h3>
-                 <p className="drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>Earn cryptographically verifiable certificates that top hiring managers actually trust.</p>
-              </motion.div>
+                     <h3 className={`heading-font ${i === 0 ? 'text-2xl' : 'text-xl'} font-bold mb-3`}>{feature.title}</h3>
+                     <p className="drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>{feature.description}</p>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="md:col-span-3 text-center py-20 text-gray-500 italic border border-dashed rounded-3xl" style={{ borderColor: 'var(--border-soft)' }}>
+                   No features provided in CMS
+                </div>
+              )}
 
               {/* Feature 4 (Full width CTA card) */}
               <motion.div 
@@ -262,26 +220,28 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
               <div className="hidden md:block absolute top-10 left-[16%] right-[16%] h-0.5 border-t-2 border-dashed z-0" style={{ borderColor: 'var(--border-strong)' }}></div>
               
-              {[
-                { step: "1", title: "Enroll in a Path", desc: "Choose a career path and get a structured curriculum." },
-                { step: "2", title: "Learn & Build", desc: "Watch high-quality lessons and build projects locally." },
-                { step: "3", title: "Get Certified", desc: "Submit your final project for review by a senior engineer." }
-              ].map((item, i) => (
-                <motion.div 
-                   key={i} 
-                   initial={{ opacity: 0, y: 30 }}
-                   whileInView={{ opacity: 1, y: 0 }}
-                   viewport={{ once: true, margin: "-50px" }}
-                   transition={{ delay: i * 0.2 }}
-                   className="relative z-10 flex flex-col items-center text-center"
-                >
-                   <div className="w-20 h-20 rounded-2xl flex items-center justify-center heading-font text-3xl font-bold mb-6 shadow-2xl backdrop-blur-xl border-2" style={{ background: 'color-mix(in srgb, var(--bg-elevated) 80%, transparent)', borderColor: 'var(--border-med)', color: 'var(--accent-primary)' }}>
-                      {item.step}
-                   </div>
-                   <h3 className="text-xl font-bold mb-3 drop-shadow-md">{item.title}</h3>
-                   <p className="drop-shadow-sm" style={{ color: 'var(--text-secondary)' }}>{item.desc}</p>
-                </motion.div>
-              ))}
+              {(initialData.howItWorks && initialData.howItWorks.filter((h: any) => h.isActive !== false).length > 0) ? (
+                initialData.howItWorks.filter((h: any) => h.isActive !== false).map((item: any, i: number) => (
+                  <motion.div 
+                     key={i} 
+                     initial={{ opacity: 0, y: 30 }}
+                     whileInView={{ opacity: 1, y: 0 }}
+                     viewport={{ once: true, margin: "-50px" }}
+                     transition={{ delay: i * 0.2 }}
+                     className="relative z-10 flex flex-col items-center text-center"
+                  >
+                     <div className="w-20 h-20 rounded-2xl flex items-center justify-center heading-font text-3xl font-bold mb-6 shadow-2xl backdrop-blur-xl border-2" style={{ background: 'color-mix(in srgb, var(--bg-elevated) 80%, transparent)', borderColor: 'var(--border-med)', color: 'var(--accent-primary)' }}>
+                        {item.step || (i + 1)}
+                     </div>
+                     <h3 className="text-xl font-bold mb-3 drop-shadow-md">{item.title}</h3>
+                     <p className="drop-shadow-sm" style={{ color: 'var(--text-secondary)' }}>{item.description}</p>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="md:col-span-3 text-center py-10 text-gray-500 italic">
+                   No "How It Works" steps added in CMS
+                </div>
+              )}
            </div>
         </div>
       </section>
@@ -294,32 +254,34 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
            </div>
            
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { name: "Alex Chen", role: "Frontend Engineer at Stripe", quote: "The Next.js course finally made server components click for me. I rebuilt our company's dashboard using the patterns taught here." },
-                { name: "Sarah Jenkins", role: "Software Engineer at Netflix", quote: "Unlike Udemy where you just watch videos, here you actually code. The project reviews from real engineers are invaluable." },
-                { name: "David Kim", role: "Full Stack Dev at Vercel", quote: "The UI/UX foundation course changed how I approach frontend. Everything I build now looks 10x better automatically." }
-              ].map((t, i) => (
-                <motion.div 
-                   key={i} 
-                   initial={{ opacity: 0, scale: 0.95 }}
-                   whileInView={{ opacity: 1, scale: 1 }}
-                   whileHover={{ y: -5, scale: 1.02 }}
-                   viewport={{ once: true, margin: "-100px" }}
-                   transition={{ delay: i * 0.15 }}
-                   className="p-8 rounded-[24px] shadow-xl backdrop-blur-md border card-hover" 
-                   style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)' }}
-                >
-                   <div className="flex gap-1 text-amber-400 mb-6 drop-shadow-md">★★★★★</div>
-                   <p className="text-lg mb-8 italic drop-shadow-sm" style={{ color: 'var(--text-primary)' }}>"{t.quote}"</p>
-                   <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white shadow-lg" style={{ background: 'var(--accent-primary)' }}>{t.name[0]}</div>
-                      <div>
-                        <div className="font-bold drop-shadow-md">{t.name}</div>
-                        <div className="text-sm drop-shadow-sm" style={{ color: 'var(--text-secondary)' }}>{t.role}</div>
-                      </div>
-                   </div>
-                </motion.div>
-              ))}
+              {(initialData.testimonials && initialData.testimonials.filter((t: any) => t.isActive !== false).length > 0) ? (
+                initialData.testimonials.filter((t: any) => t.isActive !== false).map((t: any, i: number) => (
+                  <motion.div 
+                     key={i} 
+                     initial={{ opacity: 0, scale: 0.95 }}
+                     whileInView={{ opacity: 1, scale: 1 }}
+                     whileHover={{ y: -5, scale: 1.02 }}
+                     viewport={{ once: true, margin: "-100px" }}
+                     transition={{ delay: i * 0.15 }}
+                     className="p-8 rounded-[24px] shadow-xl backdrop-blur-md border card-hover" 
+                     style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)' }}
+                  >
+                     <div className="flex gap-1 text-amber-400 mb-6 drop-shadow-md">★★★★★</div>
+                     <p className="text-lg mb-8 italic drop-shadow-sm" style={{ color: 'var(--text-primary)' }}>"{t.quote}"</p>
+                     <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white shadow-lg" style={{ background: 'var(--accent-primary)' }}>{t.name?.[0] || "?"}</div>
+                        <div>
+                          <div className="font-bold drop-shadow-md">{t.name}</div>
+                          <div className="text-sm drop-shadow-sm" style={{ color: 'var(--text-secondary)' }}>{t.role}</div>
+                        </div>
+                     </div>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="md:col-span-3 text-center py-10 text-gray-500 italic border border-dashed rounded-3xl" style={{ borderColor: 'var(--border-soft)' }}>
+                   No testimonials provided in CMS
+                </div>
+              )}
            </div>
         </div>
       </section>

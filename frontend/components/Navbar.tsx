@@ -26,13 +26,7 @@ export default function Navbar({ siteName, links, logoUrl }: { siteName?: string
   }
 
   // Use dynamic links or fallback
-  const activeLinks = (links || [
-    { name: "Courses", href: "/courses" },
-    { name: "About", href: "/about" },
-    { name: "Placements", href: "/placements" },
-    { name: "Testimonials", href: "/testimonials" },
-    { name: "Contact", href: "/contact" },
-  ]).filter((link: any) => link.isActive !== false);
+  const activeLinks = (links || []).filter((link: any) => link.isActive !== false);
 
   return (
     <nav

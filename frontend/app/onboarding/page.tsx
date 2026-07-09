@@ -27,6 +27,16 @@ export default function OnboardingPage() {
   const handleNext = () => {
     if (step === 1 && !role) return setErrorMsg("Please select a role.");
     if (step === 2 && !lifeStage) return setErrorMsg("Please select your current status.");
+    if (step === 3) {
+      if (!techStack.trim()) return setErrorMsg("Please provide your tech stack.");
+      if (lifeStage !== "Freelance Educator" && !organization.trim()) return setErrorMsg("Please provide your organization or college name.");
+      if ((role === "INSTRUCTOR" || lifeStage === "Working Professional" || lifeStage === "Industry Professional" || lifeStage === "Subject Matter Expert" || lifeStage === "Freelance Educator") && !experienceYears.trim()) {
+        return setErrorMsg("Please provide your years of experience.");
+      }
+      if (role === "STUDENT" && lifeStage === "Current Student" && !degree.trim()) {
+        return setErrorMsg("Please provide the degree you are pursuing.");
+      }
+    }
     setErrorMsg("");
     setStep((s) => s + 1);
   };
@@ -289,9 +299,14 @@ export default function OnboardingPage() {
                 Continue
               </button>
             ) : (
-              <button onClick={handleSubmit} disabled={isLoading} className="btn-primary px-10 py-3 rounded-xl font-bold flex items-center gap-2">
-                {isLoading ? "Saving..." : "Complete Setup"}
-              </button>
+              <div className="flex gap-4">
+                <button onClick={handleSubmit} disabled={isLoading} className="btn-secondary px-6 py-3 rounded-xl font-bold flex items-center gap-2">
+                  {isLoading ? "Saving..." : "Skip & Complete"}
+                </button>
+                <button onClick={handleSubmit} disabled={isLoading} className="btn-primary px-10 py-3 rounded-xl font-bold flex items-center gap-2">
+                  {isLoading ? "Saving..." : "Complete Setup"}
+                </button>
+              </div>
             )}
           </div>
 

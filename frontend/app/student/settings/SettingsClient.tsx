@@ -12,6 +12,14 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
     lastName: "",
     email: "",
     bio: "",
+    lifeStage: "",
+    organization: "",
+    degree: "",
+    experienceYears: "",
+    techStack: "",
+    linkedinUrl: "",
+    githubUrl: "",
+    portfolioUrl: "",
   });
 
   useEffect(() => {
@@ -37,6 +45,14 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
           lastName,
           email: data.email || "",
           bio: data.profile?.bio || "",
+          lifeStage: data.profile?.lifeStage || "",
+          organization: data.profile?.organization || "",
+          degree: data.profile?.degree || "",
+          experienceYears: data.profile?.experienceYears?.toString() || "",
+          techStack: data.profile?.techStack?.join(", ") || "",
+          linkedinUrl: data.profile?.linkedinUrl || "",
+          githubUrl: data.profile?.githubUrl || "",
+          portfolioUrl: data.profile?.portfolioUrl || "",
         });
       }
     } catch (err) {
@@ -55,11 +71,16 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
     setSaving(true);
     setMessage("");
 
+    const payload = {
+      ...formData,
+      techStack: formData.techStack ? formData.techStack.split(",").map(s => s.trim()).filter(Boolean) : []
+    };
+
     try {
       const res = await fetch("/api/user/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
@@ -156,6 +177,47 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
                         <div>
                            <label className="block text-sm font-medium mb-2">Bio</label>
                            <textarea name="bio" value={formData.bio} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" rows={4} placeholder="Tell us about yourself..." disabled={cmsData?.allowProfileEdit === false}></textarea>
+                        </div>
+
+                        <h3 className="font-bold text-lg pt-4 border-t border-bdr-soft">Professional Details</h3>
+                        <div className="grid grid-cols-2 gap-4">
+                           <div>
+                              <label className="block text-sm font-medium mb-2">Current Status</label>
+                              <input type="text" name="lifeStage" value={formData.lifeStage} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" placeholder="e.g. Current Student" disabled={cmsData?.allowProfileEdit === false} />
+                           </div>
+                           <div>
+                              <label className="block text-sm font-medium mb-2">College / Organization</label>
+                              <input type="text" name="organization" value={formData.organization} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" placeholder="e.g. Stanford University" disabled={cmsData?.allowProfileEdit === false} />
+                           </div>
+                           <div>
+                              <label className="block text-sm font-medium mb-2">Degree</label>
+                              <input type="text" name="degree" value={formData.degree} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" placeholder="e.g. B.S. Computer Science" disabled={cmsData?.allowProfileEdit === false} />
+                           </div>
+                           <div>
+                              <label className="block text-sm font-medium mb-2">Years of Experience</label>
+                              <input type="number" name="experienceYears" value={formData.experienceYears} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" placeholder="e.g. 2" disabled={cmsData?.allowProfileEdit === false} />
+                           </div>
+                        </div>
+
+                        <div>
+                           <label className="block text-sm font-medium mb-2">Tech Stack (comma separated)</label>
+                           <input type="text" name="techStack" value={formData.techStack} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" placeholder="e.g. React, Node.js, Python" disabled={cmsData?.allowProfileEdit === false} />
+                        </div>
+
+                        <h3 className="font-bold text-lg pt-4 border-t border-bdr-soft">Social Links</h3>
+                        <div className="space-y-4">
+                           <div>
+                              <label className="block text-sm font-medium mb-2">LinkedIn URL</label>
+                              <input type="url" name="linkedinUrl" value={formData.linkedinUrl} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" placeholder="https://linkedin.com/in/username" disabled={cmsData?.allowProfileEdit === false} />
+                           </div>
+                           <div>
+                              <label className="block text-sm font-medium mb-2">GitHub URL</label>
+                              <input type="url" name="githubUrl" value={formData.githubUrl} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" placeholder="https://github.com/username" disabled={cmsData?.allowProfileEdit === false} />
+                           </div>
+                           <div>
+                              <label className="block text-sm font-medium mb-2">Portfolio Website</label>
+                              <input type="url" name="portfolioUrl" value={formData.portfolioUrl} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" placeholder="https://mywebsite.com" disabled={cmsData?.allowProfileEdit === false} />
+                           </div>
                         </div>
 
                         {cmsData?.allowProfileEdit !== false && (

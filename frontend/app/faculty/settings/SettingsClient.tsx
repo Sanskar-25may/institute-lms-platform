@@ -11,7 +11,14 @@ export default function SettingsClient() {
     firstName: "",
     lastName: "",
     bio: "",
-    organization: ""
+    lifeStage: "",
+    organization: "",
+    degree: "",
+    experienceYears: "",
+    techStack: "",
+    linkedinUrl: "",
+    githubUrl: "",
+    portfolioUrl: "",
   });
 
   useEffect(() => {
@@ -36,7 +43,14 @@ export default function SettingsClient() {
           firstName,
           lastName,
           bio: data.profile?.bio || "",
-          organization: data.profile?.organization || ""
+          lifeStage: data.profile?.lifeStage || "",
+          organization: data.profile?.organization || "",
+          degree: data.profile?.degree || "",
+          experienceYears: data.profile?.experienceYears?.toString() || "",
+          techStack: data.profile?.techStack?.join(", ") || "",
+          linkedinUrl: data.profile?.linkedinUrl || "",
+          githubUrl: data.profile?.githubUrl || "",
+          portfolioUrl: data.profile?.portfolioUrl || "",
         });
       }
     } catch (err) {
@@ -55,11 +69,16 @@ export default function SettingsClient() {
     setSaving(true);
     setMessage("");
 
+    const payload = {
+      ...formData,
+      techStack: formData.techStack ? formData.techStack.split(",").map(s => s.trim()).filter(Boolean) : []
+    };
+
     try {
       const res = await fetch("/api/user/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
@@ -129,6 +148,43 @@ export default function SettingsClient() {
                     <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Faculty Bio</label>
                     <textarea name="bio" value={formData.bio} onChange={handleChange} rows={5} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors resize-none"></textarea>
                   </div>
+
+                  <h3 className="font-bold text-lg pt-4 border-t border-bdr-soft">Professional Details</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                     <div>
+                        <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Current Status</label>
+                        <input type="text" name="lifeStage" value={formData.lifeStage} onChange={handleChange} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" placeholder="e.g. Industry Professional" />
+                     </div>
+                     <div>
+                        <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Degree</label>
+                        <input type="text" name="degree" value={formData.degree} onChange={handleChange} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" placeholder="e.g. Ph.D. Computer Science" />
+                     </div>
+                     <div>
+                        <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Years of Experience</label>
+                        <input type="number" name="experienceYears" value={formData.experienceYears} onChange={handleChange} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" placeholder="e.g. 5" />
+                     </div>
+                     <div>
+                        <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Tech Stack</label>
+                        <input type="text" name="techStack" value={formData.techStack} onChange={handleChange} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" placeholder="e.g. React, Python" />
+                     </div>
+                  </div>
+
+                  <h3 className="font-bold text-lg pt-4 border-t border-bdr-soft">Social Links</h3>
+                  <div className="space-y-4">
+                     <div>
+                        <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">LinkedIn URL</label>
+                        <input type="url" name="linkedinUrl" value={formData.linkedinUrl} onChange={handleChange} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" placeholder="https://linkedin.com/in/username" />
+                     </div>
+                     <div>
+                        <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">GitHub URL</label>
+                        <input type="url" name="githubUrl" value={formData.githubUrl} onChange={handleChange} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" placeholder="https://github.com/username" />
+                     </div>
+                     <div>
+                        <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Portfolio Website</label>
+                        <input type="url" name="portfolioUrl" value={formData.portfolioUrl} onChange={handleChange} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" placeholder="https://mywebsite.com" />
+                     </div>
+                  </div>
+
                   <div className="pt-6 border-t border-bdr-soft flex justify-end gap-3">
                     <button type="submit" disabled={saving} className="px-6 py-3 bg-violet-600 hover:bg-violet-700 text-txt-primary text-sm font-bold rounded-xl shadow-lg shadow-violet-900/50 transition-all">
                       {saving ? "Saving..." : "Save Profile"}

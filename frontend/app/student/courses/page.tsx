@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { getSiteContent } from "@/lib/cms";
 
-export default function MyCoursesPage() {
+export default async function MyCoursesPage() {
+  const cmsData = await getSiteContent("student-courses");
+  
   const courses = [
     {
       id: "full-stack-react",
@@ -41,7 +44,7 @@ export default function MyCoursesPage() {
     <div className="space-y-8 pb-20">
        <div className="flex justify-between items-end">
           <div>
-             <h1 className="heading-font text-3xl font-bold mb-2">My Courses</h1>
+             <h1 className="heading-font text-3xl font-bold mb-2">{cmsData?.heading || "My Courses"}</h1>
              <p style={{ color: 'var(--text-secondary)' }}>Track your progress and pick up where you left off.</p>
           </div>
           <Link href="/courses" className="btn-secondary px-5 py-2.5 rounded-lg text-sm">Browse Catalog</Link>

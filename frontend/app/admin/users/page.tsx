@@ -1,9 +1,13 @@
-export default function AdminUsersPage() {
+import { getSiteContent } from "@/lib/cms";
+
+export default async function AdminUsersPage() {
+  const cmsData = await getSiteContent("admin-users");
+
   return (
     <div className="space-y-8 pb-20">
        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-             <h1 className="heading-font text-3xl font-bold mb-2">User Management</h1>
+             <h1 className="heading-font text-3xl font-bold mb-2">{cmsData?.heading || "User Management"}</h1>
              <p style={{ color: 'var(--text-secondary)' }}>Manage all platform users and roles.</p>
           </div>
           
@@ -28,9 +32,9 @@ export default function AdminUsersPage() {
                 <tbody>
                    {[
                       { email: "sanskar@example.com", role: "Student", status: "Active", login: "Just now" },
-                      { email: "marcus.chen@aushutosh.dev", role: "Faculty", status: "Active", login: "2 hours ago" },
+                      { email: "marcus.chen@javacoders.dev", role: "Faculty", status: "Active", login: "2 hours ago" },
                       { email: "banned.user@example.com", role: "Student", status: "Suspended", login: "1 month ago" },
-                      { email: "admin.super@aushutosh.dev", role: "Admin", status: "Active", login: "5 mins ago" },
+                      { email: "admin.super@javacoders.dev", role: "Admin", status: "Active", login: "5 mins ago" },
                    ].map((u, i) => (
                       <tr key={i}>
                          <td className="font-bold text-sm">{u.email}</td>

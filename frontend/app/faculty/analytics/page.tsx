@@ -1,8 +1,12 @@
-export default function AnalyticsPage() {
+import { getSiteContent } from "@/lib/cms";
+
+export default async function AnalyticsPage() {
+  const cmsData = await getSiteContent("faculty-analytics");
+
   return (
     <div className="space-y-8 pb-20">
        <div>
-          <h1 className="heading-font text-3xl font-bold mb-2">Analytics</h1>
+          <h1 className="heading-font text-3xl font-bold mb-2">{cmsData?.heading || "Analytics"}</h1>
           <p style={{ color: 'var(--text-secondary)' }}>Detailed insights into course performance and revenue.</p>
        </div>
 

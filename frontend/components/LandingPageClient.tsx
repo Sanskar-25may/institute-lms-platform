@@ -150,7 +150,7 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
              viewport={{ once: true, margin: "-100px" }}
              className="text-center max-w-3xl mx-auto mb-16"
            >
-             <h2 className="heading-font text-3xl md:text-5xl font-bold mb-6">Why Aushutosh is different.</h2>
+             <h2 className="heading-font text-3xl md:text-5xl font-bold mb-6">Why JavaCoders is different.</h2>
              <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>We threw out the traditional video-course model and built a platform optimized for actual skill acquisition.</p>
            </motion.div>
 
@@ -323,7 +323,7 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
               <div className="col-span-2 md:col-span-1">
                  <Link href="/" className="flex items-center gap-2 mb-6">
                     <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#0EA5E9]"></div>
-                    <span className="heading-font text-xl font-bold">Aushutosh</span>
+                    <span className="heading-font text-xl font-bold">JavaCoders</span>
                  </Link>
                  <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>Engineering education for the future. Built by engineers, for engineers.</p>
               </div>
@@ -360,7 +360,7 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
            </div>
            
            <div className="pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 text-sm" style={{ borderColor: 'var(--border-soft)', color: 'var(--text-tertiary)' }}>
-              <div>© 2026 Aushutosh Education Inc. All rights reserved.</div>
+              <div>© 2026 JavaCoders Education Inc. All rights reserved.</div>
                <div className="flex items-center gap-5">
                   <Link href="#" className="hover:text-[var(--text-primary)] transition-colors hover:scale-110 transform duration-200" aria-label="Twitter">
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>

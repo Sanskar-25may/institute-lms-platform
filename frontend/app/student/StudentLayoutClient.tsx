@@ -5,7 +5,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function StudentLayoutClient({ children, cmsData }: { children: React.ReactNode, cmsData?: any }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -17,12 +17,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, []);
 
   const navLinks = [
-    { name: "Overview", href: "/admin" },
-    { name: "Users", href: "/admin/users" },
-    { name: "Courses", href: "/admin/courses" },
-    { name: "CMS", href: "/admin/cms" },
-    { name: "Reports", href: "/admin/reports" },
-    { name: "Settings", href: "/admin/settings" },
+    { name: "Overview", href: "/student" },
+    { name: "My Courses", href: "/student/courses" },
+    { name: "Live", href: "/student/live", hasPulse: true },
+    { name: "Assignments", href: "/student/assignments", badge: "2" },
+    { name: "Calendar", href: "/student/calendar" },
+    { name: "Messages", href: "/student/messages", badge: "3" },
   ];
 
   return (
@@ -40,14 +40,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 
                 {/* Logo & Branding */}
                 <div className="flex items-center gap-6">
-                   <Link href="/admin" className="flex items-center gap-2">
+                   <Link href="/student" className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#0EA5E9] p-0.5">
                          <div className="w-full h-full rounded-full" style={{ background: 'var(--bg-card)' }}></div>
                       </div>
                       <span className="heading-font text-xl font-bold tracking-tight hidden sm:block" style={{ color: 'var(--text-primary)' }}>JavaCoders</span>
                    </Link>
                    <div className="hidden sm:block h-6 w-px" style={{ background: 'var(--border-soft)' }}></div>
-                   <span className="badge-danger px-2.5 py-1 rounded-md text-xs font-bold hidden sm:block">Admin Console</span>
+                   <span className="badge-primary px-2.5 py-1 rounded-md text-xs font-bold hidden sm:block">Student Portal</span>
                 </div>
 
                 {/* Desktop Nav */}
@@ -65,6 +65,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             }}
                          >
                             <span className={`group-hover:text-[var(--text-primary)] transition-colors`}>{link.name}</span>
+                            {link.hasPulse && (
+                               <span className="relative flex h-2 w-2">
+                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                               </span>
+                            )}
+                            {link.badge && (
+                               <span className="flex items-center justify-center w-5 h-5 text-[10px] font-bold text-txt-primary rounded-full bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.4)]">
+                                  {link.badge}
+                               </span>
+                            )}
                          </Link>
                       )
                    })}
@@ -74,13 +85,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="flex items-center gap-4">
                    <ThemeToggle />
                    
-                   <Link href="/admin/settings" className="relative group ml-2">
-                      <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-rose-400 to-rose-600 p-[2px]">
+                   {cmsData?.showNotifications !== false && (
+                      <div className="relative cursor-pointer w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-black/5 dark:hover:bg-surf-elevated text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
+                         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                         <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-500 border-2" style={{ borderColor: 'var(--bg-card)' }}></span>
+                      </div>
+                   )}
+
+                   <Link href="/student/settings" className="relative group ml-2">
+                      <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-emerald-400 to-emerald-600 p-[2px]">
                          <div className="w-full h-full rounded-full border-2 flex items-center justify-center font-bold text-xs" style={{ background: 'var(--bg-card)', borderColor: 'var(--bg-card)' }}>
-                            AD
+                            SG
                          </div>
                       </div>
-                      <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-rose-500 border-2" style={{ borderColor: 'var(--bg-card)' }}></div>
+                      <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2" style={{ borderColor: 'var(--bg-card)' }}></div>
                    </Link>
 
                    <button 
@@ -130,7 +148,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                          >
                             <span className="flex items-center gap-3">
                                {link.name}
+                               {link.hasPulse && <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>}
                             </span>
+                            {link.badge && <span className="bg-rose-500 text-txt-primary text-[10px] font-bold px-2 py-0.5 rounded-full">{link.badge}</span>}
                          </Link>
                       )
                    })}

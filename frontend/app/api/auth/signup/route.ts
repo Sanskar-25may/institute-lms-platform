@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     let validRole = role === "INSTRUCTOR" ? "INSTRUCTOR" : "STUDENT";
     
     // Hardcoded Super Admin Check
-    const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "gsanskargkp25@gmail.com";
+    const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "pandey.ashutosh699@gmail.com";
     if (email === superAdminEmail) {
       validRole = "ADMIN";
     }

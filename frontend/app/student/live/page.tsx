@@ -1,12 +1,15 @@
 import Link from "next/link";
+import { getSiteContent } from "@/lib/cms";
 
-export default function LiveClassesPage() {
+export default async function LiveClassesPage() {
+  const cmsData = await getSiteContent("student-live");
+  
   return (
     <div className="space-y-8 pb-20">
        <div className="flex justify-between items-end">
           <div>
-             <h1 className="heading-font text-3xl font-bold mb-2">Live Sessions</h1>
-             <p style={{ color: 'var(--text-secondary)' }}>Join live cohorts, Q&A sessions, and project reviews.</p>
+             <h1 className="heading-font text-3xl font-bold mb-2">{cmsData?.heading || "Live Sessions"}</h1>
+             <p style={{ color: 'var(--text-secondary)' }}>{cmsData?.guidelines || "Join live cohorts, Q&A sessions, and project reviews."}</p>
           </div>
        </div>
 

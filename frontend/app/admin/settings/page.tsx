@@ -1,33 +1,43 @@
-export default function AdminSettingsPage() {
+import { getSiteContent } from "@/lib/cms";
+
+export default async function AdminSettingsPage() {
+  const cmsData = await getSiteContent("admin-settings");
+
   return (
-    <div className="max-w-[1000px] mx-auto space-y-8 animate-in fade-in duration-500 pb-24">
-      <h1 className="text-3xl font-extrabold text-txt-primary mb-8">Platform Settings</h1>
+    <div className="max-w-[1000px] mx-auto space-y-8 animate-fade-in-up pb-24">
+      <h1 className="heading-font text-3xl font-extrabold mb-8">{cmsData?.heading || "Platform Settings"}</h1>
+
+      {cmsData?.maintenanceMode && (
+         <div className="p-4 rounded-xl text-sm font-bold mb-4" style={{ background: 'color-mix(in srgb, var(--accent-danger) 10%, transparent)', color: 'var(--accent-danger)', border: '1px solid var(--accent-danger)' }}>
+            ⚠️ Maintenance Mode is currently enabled. Non-admin users cannot access the site.
+         </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-1 space-y-2">
-          <button className="w-full text-left px-4 py-3 bg-violet-600/10 text-violet-400 font-bold rounded-xl border border-violet-500/20 transition-colors">General Info</button>
-          <button className="w-full text-left px-4 py-3 text-txt-secondary hover:bg-white/[0.02] hover:text-txt-primary font-medium rounded-xl transition-colors">Payment Gateways</button>
-          <button className="w-full text-left px-4 py-3 text-txt-secondary hover:bg-white/[0.02] hover:text-txt-primary font-medium rounded-xl transition-colors">Email & Notifications</button>
-          <button className="w-full text-left px-4 py-3 text-txt-secondary hover:bg-white/[0.02] hover:text-txt-primary font-medium rounded-xl transition-colors">API Keys</button>
+          <button className="w-full text-left px-4 py-3 font-bold rounded-xl border transition-colors" style={{ background: 'color-mix(in srgb, var(--accent-primary) 10%, transparent)', color: 'var(--accent-primary)', borderColor: 'color-mix(in srgb, var(--accent-primary) 20%, transparent)' }}>General Info</button>
+          <button className="w-full text-left px-4 py-3 font-medium rounded-xl transition-colors hover:bg-black/5 dark:hover:bg-surf-elevated" style={{ color: 'var(--text-secondary)' }}>Payment Gateways</button>
+          <button className="w-full text-left px-4 py-3 font-medium rounded-xl transition-colors hover:bg-black/5 dark:hover:bg-surf-elevated" style={{ color: 'var(--text-secondary)' }}>Email & Notifications</button>
+          <button className="w-full text-left px-4 py-3 font-medium rounded-xl transition-colors hover:bg-black/5 dark:hover:bg-surf-elevated" style={{ color: 'var(--text-secondary)' }}>API Keys</button>
         </div>
 
-        <div className="md:col-span-2 bg-[#131B2F] border border-bdr-soft rounded-[24px] shadow-lg p-8">
-          <h2 className="text-xl font-bold text-txt-primary mb-6 border-b border-bdr-soft pb-4">General Platform Info</h2>
+        <div className="md:col-span-2 border rounded-[24px] shadow-lg p-8" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-soft)' }}>
+          <h2 className="heading-font text-xl font-bold mb-6 border-b pb-4" style={{ borderColor: 'var(--border-soft)' }}>General Platform Info</h2>
           
           <form className="space-y-6">
             <div>
-              <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Platform Name</label>
-              <input type="text" defaultValue="Aushutosh" className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" />
+              <label className="block text-xs font-bold mb-2 uppercase" style={{ color: 'var(--text-secondary)' }}>Platform Name</label>
+              <input type="text" defaultValue="JavaCoders" className="input-premium w-full rounded-xl px-4 py-3 transition-colors" />
             </div>
             
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Support Email</label>
-                <input type="email" defaultValue="support@aushutosh.io" className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" />
+                <label className="block text-xs font-bold mb-2 uppercase" style={{ color: 'var(--text-secondary)' }}>Support Email</label>
+                <input type="email" defaultValue="support@javacoders.io" className="input-premium w-full rounded-xl px-4 py-3 transition-colors" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Global Currency</label>
-                <select className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors">
+                <label className="block text-xs font-bold mb-2 uppercase" style={{ color: 'var(--text-secondary)' }}>Global Currency</label>
+                <select className="input-premium w-full rounded-xl px-4 py-3 transition-colors">
                   <option value="USD">USD ($)</option>
                   <option value="EUR">EUR (€)</option>
                   <option value="INR">INR (₹)</option>
@@ -36,13 +46,13 @@ export default function AdminSettingsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Platform Fee (%)</label>
-              <input type="number" defaultValue="20" className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" />
-              <p className="text-xs text-txt-tertiary mt-2">The percentage deducted from faculty sales before payouts.</p>
+              <label className="block text-xs font-bold mb-2 uppercase" style={{ color: 'var(--text-secondary)' }}>Platform Fee (%)</label>
+              <input type="number" defaultValue="20" className="input-premium w-full rounded-xl px-4 py-3 transition-colors" />
+              <p className="text-xs mt-2" style={{ color: 'var(--text-tertiary)' }}>The percentage deducted from faculty sales before payouts.</p>
             </div>
             
-            <div className="pt-6 border-t border-bdr-soft flex justify-end gap-3">
-              <button type="button" className="px-6 py-3 bg-violet-600 hover:bg-violet-700 text-txt-primary text-sm font-bold rounded-xl shadow-lg shadow-violet-900/50 transition-all">Save Global Settings</button>
+            <div className="pt-6 border-t flex justify-end gap-3" style={{ borderColor: 'var(--border-soft)' }}>
+              <button type="button" className="btn-primary px-6 py-3 text-sm font-bold rounded-xl shadow-lg transition-all">Save Global Settings</button>
             </div>
           </form>
         </div>

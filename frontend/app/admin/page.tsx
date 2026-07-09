@@ -1,12 +1,15 @@
 import Link from "next/link";
+import { getSiteContent } from "@/lib/cms";
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const cmsData = await getSiteContent("admin-dashboard");
+  
   return (
     <div className="space-y-6 pb-20">
        
        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-             <h1 className="heading-font text-3xl font-bold mb-1">Platform Overview</h1>
+             <h1 className="heading-font text-3xl font-bold mb-1">{cmsData?.heading || "Platform Overview"}</h1>
              <p style={{ color: 'var(--text-secondary)' }}>System metrics and global activity.</p>
           </div>
        </div>
@@ -14,11 +17,11 @@ export default function AdminDashboard() {
        {/* Metric Cards */}
        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {[
-             { label: "Total Users", value: "24,592", trend: "+1.2k this month", color: "var(--accent-primary)" },
-             { label: "MRR", value: "$284,000", trend: "+5.4%", color: "var(--accent-success)" },
-             { label: "Active Courses", value: "142", trend: "+12 new", color: "var(--accent-warning)" },
-             { label: "System Uptime", value: "99.99%", trend: "Healthy", color: "var(--accent-cyan)" }
-          ].map((stat, i) => (
+             { label: "Total Users", value: "24,592", trend: "+1.2k this month", color: "var(--accent-primary)", show: true },
+             { label: "MRR", value: "$284,000", trend: "+5.4%", color: "var(--accent-success)", show: cmsData?.showRevenue !== false },
+             { label: "Active Courses", value: "142", trend: "+12 new", color: "var(--accent-warning)", show: true },
+             { label: "System Uptime", value: "99.99%", trend: "Healthy", color: "var(--accent-cyan)", show: true }
+          ].filter(s => s.show).map((stat, i) => (
              <div key={i} className="p-6 rounded-[24px] card-hover" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
                 <div className="text-sm font-medium mb-4" style={{ color: 'var(--text-secondary)' }}>{stat.label}</div>
                 <div className="heading-font text-3xl font-bold mb-2">{stat.value}</div>

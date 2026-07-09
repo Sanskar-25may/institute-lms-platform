@@ -52,7 +52,7 @@ export default function Navbar({ siteName, links, logoUrl }: { siteName?: string
               </div>
             )}
             <span className="heading-font text-2xl font-bold tracking-tight" style={{ color: 'var(--text-primary)'}}>
-              {siteName || "Aushutosh"}
+              {siteName || "JavaCoders"}
             </span>
           </Link>
 

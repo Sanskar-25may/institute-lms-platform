@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { CMS_SCHEMAS, PageSchema, getDefaultDataForSchema } from "@/lib/cmsDefaults";
+import SidebarDraggable from "./SidebarDraggable";
 import DynamicForm from "@/components/cms/DynamicForm";
 
 type Tab = "global" | "public" | "student" | "faculty" | "admin";
@@ -97,20 +98,40 @@ export default function CMSAdminPage() {
     }
   };
 
+  const handleReorder = async (newOrder: PageSchema[]) => {
+    // 1. Update local config state for instant feedback
+    const orderKey = `${activeTab}Order`;
+    const newConfigList = newOrder.map(p => ({ id: p.id, isHidden: false }));
+    const newConfig = { ...cmsConfig, [orderKey]: newConfigList };
+    setCmsConfig(newConfig);
+
+    // 2. Save new order to database
+    try {
+      await fetch("/api/admin/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pageId: "cms-config",
+          category: "admin",
+          content: newConfig,
+        }),
+      });
+    } catch (err) {
+      console.error("Failed to save new order", err);
+    }
+  };
+
   // Compute ordered sidebar pages based on cmsConfig
   const getVisiblePagesForTab = (tab: Tab): PageSchema[] => {
     if (!cmsConfig) {
-      // Fallback if config isn't loaded yet
       return CMS_SCHEMAS.filter(s => s.category === tab);
     }
     
     const orderKey = `${tab}Order`;
     const orderConfig = cmsConfig[orderKey] || [];
     
-    // Create an ordered list of schemas
     const orderedPages: PageSchema[] = [];
     
-    // First, add pages based on the config order (if they aren't hidden)
     for (const item of orderConfig) {
       if (!item.isHidden) {
         const schema = CMS_SCHEMAS.find(s => s.id === item.id && s.category === tab);
@@ -118,7 +139,6 @@ export default function CMSAdminPage() {
       }
     }
     
-    // Then append any schemas that exist in code but aren't in the config yet
     const configIds = orderConfig.map((c: any) => c.id);
     const unconfigured = CMS_SCHEMAS.filter(s => s.category === tab && !configIds.includes(s.id));
     orderedPages.push(...unconfigured);
@@ -153,24 +173,13 @@ export default function CMSAdminPage() {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <div className="w-64 border-r overflow-y-auto p-4 flex flex-col gap-1" style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-surface)' }}>
-          <h2 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-secondary)' }}>
-            {activeTab} Pages
-          </h2>
-          {sidebarPages.length === 0 && (
-             <div className="text-sm text-center py-4" style={{ color: 'var(--text-secondary)' }}>No pages configured.</div>
-          )}
-          {sidebarPages.map((page) => (
-            <button
-              key={page.id}
-              onClick={() => setActivePageId(page.id)}
-              className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${activePageId === page.id ? 'bg-[var(--accent-primary)] text-white' : 'hover:bg-black/5 dark:hover:bg-white/5'}`}
-              style={activePageId !== page.id ? { color: 'var(--text-secondary)' } : {}}
-            >
-              {page.name}
-            </button>
-          ))}
-        </div>
+        <SidebarDraggable 
+           activeTab={activeTab} 
+           sidebarPages={sidebarPages} 
+           activePageId={activePageId} 
+           setActivePageId={setActivePageId} 
+           onReorder={handleReorder}
+        />
 
         {/* Editor Area */}
         <div className="flex-1 flex flex-col p-8 bg-[var(--bg-base)] overflow-y-auto">

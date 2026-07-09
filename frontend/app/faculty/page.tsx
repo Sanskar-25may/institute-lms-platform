@@ -1,12 +1,15 @@
 import Link from "next/link";
+import { getSiteContent } from "@/lib/cms";
 
-export default function FacultyDashboard() {
+export default async function FacultyDashboard() {
+  const cmsData = await getSiteContent("faculty-dashboard");
+  
   return (
     <div className="space-y-6 pb-20">
        
        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-             <h1 className="heading-font text-3xl font-bold mb-1">Instructor Dashboard</h1>
+             <h1 className="heading-font text-3xl font-bold mb-1">{cmsData?.welcomeMessage || "Instructor Dashboard"}</h1>
              <p style={{ color: 'var(--text-secondary)' }}>Overview of your courses and student performance.</p>
           </div>
           <Link href="/faculty/create" className="btn-primary px-5 py-2.5 rounded-lg text-sm font-bold flex items-center gap-2">

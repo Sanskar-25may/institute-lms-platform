@@ -22,7 +22,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   // On mount, read from localStorage or system preference
   useEffect(() => {
-    const stored = localStorage.getItem("aushutosh-theme") as Theme | null;
+    const stored = localStorage.getItem("javacoders-theme") as Theme | null;
     if (stored === "dark" || stored === "light") {
       applyTheme(stored);
       setThemeState(stored);
@@ -45,7 +45,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setTheme = useCallback((t: Theme) => {
     applyTheme(t);
     setThemeState(t);
-    localStorage.setItem("aushutosh-theme", t);
+    localStorage.setItem("javacoders-theme", t);
   }, []);
 
   const toggleTheme = useCallback(() => {

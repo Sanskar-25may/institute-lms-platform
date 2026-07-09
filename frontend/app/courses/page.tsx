@@ -1,7 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getSiteContent } from "@/lib/cms";
 
-export default function CoursesCatalog() {
+export default async function CoursesCatalog() {
+  const cmsData = await getSiteContent("public-courses");
+
   const courses = [
     {
       id: "full-stack-react",
@@ -77,8 +80,8 @@ export default function CoursesCatalog() {
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 animate-fade-in-up">
              <div>
-               <h1 className="heading-font text-4xl md:text-5xl font-bold mb-4">Course Catalog</h1>
-               <p className="text-lg max-w-xl" style={{ color: 'var(--text-secondary)' }}>Master modern engineering skills with project-based courses taught by industry veterans.</p>
+               <h1 className="heading-font text-4xl md:text-5xl font-bold mb-4">{cmsData?.heading || "Course Catalog"}</h1>
+               <p className="text-lg max-w-xl" style={{ color: 'var(--text-secondary)' }}>{cmsData?.subtitle || "Master modern engineering skills with project-based courses taught by industry veterans."}</p>
              </div>
              
              <div className="relative w-full md:w-72 shrink-0">

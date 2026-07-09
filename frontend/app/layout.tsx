@@ -38,17 +38,22 @@ export const metadata: Metadata = {
 };
 
 import AuthProvider from "@/components/AuthProvider";
+import { getSiteContent } from "@/lib/cms";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // Fetch global settings and navbar config
+  const globalSettings = await getSiteContent("global-settings");
+  const navbarConfig = await getSiteContent("public-navbar");
+
   return (
     <html lang="en" data-theme="dark" className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable}`}>
       <body className="min-h-screen flex flex-col antialiased bg-transparent" style={{ color: "var(--text-primary)" }}>
         <ThemeProvider>
           <AuthProvider>
             <DynamicBackground />
-            <Navbar />
+            <Navbar siteName={globalSettings.siteName} links={navbarConfig.links} logoUrl={globalSettings.logoUrl} />
             <main className="flex-1 flex flex-col relative z-10">{children}</main>
           </AuthProvider>
         </ThemeProvider>

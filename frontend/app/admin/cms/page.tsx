@@ -1,43 +1,39 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { CMS_SCHEMAS, PageSchema, getDefaultDataForSchema } from "@/lib/cmsDefaults";
+import DynamicForm from "@/components/cms/DynamicForm";
 
-type Tab = "public" | "student" | "faculty";
-
-const PAGES = {
-  public: [
-    { id: "public-home", name: "Home Page" },
-    { id: "public-about", name: "About Us" },
-    { id: "public-contact", name: "Contact Page" },
-    { id: "public-navbar", name: "Navigation Bar" },
-    { id: "public-footer", name: "Footer" },
-  ],
-  student: [
-    { id: "student-dashboard", name: "Student Dashboard" },
-    { id: "student-classroom", name: "Classroom Layout" },
-    { id: "student-assignments", name: "Assignments Page" },
-  ],
-  faculty: [
-    { id: "faculty-dashboard", name: "Faculty Dashboard" },
-    { id: "faculty-course-builder", name: "Course Builder Guide" },
-    { id: "faculty-submissions", name: "Submissions View" },
-  ],
-};
+type Tab = "global" | "public" | "student" | "faculty" | "admin";
+const TABS: Tab[] = ["global", "public", "student", "faculty", "admin"];
 
 export default function CMSAdminPage() {
-  const [activeTab, setActiveTab] = useState<Tab>("public");
-  const [activePageId, setActivePageId] = useState<string>(PAGES.public[0].id);
-  const [content, setContent] = useState<string>("{}");
+  const [activeTab, setActiveTab] = useState<Tab>("global");
+  const [activePageId, setActivePageId] = useState<string>("global-settings");
+  
+  // Data stores
+  const [cmsConfig, setCmsConfig] = useState<any>(null); // holds the order/visibility config
+  const [content, setContent] = useState<any>({});
+  
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState("");
 
+  // Fetch cms-config on mount to know the sidebar order
   useEffect(() => {
-    // When tab changes, default to the first page in that tab
-    const firstPageId = PAGES[activeTab][0].id;
-    setActivePageId(firstPageId);
-  }, [activeTab]);
+    const fetchConfig = async () => {
+      try {
+        const res = await fetch(`/api/admin/cms?pageId=cms-config`);
+        const data = await res.json();
+        setCmsConfig(data.content || getDefaultDataForSchema(CMS_SCHEMAS.find(s => s.id === "cms-config")!.schema));
+      } catch (error) {
+        console.error("Failed to load CMS config", error);
+      }
+    };
+    fetchConfig();
+  }, []);
 
+  // Fetch content for the active page
   useEffect(() => {
     const fetchContent = async () => {
       setIsLoading(true);
@@ -45,7 +41,12 @@ export default function CMSAdminPage() {
       try {
         const res = await fetch(`/api/admin/cms?pageId=${activePageId}`);
         const data = await res.json();
-        setContent(JSON.stringify(data.content || {}, null, 2));
+        
+        // Merge with default schema structure in case it's empty
+        const pageSchema = CMS_SCHEMAS.find(s => s.id === activePageId);
+        const defaultData = pageSchema ? getDefaultDataForSchema(pageSchema.schema) : {};
+        
+        setContent(Object.keys(data.content || {}).length > 0 ? data.content : defaultData);
       } catch (error) {
         console.error(error);
         setMessage("Failed to load content.");
@@ -56,31 +57,34 @@ export default function CMSAdminPage() {
     fetchContent();
   }, [activePageId]);
 
+  // When tab changes, pick the first visible page in that tab
+  useEffect(() => {
+    const pagesForTab = getVisiblePagesForTab(activeTab);
+    if (pagesForTab.length > 0 && !pagesForTab.find(p => p.id === activePageId)) {
+      setActivePageId(pagesForTab[0].id);
+    }
+  }, [activeTab, cmsConfig]);
+
   const handleSave = async () => {
     setIsSaving(true);
     setMessage("");
     try {
-      let parsedContent = {};
-      try {
-        parsedContent = JSON.parse(content);
-      } catch (e) {
-        setMessage("Invalid JSON format.");
-        setIsSaving(false);
-        return;
-      }
-
       const res = await fetch("/api/admin/cms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           pageId: activePageId,
           category: activeTab,
-          content: parsedContent,
+          content: content,
         }),
       });
 
       if (res.ok) {
         setMessage("Saved successfully!");
+        // If we just saved the cms-config, update our local sidebar state
+        if (activePageId === "cms-config") {
+           setCmsConfig(content);
+        }
       } else {
         setMessage("Failed to save.");
       }
@@ -89,19 +93,52 @@ export default function CMSAdminPage() {
       setMessage("An error occurred while saving.");
     } finally {
       setIsSaving(false);
+      setTimeout(() => setMessage(""), 3000);
     }
   };
+
+  // Compute ordered sidebar pages based on cmsConfig
+  const getVisiblePagesForTab = (tab: Tab): PageSchema[] => {
+    if (!cmsConfig) {
+      // Fallback if config isn't loaded yet
+      return CMS_SCHEMAS.filter(s => s.category === tab);
+    }
+    
+    const orderKey = `${tab}Order`;
+    const orderConfig = cmsConfig[orderKey] || [];
+    
+    // Create an ordered list of schemas
+    const orderedPages: PageSchema[] = [];
+    
+    // First, add pages based on the config order (if they aren't hidden)
+    for (const item of orderConfig) {
+      if (!item.isHidden) {
+        const schema = CMS_SCHEMAS.find(s => s.id === item.id && s.category === tab);
+        if (schema) orderedPages.push(schema);
+      }
+    }
+    
+    // Then append any schemas that exist in code but aren't in the config yet
+    const configIds = orderConfig.map((c: any) => c.id);
+    const unconfigured = CMS_SCHEMAS.filter(s => s.category === tab && !configIds.includes(s.id));
+    orderedPages.push(...unconfigured);
+    
+    return orderedPages;
+  };
+
+  const activeSchema = CMS_SCHEMAS.find(s => s.id === activePageId);
+  const sidebarPages = getVisiblePagesForTab(activeTab);
 
   return (
     <div className="flex flex-col h-[calc(100vh-80px)]" style={{ background: 'var(--bg-base)' }}>
       {/* CMS Header / Tabs */}
       <div className="border-b px-6 py-4 flex items-center justify-between" style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-card)' }}>
         <div>
-          <h1 className="heading-font text-2xl font-bold">Content Management System</h1>
-          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Manage all content and layouts dynamically.</p>
+          <h1 className="heading-font text-2xl font-bold">Visual Content Editor</h1>
+          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Manage all content without touching code.</p>
         </div>
         <div className="flex bg-black/5 p-1 rounded-xl" style={{ background: 'var(--bg-surface)' }}>
-          {(["public", "student", "faculty"] as Tab[]).map((tab) => (
+          {TABS.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -116,64 +153,68 @@ export default function CMSAdminPage() {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <div className="w-64 border-r overflow-y-auto p-4" style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-surface)' }}>
-          <h2 className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: 'var(--text-secondary)' }}>
+        <div className="w-64 border-r overflow-y-auto p-4 flex flex-col gap-1" style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-surface)' }}>
+          <h2 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-secondary)' }}>
             {activeTab} Pages
           </h2>
-          <div className="space-y-1">
-            {PAGES[activeTab].map((page) => (
-              <button
-                key={page.id}
-                onClick={() => setActivePageId(page.id)}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activePageId === page.id ? 'bg-[var(--accent-primary)] text-white' : 'hover:bg-black/5 dark:hover:bg-white/5'}`}
-                style={activePageId !== page.id ? { color: 'var(--text-secondary)' } : {}}
-              >
-                {page.name}
-              </button>
-            ))}
-          </div>
+          {sidebarPages.length === 0 && (
+             <div className="text-sm text-center py-4" style={{ color: 'var(--text-secondary)' }}>No pages configured.</div>
+          )}
+          {sidebarPages.map((page) => (
+            <button
+              key={page.id}
+              onClick={() => setActivePageId(page.id)}
+              className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${activePageId === page.id ? 'bg-[var(--accent-primary)] text-white' : 'hover:bg-black/5 dark:hover:bg-white/5'}`}
+              style={activePageId !== page.id ? { color: 'var(--text-secondary)' } : {}}
+            >
+              {page.name}
+            </button>
+          ))}
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 flex flex-col p-6 bg-[var(--bg-base)] overflow-y-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold">
-              Editing: {PAGES[activeTab].find(p => p.id === activePageId)?.name}
-            </h2>
-            <button
-              onClick={handleSave}
-              disabled={isSaving || isLoading}
-              className="btn-primary px-6 py-2 rounded-lg text-sm font-bold"
-            >
-              {isSaving ? "Saving..." : "Save Content"}
-            </button>
+        <div className="flex-1 flex flex-col p-8 bg-[var(--bg-base)] overflow-y-auto">
+          <div className="flex items-center justify-between mb-8 pb-4 border-b" style={{ borderColor: 'var(--border-soft)' }}>
+            <div>
+              <h2 className="heading-font text-3xl font-bold mb-1">
+                {activeSchema?.name || "Unknown Page"}
+              </h2>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>ID: {activePageId}</p>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              {message && (
+                <span className={`text-sm font-bold ${message.includes('Failed') ? 'text-red-500' : 'text-green-500'}`}>
+                  {message}
+                </span>
+              )}
+              <button
+                onClick={handleSave}
+                disabled={isSaving || isLoading}
+                className="btn-primary px-8 py-3 rounded-xl text-sm font-bold transition-transform hover:scale-105 active:scale-95"
+              >
+                {isSaving ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
           </div>
 
-          {message && (
-            <div className={`p-3 rounded-lg mb-4 text-sm font-bold ${message.includes('success') ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-500 border border-rose-500/20'}`}>
-              {message}
-            </div>
-          )}
-
-          <div className="flex-1 flex flex-col rounded-xl border overflow-hidden" style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-card)' }}>
-            <div className="px-4 py-2 border-b text-xs font-mono" style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-surface)', color: 'var(--text-secondary)' }}>
-              JSON Payload
-            </div>
+          <div className="max-w-4xl">
             {isLoading ? (
-              <div className="flex-1 flex items-center justify-center" style={{ color: 'var(--text-secondary)' }}>Loading...</div>
+              <div className="animate-pulse flex flex-col gap-6">
+                 <div className="h-16 rounded-xl bg-black/5 dark:bg-white/5 w-full"></div>
+                 <div className="h-32 rounded-xl bg-black/5 dark:bg-white/5 w-full"></div>
+                 <div className="h-16 rounded-xl bg-black/5 dark:bg-white/5 w-full"></div>
+              </div>
             ) : (
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="flex-1 w-full p-4 bg-transparent outline-none font-mono text-sm resize-none"
-                style={{ color: 'var(--text-primary)' }}
-                spellCheck={false}
-              />
+              activeSchema && (
+                <DynamicForm 
+                  schema={activeSchema.schema} 
+                  data={content} 
+                  onChange={setContent} 
+                />
+              )
             )}
           </div>
-          <p className="text-xs mt-3" style={{ color: 'var(--text-secondary)' }}>
-            Note: For V1, the CMS uses an advanced JSON payload editor allowing infinite layout configurations without breaking the UI.
-          </p>
         </div>
       </div>
     </div>

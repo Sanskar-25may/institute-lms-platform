@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import ThemeToggle from "./ThemeToggle";
 
-export default function Navbar() {
+export default function Navbar({ siteName, links, logoUrl }: { siteName?: string, links?: any[], logoUrl?: string }) {
   const { data: session } = useSession();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -25,13 +25,14 @@ export default function Navbar() {
     return null;
   }
 
-  const links = [
+  // Use dynamic links or fallback
+  const activeLinks = (links || [
     { name: "Courses", href: "/courses" },
     { name: "About", href: "/about" },
     { name: "Placements", href: "/placements" },
     { name: "Testimonials", href: "/testimonials" },
     { name: "Contact", href: "/contact" },
-  ];
+  ]).filter((link: any) => link.isActive !== false);
 
   return (
     <nav
@@ -47,19 +48,23 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#0EA5E9] p-0.5 relative">
-               <div className="w-full h-full rounded-full flex items-center justify-center relative overflow-hidden group-hover:opacity-90 transition-opacity" style={{ background: 'var(--bg-base)'}}>
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'var(--text-primary)' }}></div>
-               </div>
-            </div>
+            {logoUrl ? (
+              <img src={logoUrl} alt={siteName || "Logo"} className="w-8 h-8 rounded-full object-cover border border-[var(--border-soft)]" />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#0EA5E9] p-0.5 relative">
+                 <div className="w-full h-full rounded-full flex items-center justify-center relative overflow-hidden group-hover:opacity-90 transition-opacity" style={{ background: 'var(--bg-base)'}}>
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'var(--text-primary)' }}></div>
+                 </div>
+              </div>
+            )}
             <span className="heading-font text-2xl font-bold tracking-tight" style={{ color: 'var(--text-primary)'}}>
-              Aushutosh
+              {siteName || "Aushutosh"}
             </span>
           </Link>
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center space-x-8">
-            {links.map((link) => {
+            {activeLinks.map((link: any) => {
               const isActive = pathname === link.href;
               return (
                 <Link
@@ -109,7 +114,7 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full glass-strong" style={{ borderBottom: '1px solid var(--border-soft)' }}>
           <div className="px-4 pt-2 pb-6 space-y-1 shadow-xl">
-            {links.map((link) => {
+            {activeLinks.map((link: any) => {
               const isActive = pathname === link.href;
               return (
                 <Link

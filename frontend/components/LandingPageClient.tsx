@@ -100,7 +100,7 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
                 { label: "Course Satisfaction", value: "98%" },
                 { label: "Average Rating", value: "4.9/5" },
                 { label: "Salary Increase", value: "$34M+" },
-              ]).map((stat: any, i: number) => (
+              ]).filter((s: any) => s.isActive !== false).map((stat: any, i: number) => (
                 <motion.div 
                    key={i} 
                    initial={{ opacity: 0, y: 20 }}

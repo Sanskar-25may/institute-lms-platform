@@ -46,7 +46,7 @@ export async function POST(req: Request) {
         email,
         phoneNumber: phoneNumber || null,
         passwordHash,
-        role: validRole,
+        role: validRole as "STUDENT" | "INSTRUCTOR" | "ADMIN",
       },
     });
 

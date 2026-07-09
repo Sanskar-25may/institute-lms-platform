@@ -28,6 +28,11 @@ export default withAuth(
       return NextResponse.redirect(new URL("/student", req.url));
     }
 
+    // Force onboarding if they haven't finished it (Admins are exempt)
+    if (!token.onboarded && role !== "ADMIN") {
+      return NextResponse.redirect(new URL("/onboarding", req.url));
+    }
+
     // Protect Faculty routes
     if (path.startsWith("/faculty") && role !== "INSTRUCTOR" && role !== "ADMIN") {
       return NextResponse.redirect(new URL("/student", req.url));

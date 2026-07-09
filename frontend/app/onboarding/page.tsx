@@ -62,8 +62,8 @@ export default function OnboardingPage() {
 
       if (!res.ok) throw new Error("Failed to save profile");
 
-      // Update the NextAuth session cookie with the new role
-      await update({ role });
+      // Update the NextAuth session cookie with the new role and onboarded status
+      await update({ role, onboarded: true });
 
       router.push(role === "INSTRUCTOR" ? "/faculty" : "/student");
       router.refresh();

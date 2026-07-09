@@ -70,14 +70,23 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       // Allow client-side session updates
-      if (trigger === "update" && session?.role) {
-        token.role = session.role;
+      if (trigger === "update") {
+        if (session?.role) token.role = session.role;
+        if (session?.onboarded !== undefined) token.onboarded = session.onboarded;
       }
 
       if (user) {
         token.role = user.role;
         token.id = user.id;
         token.email = user.email;
+        
+        // Check if user has completed onboarding (admins are always onboarded)
+        if (user.role === "ADMIN" || token.email === (process.env.SUPER_ADMIN_EMAIL || "gsanskargkp25@gmail.com")) {
+           token.onboarded = true;
+        } else {
+           const profile = await prisma.userProfile.findUnique({ where: { userId: user.id } });
+           token.onboarded = !!profile;
+        }
       }
       
       // HARD SECURITY CHECK: Only this specific email can ever be ADMIN.
@@ -85,6 +94,7 @@ export const authOptions: NextAuthOptions = {
       const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "gsanskargkp25@gmail.com"; 
       if (token.email === superAdminEmail) {
         token.role = "ADMIN";
+        token.onboarded = true;
       } else if (token.role === "ADMIN") {
         // If they are ADMIN in DB but not the super admin email, downgrade them to prevent unauthorized access
         token.role = "STUDENT";
@@ -96,6 +106,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.role = token.role as string;
         session.user.id = token.id as string;
+        session.user.onboarded = token.onboarded as boolean;
       }
       return session;
     },

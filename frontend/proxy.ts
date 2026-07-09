@@ -6,13 +6,8 @@ export default withAuth(
     const token = req.nextauth.token;
     const path = req.nextUrl.pathname;
 
-    // If accessing auth page while logged in, redirect to dashboard
+    // Allow access to auth page explicitly
     if (path.startsWith("/auth")) {
-      if (token) {
-        if (token.role === "ADMIN") return NextResponse.redirect(new URL("/admin", req.url));
-        if (token.role === "INSTRUCTOR") return NextResponse.redirect(new URL("/faculty", req.url));
-        return NextResponse.redirect(new URL("/student", req.url));
-      }
       return NextResponse.next();
     }
 

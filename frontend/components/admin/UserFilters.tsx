@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState, useEffect } from "react";
-import { useDebounce } from "@/hooks/useDebounce"; // Assuming this exists or I will create it. Actually, I can just use a simple timeout or local state.
 
 export function UserFilters() {
   const router = useRouter();

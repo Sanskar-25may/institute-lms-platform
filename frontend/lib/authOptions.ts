@@ -53,6 +53,10 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Please log in with Google");
         }
 
+        if (user.isBlocked) {
+          throw new Error("Your account has been blocked by the admin.");
+        }
+
         const isValid = await bcrypt.compare(credentials.password, user.passwordHash);
 
         if (!isValid) {
@@ -69,6 +73,15 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google" && user.email) {
+        const dbUser = await prisma.user.findUnique({ where: { email: user.email } });
+        if (dbUser?.isBlocked) {
+          throw new Error("Your account has been blocked by the admin.");
+        }
+      }
+      return true;
+    },
     async jwt({ token, user, trigger, session }) {
       // Allow client-side session updates
       if (trigger === "update") {

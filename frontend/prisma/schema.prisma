@@ -43,6 +43,7 @@ model User {
   image         String?   @db.Text
   passwordHash  String?   @map("password_hash") @db.VarChar(255)
   role          UserRole  @default(STUDENT) @map("role")
+  isBlocked     Boolean   @default(false) @map("is_blocked")
   createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamp()
 
   // Relationships

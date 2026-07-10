@@ -2,25 +2,45 @@ import Link from "next/link";
 import Image from "next/image";
 import { getSiteContent } from "@/lib/cms";
 import { prisma } from "@/lib/prisma";
+import { UserFilters } from "@/components/admin/UserFilters";
+import { UserActionsRow } from "@/components/admin/UserActionsRow";
 
-export default async function AdminUsersPage() {
+export default async function AdminUsersPage({ searchParams }: { searchParams: { search?: string, role?: string } }) {
   const cmsData = await getSiteContent("admin-users");
   
+  const search = searchParams?.search || "";
+  const role = searchParams?.role || "ALL";
+
+  const where: any = {};
+  
+  if (role !== "ALL") {
+    where.role = role;
+  }
+  
+  if (search) {
+    where.OR = [
+      { email: { contains: search, mode: 'insensitive' } },
+      { name: { contains: search, mode: 'insensitive' } },
+      { fullName: { contains: search, mode: 'insensitive' } },
+    ];
+  }
+
   const users = await prisma.user.findMany({
+    where,
     orderBy: { createdAt: 'desc' },
   });
 
   return (
     <div className="space-y-8 pb-20">
-       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+       <div className="flex flex-col md:items-start justify-between gap-4">
           <div>
              <h1 className="heading-font text-3xl font-bold mb-2">{cmsData?.heading || "User Management"}</h1>
              <p style={{ color: 'var(--text-secondary)' }}>Manage all platform users and roles.</p>
           </div>
           
-          <div className="flex gap-2 w-full md:w-auto">
-             <input type="text" placeholder="Search email..." className="input-premium px-4 py-2 rounded-lg text-sm flex-1 md:w-64" />
-             <Link href="/admin/users/add" className="btn-primary px-4 py-2 rounded-lg text-sm font-bold flex items-center">Add User</Link>
+          <div className="flex flex-col md:flex-row gap-4 w-full justify-between mt-4">
+             <UserFilters />
+             <Link href="/admin/users/add" className="btn-primary px-4 py-2 rounded-lg text-sm font-bold flex items-center justify-center shrink-0">Add User</Link>
           </div>
        </div>
 
@@ -37,7 +57,7 @@ export default async function AdminUsersPage() {
                 </thead>
                 <tbody>
                    {users.map((u) => (
-                      <tr key={u.id} className="border-b last:border-0" style={{ borderColor: 'var(--border-soft)' }}>
+                      <tr key={u.id} className={`border-b last:border-0 ${u.isBlocked ? 'opacity-50' : ''}`} style={{ borderColor: 'var(--border-soft)' }}>
                          <td className="p-4">
                             <div className="flex items-center gap-3">
                                <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-200 shrink-0">
@@ -65,9 +85,11 @@ export default async function AdminUsersPage() {
                             {new Date(u.createdAt).toLocaleDateString()}
                          </td>
                          <td className="p-4">
-                            <div className="flex gap-2">
+                            <div className="flex gap-4 items-center">
                                <Link href={`/admin/users/edit/${u.id}`} className="text-xs font-bold text-[var(--accent-primary)] hover:underline">Edit</Link>
-                               <button className="text-xs font-bold text-rose-500 hover:underline">Suspend</button>
+                               {u.role !== 'ADMIN' && (
+                                 <UserActionsRow userId={u.id} isBlocked={u.isBlocked} />
+                               )}
                             </div>
                          </td>
                       </tr>

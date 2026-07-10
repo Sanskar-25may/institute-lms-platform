@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -18,6 +18,13 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/student";
+
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (error) {
+      setErrorMsg(error);
+    }
+  }, [searchParams]);
 
   const handleGoogleLogin = () => {
     signIn("google", { callbackUrl });

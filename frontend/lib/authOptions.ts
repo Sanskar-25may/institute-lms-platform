@@ -82,7 +82,7 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         
         // Check if user has completed onboarding (admins are always onboarded)
-        if (user.role === "ADMIN" || token.email === (process.env.SUPER_ADMIN_EMAIL || "pandey.ashutosh699@gmail.com")) {
+        if (user.role === "ADMIN" || token.email === (process.env.SUPER_ADMIN_EMAIL || "codersspot97@gmail.com")) {
            token.onboarded = true;
         } else {
            const profile = await prisma.userProfile.findUnique({ where: { userId: user.id } });
@@ -92,7 +92,7 @@ export const authOptions: NextAuthOptions = {
       
       // HARD SECURITY CHECK: Only this specific email can ever be ADMIN.
       // Even if someone hacks the database, NextAuth will forcefully downgrade them if their email doesn't match.
-      const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "pandey.ashutosh699@gmail.com"; 
+      const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "codersspot97@gmail.com"; 
       if (token.email === superAdminEmail) {
         token.role = "ADMIN";
         token.onboarded = true;

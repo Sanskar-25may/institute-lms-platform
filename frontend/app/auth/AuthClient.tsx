@@ -86,9 +86,17 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
         const role = sessionData?.user?.role;
         
         let redirectUrl = callbackUrl;
-        if (redirectUrl === "/student") { // if it's the default, route intelligently
-          if (role === "ADMIN") redirectUrl = "/admin";
-          else if (role === "INSTRUCTOR") redirectUrl = "/faculty";
+        try {
+          const parsedUrl = new URL(redirectUrl, window.location.origin);
+          if (parsedUrl.pathname === "/student") {
+            if (role === "ADMIN") redirectUrl = "/admin";
+            else if (role === "INSTRUCTOR") redirectUrl = "/faculty";
+          }
+        } catch (e) {
+          if (redirectUrl === "/student") {
+            if (role === "ADMIN") redirectUrl = "/admin";
+            else if (role === "INSTRUCTOR") redirectUrl = "/faculty";
+          }
         }
         
         router.push(redirectUrl);

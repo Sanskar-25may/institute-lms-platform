@@ -13,6 +13,9 @@ async function main() {
 
       // Replace Aushutosh, Ashutosh, Lumina variants
       const replacements = [
+        { from: /JavaCoders/g, to: 'CodersSpot' },
+        { from: /javacoders/g, to: 'codersspot' },
+        { from: /JAVACODERS/g, to: 'CODERSSPOT' },
         { from: /Aushutosh/g, to: 'CodersSpot' },
         { from: /aushutosh/g, to: 'codersspot' },
         { from: /Ashutosh/g, to: 'CodersSpot' },

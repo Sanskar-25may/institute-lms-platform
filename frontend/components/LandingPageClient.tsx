@@ -144,7 +144,7 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
              viewport={{ once: true, margin: "-100px" }}
              className="text-center max-w-3xl mx-auto mb-16"
            >
-             <h2 className="heading-font text-3xl md:text-5xl font-bold mb-6">Why JavaCoders is different.</h2>
+             <h2 className="heading-font text-3xl md:text-5xl font-bold mb-6">Why CodersSpot is different.</h2>
              <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>We threw out the traditional video-course model and built a platform optimized for actual skill acquisition.</p>
            </motion.div>
 

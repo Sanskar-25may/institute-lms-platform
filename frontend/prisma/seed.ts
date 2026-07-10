@@ -16,8 +16,8 @@ async function main() {
   // Create Users
   const admin = await prisma.user.create({
     data: {
-      fullName: 'JavaCoders Admin',
-      email: 'admin@javacoders.dev',
+      fullName: 'CodersSpot Admin',
+      email: 'admin@codersspot.dev',
       passwordHash,
       role: 'ADMIN',
     },
@@ -26,7 +26,7 @@ async function main() {
   const faculty1 = await prisma.user.create({
     data: {
       fullName: 'Sarah Jenkins',
-      email: 'sarah@javacoders.dev',
+      email: 'sarah@codersspot.dev',
       passwordHash,
       role: 'INSTRUCTOR',
     },
@@ -35,7 +35,7 @@ async function main() {
   const faculty2 = await prisma.user.create({
     data: {
       fullName: 'David Kim',
-      email: 'david@javacoders.dev',
+      email: 'david@codersspot.dev',
       passwordHash,
       role: 'INSTRUCTOR',
     },
@@ -44,7 +44,7 @@ async function main() {
   const student1 = await prisma.user.create({
     data: {
       fullName: 'Jane Student',
-      email: 'demo@javacoders.dev', // Matches the default on the auth page
+      email: 'demo@codersspot.dev', // Matches the default on the auth page
       passwordHash,
       role: 'STUDENT',
     },
@@ -53,7 +53,7 @@ async function main() {
   const student2 = await prisma.user.create({
     data: {
       fullName: 'John Learner',
-      email: 'john@javacoders.dev',
+      email: 'john@codersspot.dev',
       passwordHash,
       role: 'STUDENT',
     },
@@ -134,7 +134,7 @@ async function main() {
   await prisma.platformSettings.create({
     data: {
       themeConfig: { mode: 'dark', primaryColor: '#7C3AED' },
-      globalContent: { platformName: 'JavaCoders', supportEmail: 'support@javacoders.io' },
+      globalContent: { platformName: 'CodersSpot', supportEmail: 'support@codersspot.io' },
       footerLinks: [{ name: 'Privacy Policy', url: '/privacy' }],
       lastUpdatedBy: admin.id,
     }

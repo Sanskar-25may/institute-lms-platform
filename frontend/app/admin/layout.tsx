@@ -45,7 +45,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#0EA5E9] p-0.5">
                          <div className="w-full h-full rounded-full" style={{ background: 'var(--bg-card)' }}></div>
                       </div>
-                      <span className="heading-font text-xl font-bold tracking-tight hidden sm:block" style={{ color: 'var(--text-primary)' }}>JavaCoders</span>
+                      <span className="heading-font text-xl font-bold tracking-tight hidden sm:block" style={{ color: 'var(--text-primary)' }}>CodersSpot</span>
                    </Link>
                    <div className="hidden sm:block h-6 w-px" style={{ background: 'var(--border-soft)' }}></div>
                    <span className="badge-danger px-2.5 py-1 rounded-md text-xs font-bold hidden sm:block">Admin Console</span>

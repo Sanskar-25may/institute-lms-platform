@@ -10,7 +10,7 @@ export default async function AboutPage() {
         
         {/* Hero */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <h1 className="heading-font text-5xl md:text-6xl font-bold mb-6">{cmsData.heading || "About JavaCoders"}</h1>
+          <h1 className="heading-font text-5xl md:text-6xl font-bold mb-6">{cmsData.heading || "About CodersSpot"}</h1>
           <p className="text-xl" style={{ color: 'var(--text-secondary)' }}>We're on a mission to bridge the gap between academic theory and production reality.</p>
         </div>
 
@@ -50,7 +50,7 @@ export default async function AboutPage() {
 
         {/* Team */}
         <div className="mb-24">
-          <h2 className="heading-font text-3xl font-bold text-center mb-12">The Team Behind {cmsData.heading ? cmsData.heading.replace('About ', '') : 'JavaCoders'}</h2>
+          <h2 className="heading-font text-3xl font-bold text-center mb-12">The Team Behind {cmsData.heading ? cmsData.heading.replace('About ', '') : 'CodersSpot'}</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {cmsData.team && cmsData.team.filter((t: any) => t.isActive !== false).length > 0 ? (
               cmsData.team.filter((t: any) => t.isActive !== false).map((person: any, i: number) => (

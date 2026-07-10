@@ -24,14 +24,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "JavaCoders — Engineering Education for the Future",
-    template: "%s | JavaCoders",
+    default: "CodersSpot — Engineering Education for the Future",
+    template: "%s | CodersSpot",
   },
   description:
     "Project-based engineering courses taught by the industry's top 1%. Build real products, earn verified credentials, launch your career.",
   keywords: ["LMS", "engineering", "courses", "react", "typescript", "machine learning", "live classes"],
   openGraph: {
-    title: "JavaCoders — Engineering Education for the Future",
+    title: "CodersSpot — Engineering Education for the Future",
     description: "Project-based engineering courses taught by the industry's top 1%.",
     type: "website",
   },

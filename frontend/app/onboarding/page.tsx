@@ -112,7 +112,7 @@ export default function OnboardingPage() {
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#0EA5E9] p-0.5">
              <div className="w-full h-full rounded-full" style={{ background: 'var(--bg-base)' }}></div>
           </div>
-          <span className="heading-font font-bold text-xl tracking-tight">JavaCoders</span>
+          <span className="heading-font font-bold text-xl tracking-tight">CodersSpot</span>
         </div>
         <div className="flex items-center gap-4">
           <button 
@@ -153,7 +153,7 @@ export default function OnboardingPage() {
           {/* STEP 1: ROLE */}
           {step === 1 && (
             <div className="animate-slide-in-right">
-              <h1 className="heading-font text-4xl font-bold mb-4">Welcome to JavaCoders</h1>
+              <h1 className="heading-font text-4xl font-bold mb-4">Welcome to CodersSpot</h1>
               <p className="text-lg mb-10" style={{ color: "var(--text-secondary)" }}>How do you plan to use the platform?</p>
               
               <div className="grid md:grid-cols-2 gap-4">

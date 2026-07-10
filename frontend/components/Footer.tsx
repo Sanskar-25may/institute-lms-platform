@@ -11,7 +11,7 @@ export default function Footer({ cmsData, siteName }: { cmsData?: any, siteName?
   if (!isPublicPage) return null;
 
   const brandDescription = cmsData?.brandDescription || "Engineering education for the future. Built by engineers, for engineers.";
-  const copyright = cmsData?.copyright || "© 2026 JavaCoders Education Inc. All rights reserved.";
+  const copyright = cmsData?.copyright || "© 2026 CodersSpot Education Inc. All rights reserved.";
   
   const defaultLearnLinks = [
     { label: "Courses", url: "/courses" },
@@ -44,7 +44,7 @@ export default function Footer({ cmsData, siteName }: { cmsData?: any, siteName?
             <div className="col-span-2 md:col-span-1">
                <Link href="/" className="flex items-center gap-2 mb-6">
                   <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#0EA5E9]"></div>
-                  <span className="heading-font text-xl font-bold">{siteName || "JavaCoders"}</span>
+                  <span className="heading-font text-xl font-bold">{siteName || "CodersSpot"}</span>
                </Link>
                <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>{brandDescription}</p>
             </div>

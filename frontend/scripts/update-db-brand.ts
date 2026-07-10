@@ -13,14 +13,14 @@ async function main() {
 
       // Replace Aushutosh, Ashutosh, Lumina variants
       const replacements = [
-        { from: /Aushutosh/g, to: 'JavaCoders' },
-        { from: /aushutosh/g, to: 'javacoders' },
-        { from: /Ashutosh/g, to: 'JavaCoders' },
-        { from: /ashutosh/g, to: 'javacoders' },
-        { from: /Lumina/g, to: 'JavaCoders' },
-        { from: /lumina/g, to: 'javacoders' },
-        { from: /AUSHUTOSH/g, to: 'JAVACODERS' },
-        { from: /ASHUTOSH/g, to: 'JAVACODERS' }
+        { from: /Aushutosh/g, to: 'CodersSpot' },
+        { from: /aushutosh/g, to: 'codersspot' },
+        { from: /Ashutosh/g, to: 'CodersSpot' },
+        { from: /ashutosh/g, to: 'codersspot' },
+        { from: /Lumina/g, to: 'CodersSpot' },
+        { from: /lumina/g, to: 'codersspot' },
+        { from: /AUSHUTOSH/g, to: 'CODERSSPOT' },
+        { from: /ASHUTOSH/g, to: 'CODERSSPOT' }
       ];
 
       for (const { from, to } of replacements) {
@@ -31,8 +31,8 @@ async function main() {
       }
 
       if (changed) {
-        if (dataStr.includes("pandey.javacoders699")) {
-          dataStr = dataStr.replace(/pandey\.javacoders699/g, "pandey.ashutosh699");
+        if (dataStr.includes("pandey.codersspot699")) {
+          dataStr = dataStr.replace(/pandey\.codersspot699/g, "pandey.ashutosh699");
         }
 
         await prisma.siteContent.update({

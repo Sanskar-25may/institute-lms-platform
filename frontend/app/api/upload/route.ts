@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/authOptions";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
@@ -27,25 +24,9 @@ export async function POST(req: Request) {
 
     const buffer = Buffer.from(await file.arrayBuffer());
     
-    // Create a safe, unique filename
-    const ext = path.extname(file.name);
-    const uniqueName = `${session.user.id}-${crypto.randomBytes(4).toString("hex")}${ext}`;
-    
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (e) {
-      // Ignore if dir already exists
-    }
-
-    const filePath = path.join(uploadDir, uniqueName);
-    await writeFile(filePath, buffer);
-
-    // Return the public URL
-    const fileUrl = `/uploads/${uniqueName}`;
-
-    return NextResponse.json({ url: fileUrl }, { status: 200 });
+    // Return the base64 string as the URL
+    const base64String = `data:${file.type};base64,${buffer.toString("base64")}`;
+    return NextResponse.json({ url: base64String }, { status: 200 });
 
   } catch (error) {
     console.error("[UPLOAD_ERROR]", error);

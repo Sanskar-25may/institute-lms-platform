@@ -40,7 +40,7 @@ model User {
   email         String    @unique @db.VarChar(255)
   phoneNumber   String?   @map("phone_number") @db.VarChar(50)
   emailVerified DateTime? @map("email_verified")
-  image         String?   @db.VarChar(255)
+  image         String?   @db.Text
   passwordHash  String?   @map("password_hash") @db.VarChar(255)
   role          UserRole  @default(STUDENT) @map("role")
   createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamp()

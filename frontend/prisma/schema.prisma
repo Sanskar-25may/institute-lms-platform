@@ -25,6 +25,12 @@ enum PaymentState {
   FAILED
 }
 
+enum LeadStatus {
+  NEW
+  CONTACTED
+  CONVERTED
+}
+
 // --- MODELS ---
 
 model User {
@@ -46,7 +52,13 @@ model User {
   platformSettings PlatformSettings[]
   accounts         Account[]
   sessions         Session[]
+  
+  insightPosts     InsightPost[]
+  insightLikes     InsightLike[]
+  insightComments  InsightComment[]
 
+  @@index([email])
+  @@index([role])
   @@map("Users")
 }
 
@@ -61,6 +73,12 @@ model UserProfile {
   experienceYears Int?     @map("experience_years")
   techStack       String[] @map("tech_stack")
   
+  country         String?  @db.VarChar(100)
+  state           String?  @db.VarChar(100)
+  city            String?  @db.VarChar(100)
+  pincode         String?  @db.VarChar(20)
+  languages       String[] @map("languages")
+  
   bio             String?  @db.Text
   linkedinUrl     String?  @map("linkedin_url") @db.VarChar(255)
   githubUrl       String?  @map("github_url") @db.VarChar(255)
@@ -69,6 +87,7 @@ model UserProfile {
   createdAt       DateTime @default(now()) @map("created_at") @db.Timestamp()
   updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamp()
 
+  @@index([userId])
   @@map("UserProfiles")
 }
 
@@ -86,6 +105,8 @@ model Course {
   lessons     Lesson[]
   enrollments Enrollment[]
 
+  @@index([facultyId])
+  @@index([status])
   @@map("Courses")
 }
 
@@ -99,6 +120,7 @@ model Lesson {
   // Relationships
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
+  @@index([courseId])
   @@map("Lessons")
 }
 
@@ -117,6 +139,8 @@ model Enrollment {
 
   // A student can only enroll in a specific course once
   @@unique([studentId, courseId])
+  @@index([studentId])
+  @@index([courseId])
   @@map("Enrollments")
 }
 
@@ -208,7 +232,72 @@ model CareerGuidanceForm {
   strengths              String   @db.Text // CSV
   hobbies                String   @db.Text
   remarkableAchievements String   @db.Text
+  status                 LeadStatus @default(NEW)
   createdAt              DateTime @default(now()) @map("created_at") @db.Timestamp()
 
   @@map("career_guidance_forms")
+}
+
+model ContactMessage {
+  id        String     @id @default(uuid()) @db.Uuid
+  firstName String     @db.VarChar(100)
+  lastName  String     @db.VarChar(100)
+  email     String     @db.VarChar(255)
+  subject   String     @db.VarChar(255)
+  message   String     @db.Text
+  source    String?    @db.VarChar(100)
+  status    LeadStatus @default(NEW)
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamp()
+
+  @@map("contact_messages")
+}
+
+model InsightPost {
+  id          String   @id @default(uuid()) @db.Uuid
+  authorId    String   @map("author_id") @db.Uuid
+  title       String   @db.VarChar(255)
+  content     String?  @db.Text
+  imageUrl    String?  @map("image_url") @db.VarChar(255)
+  videoUrl    String?  @map("video_url") @db.VarChar(255)
+  codeSnippet String?  @map("code_snippet") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamp()
+
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likes     InsightLike[]
+  comments  InsightComment[]
+
+  @@index([authorId])
+  @@map("insight_posts")
+}
+
+model InsightLike {
+  id        String   @id @default(uuid()) @db.Uuid
+  postId    String   @map("post_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp()
+
+  post      InsightPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+  @@map("insight_likes")
+}
+
+model InsightComment {
+  id        String   @id @default(uuid()) @db.Uuid
+  postId    String   @map("post_id") @db.Uuid
+  authorId  String   @map("author_id") @db.Uuid
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp()
+
+  post      InsightPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author    User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@index([authorId])
+  @@map("insight_comments")
 }

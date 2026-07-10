@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-export default function InsightsClient({ cmsData }: { cmsData?: any }) {
-  const [posts, setPosts] = useState<any[]>(cmsData?.posts || []);
+export default function InsightsClient({ cmsData, initialPosts = [] }: { cmsData?: any, initialPosts?: any[] }) {
+  const [posts, setPosts] = useState<any[]>(initialPosts.length > 0 ? initialPosts : (cmsData?.posts || []));
 
   const handleLike = async (postId: string) => {
     // Optimistic UI update

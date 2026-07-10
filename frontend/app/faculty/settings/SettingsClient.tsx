@@ -1,5 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
+import LocationSelector from "@/components/LocationSelector";
+import LanguageSelector from "@/components/LanguageSelector";
+import ImageUpload from "@/components/ImageUpload";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 export default function SettingsClient() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -10,6 +15,9 @@ export default function SettingsClient() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    email: "",
+    phoneNumber: "",
+    image: "",
     bio: "",
     lifeStage: "",
     organization: "",
@@ -19,6 +27,11 @@ export default function SettingsClient() {
     linkedinUrl: "",
     githubUrl: "",
     portfolioUrl: "",
+    country: "",
+    state: "",
+    city: "",
+    pincode: "",
+    languages: [] as string[],
   });
 
   useEffect(() => {
@@ -42,6 +55,9 @@ export default function SettingsClient() {
         setFormData({
           firstName,
           lastName,
+          email: data.email || "",
+          phoneNumber: data.phoneNumber || "",
+          image: data.image || "",
           bio: data.profile?.bio || "",
           lifeStage: data.profile?.lifeStage || "",
           organization: data.profile?.organization || "",
@@ -51,6 +67,11 @@ export default function SettingsClient() {
           linkedinUrl: data.profile?.linkedinUrl || "",
           githubUrl: data.profile?.githubUrl || "",
           portfolioUrl: data.profile?.portfolioUrl || "",
+          country: data.profile?.country || "",
+          state: data.profile?.state || "",
+          city: data.profile?.city || "",
+          pincode: data.profile?.pincode || "",
+          languages: data.profile?.languages || [],
         });
       }
     } catch (err) {
@@ -130,6 +151,11 @@ export default function SettingsClient() {
                     </div>
                   )}
 
+                  <div>
+                     <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Profile Picture</label>
+                     <ImageUpload currentImage={formData.image} onUploadSuccess={url => setFormData(prev => ({ ...prev, image: url }))} />
+                  </div>
+
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">First Name</label>
@@ -140,6 +166,24 @@ export default function SettingsClient() {
                       <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" />
                     </div>
                   </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Email</label>
+                      <input type="email" value={formData.email} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none transition-colors opacity-70" disabled />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Phone Number</label>
+                      <PhoneInput
+                        international
+                        defaultCountry="US"
+                        value={formData.phoneNumber}
+                        onChange={(val) => setFormData(prev => ({ ...prev, phoneNumber: val?.toString() || "" }))}
+                        className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors phone-input-container"
+                      />
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Professional Title / Organization</label>
                     <input type="text" name="organization" value={formData.organization} onChange={handleChange} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" />
@@ -167,6 +211,24 @@ export default function SettingsClient() {
                         <label className="block text-xs font-bold text-txt-secondary mb-2 uppercase">Tech Stack</label>
                         <input type="text" name="techStack" value={formData.techStack} onChange={handleChange} className="w-full bg-[#0B0F19] border border-bdr-soft rounded-xl px-4 py-3 text-txt-primary focus:outline-none focus:border-violet-500 transition-colors" placeholder="e.g. React, Python" />
                      </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-bdr-soft">
+                     <h3 className="font-bold text-lg mb-4">Location</h3>
+                     <LocationSelector 
+                       country={formData.country} 
+                       state={formData.state} 
+                       city={formData.city} 
+                       pincode={formData.pincode} 
+                       onCountryChange={val => setFormData(prev => ({ ...prev, country: val }))} 
+                       onStateChange={val => setFormData(prev => ({ ...prev, state: val }))} 
+                       onCityChange={val => setFormData(prev => ({ ...prev, city: val }))} 
+                       onPincodeChange={val => setFormData(prev => ({ ...prev, pincode: val }))} 
+                     />
+                  </div>
+
+                  <div className="pt-4 border-t border-bdr-soft">
+                     <LanguageSelector languages={formData.languages} onChange={val => setFormData(prev => ({ ...prev, languages: val }))} />
                   </div>
 
                   <h3 className="font-bold text-lg pt-4 border-t border-bdr-soft">Social Links</h3>

@@ -54,6 +54,12 @@ export async function PUT(req: Request) {
       linkedinUrl,
       githubUrl,
       portfolioUrl,
+      country,
+      state,
+      city,
+      pincode,
+      languages,
+      image,
     } = body;
 
     const userId = session.user.id;
@@ -65,6 +71,7 @@ export async function PUT(req: Request) {
       data: {
         ...(fullName && { name: fullName, fullName: fullName }),
         ...(phoneNumber !== undefined && { phoneNumber }),
+        ...(image !== undefined && { image }),
       },
     });
 
@@ -81,6 +88,11 @@ export async function PUT(req: Request) {
         linkedinUrl,
         githubUrl,
         portfolioUrl,
+        country,
+        state,
+        city,
+        pincode,
+        languages: languages || [],
       },
       create: {
         userId,
@@ -93,6 +105,11 @@ export async function PUT(req: Request) {
         linkedinUrl,
         githubUrl,
         portfolioUrl,
+        country,
+        state,
+        city,
+        pincode,
+        languages: languages || [],
       },
     });
 
@@ -109,15 +126,24 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
     if (!session || !session.user || !session.user.id) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     const body = await req.json();
-    const { role, lifeStage, organization, degree, experienceYears, techStack, bio, linkedinUrl, githubUrl, portfolioUrl } = body;
+    const { role, lifeStage, organization, degree, experienceYears, techStack, bio, linkedinUrl, githubUrl, portfolioUrl, country, state, city, pincode, languages, image } = body;
     const userId = session.user.id;
+    
+    // Build User table updates
+    const userUpdateData: any = {};
     if (session.user.role !== "ADMIN" && (role === "STUDENT" || role === "INSTRUCTOR")) {
-      await prisma.user.update({ where: { id: userId }, data: { role } });
+      userUpdateData.role = role;
+    }
+    if (image) {
+      userUpdateData.image = image;
+    }
+    if (Object.keys(userUpdateData).length > 0) {
+      await prisma.user.update({ where: { id: userId }, data: userUpdateData });
     }
     await prisma.userProfile.upsert({
       where: { userId },
-      update: { lifeStage, organization, degree, experienceYears: experienceYears ? parseInt(experienceYears, 10) : null, techStack: techStack || [], bio, linkedinUrl, githubUrl, portfolioUrl },
-      create: { userId, lifeStage, organization, degree, experienceYears: experienceYears ? parseInt(experienceYears, 10) : null, techStack: techStack || [], bio, linkedinUrl, githubUrl, portfolioUrl },
+      update: { lifeStage, organization, degree, experienceYears: experienceYears ? parseInt(experienceYears, 10) : null, techStack: techStack || [], bio, linkedinUrl, githubUrl, portfolioUrl, country, state, city, pincode, languages: languages || [] },
+      create: { userId, lifeStage, organization, degree, experienceYears: experienceYears ? parseInt(experienceYears, 10) : null, techStack: techStack || [], bio, linkedinUrl, githubUrl, portfolioUrl, country, state, city, pincode, languages: languages || [] },
     });
     return NextResponse.json({ message: "Profile saved successfully" }, { status: 200 });
   } catch (error) {

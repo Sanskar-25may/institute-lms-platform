@@ -543,3 +543,19 @@ code, pre, .font-mono {
 
 .animate-spin-slow { animation: spinSlow 30s linear infinite; }
 .animate-blob { animation: blob 15s infinite; }
+
+/* Phone Input Overrides */
+.phone-input-container {
+  display: flex;
+  align-items: center;
+}
+.phone-input-container input {
+  background: transparent;
+  border: none;
+  outline: none;
+  flex: 1;
+  color: var(--text-primary);
+}
+.phone-input-container .PhoneInputCountry {
+  margin-right: 0.5rem;
+}

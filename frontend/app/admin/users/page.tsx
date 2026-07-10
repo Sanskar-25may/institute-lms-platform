@@ -1,8 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getSiteContent } from "@/lib/cms";
+import { prisma } from "@/lib/prisma";
 
 export default async function AdminUsersPage() {
   const cmsData = await getSiteContent("admin-users");
+  
+  const users = await prisma.user.findMany({
+    orderBy: { createdAt: 'desc' },
+  });
 
   return (
     <div className="space-y-8 pb-20">
@@ -20,45 +26,57 @@ export default async function AdminUsersPage() {
 
        <div className="rounded-[24px] overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
           <div className="overflow-x-auto">
-             <table className="data-table">
+             <table className="data-table w-full text-left">
                 <thead>
-                   <tr>
-                      <th>User</th>
-                      <th>Role</th>
-                      <th>Status</th>
-                      <th>Last Login</th>
-                      <th>Actions</th>
+                   <tr className="border-b" style={{ borderColor: 'var(--border-soft)' }}>
+                      <th className="p-4">User</th>
+                      <th className="p-4">Role</th>
+                      <th className="p-4">Joined</th>
+                      <th className="p-4">Actions</th>
                    </tr>
                 </thead>
                 <tbody>
-                   {[
-                      { email: "sanskar@example.com", role: "Student", status: "Active", login: "Just now" },
-                      { email: "marcus.chen@javacoders.dev", role: "Faculty", status: "Active", login: "2 hours ago" },
-                      { email: "banned.user@example.com", role: "Student", status: "Suspended", login: "1 month ago" },
-                      { email: "admin.super@javacoders.dev", role: "Admin", status: "Active", login: "5 mins ago" },
-                   ].map((u, i) => (
-                      <tr key={i}>
-                         <td className="font-bold text-sm">{u.email}</td>
-                         <td>
+                   {users.map((u) => (
+                      <tr key={u.id} className="border-b last:border-0" style={{ borderColor: 'var(--border-soft)' }}>
+                         <td className="p-4">
+                            <div className="flex items-center gap-3">
+                               <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-200 shrink-0">
+                                  {u.image ? (
+                                    <Image src={u.image} alt="Profile" fill className="object-cover" />
+                                  ) : (
+                                    <div className="w-full h-full flex items-center justify-center font-bold text-gray-500">
+                                      {u.email.charAt(0).toUpperCase()}
+                                    </div>
+                                  )}
+                               </div>
+                               <div>
+                                  <div className="font-bold text-sm">{u.fullName || u.name || "N/A"}</div>
+                                  <div className="text-xs text-gray-500">{u.email}</div>
+                               </div>
+                            </div>
+                         </td>
+                         <td className="p-4">
                             <span className={`px-2 py-1 rounded text-xs font-bold ${
-                               u.role === 'Admin' ? 'badge-danger' :
-                               u.role === 'Faculty' ? 'badge-warning' : 'badge-primary'
+                               u.role === 'ADMIN' ? 'badge-danger' :
+                               u.role === 'INSTRUCTOR' ? 'badge-warning' : 'badge-primary'
                             }`}>{u.role}</span>
                          </td>
-                         <td>
-                            <span className={`px-2 py-1 rounded text-xs font-bold ${
-                               u.status === 'Active' ? 'badge-success' : 'badge-danger'
-                            }`}>{u.status}</span>
+                         <td className="p-4 text-xs" style={{ color: 'var(--text-secondary)' }}>
+                            {new Date(u.createdAt).toLocaleDateString()}
                          </td>
-                         <td className="text-xs" style={{ color: 'var(--text-secondary)' }}>{u.login}</td>
-                         <td>
+                         <td className="p-4">
                             <div className="flex gap-2">
-                               <Link href={`/admin/users/edit/${i}`} className="text-xs font-bold text-[var(--accent-primary)] hover:underline">Edit</Link>
-                               <Link href={`/admin/users/suspend/${i}`} className="text-xs font-bold text-rose-500 hover:underline">Suspend</Link>
+                               <Link href={`/admin/users/edit/${u.id}`} className="text-xs font-bold text-[var(--accent-primary)] hover:underline">Edit</Link>
+                               <button className="text-xs font-bold text-rose-500 hover:underline">Suspend</button>
                             </div>
                          </td>
                       </tr>
                    ))}
+                   {users.length === 0 && (
+                     <tr>
+                        <td colSpan={4} className="p-8 text-center text-gray-500">No users found.</td>
+                     </tr>
+                   )}
                 </tbody>
              </table>
           </div>

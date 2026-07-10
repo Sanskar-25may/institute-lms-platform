@@ -1,5 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
+import LocationSelector from "@/components/LocationSelector";
+import LanguageSelector from "@/components/LanguageSelector";
+import ImageUpload from "@/components/ImageUpload";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 export default function SettingsClient({ cmsData }: { cmsData: any }) {
   const [activeTab, setActiveTab] = useState("profile");
@@ -11,6 +16,8 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
     firstName: "",
     lastName: "",
     email: "",
+    phoneNumber: "",
+    image: "",
     bio: "",
     lifeStage: "",
     organization: "",
@@ -20,6 +27,11 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
     linkedinUrl: "",
     githubUrl: "",
     portfolioUrl: "",
+    country: "",
+    state: "",
+    city: "",
+    pincode: "",
+    languages: [] as string[],
   });
 
   useEffect(() => {
@@ -44,6 +56,8 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
           firstName,
           lastName,
           email: data.email || "",
+          phoneNumber: data.phoneNumber || "",
+          image: data.image || "",
           bio: data.profile?.bio || "",
           lifeStage: data.profile?.lifeStage || "",
           organization: data.profile?.organization || "",
@@ -53,6 +67,11 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
           linkedinUrl: data.profile?.linkedinUrl || "",
           githubUrl: data.profile?.githubUrl || "",
           portfolioUrl: data.profile?.portfolioUrl || "",
+          country: data.profile?.country || "",
+          state: data.profile?.state || "",
+          city: data.profile?.city || "",
+          pincode: data.profile?.pincode || "",
+          languages: data.profile?.languages || [],
         });
       }
     } catch (err) {
@@ -131,15 +150,12 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
                    <h2 className="heading-font text-2xl font-bold border-b pb-4" style={{ borderColor: 'var(--border-soft)' }}>Profile Details</h2>
                    
                    <div className="flex items-center gap-6">
-                      <div className="w-24 h-24 rounded-full flex items-center justify-center font-bold text-3xl" style={{ background: 'var(--bg-surface)' }}>
-                         {formData.firstName?.[0] || ""}{formData.lastName?.[0] || ""}
-                      </div>
-                      <div>
+                      <div className="flex-1">
                          {cmsData?.allowProfileEdit !== false ? (
-                            <>
-                               <button className="btn-secondary px-4 py-2 rounded-lg text-sm font-bold mb-2">Change Avatar</button>
-                               <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>JPG, GIF or PNG. 1MB max.</p>
-                            </>
+                            <ImageUpload 
+                              currentImage={formData.image} 
+                              onUploadSuccess={(url) => setFormData(prev => ({ ...prev, image: url }))} 
+                            />
                          ) : (
                             <p className="text-sm font-semibold" style={{ color: 'var(--accent-warning)' }}>Profile editing is disabled by administrator.</p>
                          )}
@@ -169,9 +185,22 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
                            </div>
                         </div>
                         
-                        <div>
-                           <label className="block text-sm font-medium mb-2">Email</label>
-                           <input type="email" value={formData.email} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" disabled />
+                        <div className="grid grid-cols-2 gap-4">
+                           <div>
+                              <label className="block text-sm font-medium mb-2">Email</label>
+                              <input type="email" value={formData.email} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" disabled />
+                           </div>
+                           <div>
+                              <label className="block text-sm font-medium mb-2">Phone Number</label>
+                              <PhoneInput
+                                international
+                                defaultCountry="US"
+                                value={formData.phoneNumber}
+                                onChange={(val) => setFormData(prev => ({ ...prev, phoneNumber: val?.toString() || "" }))}
+                                className="input-premium w-full px-4 py-2.5 rounded-lg text-sm phone-input-container"
+                                disabled={cmsData?.allowProfileEdit === false}
+                              />
+                           </div>
                         </div>
 
                         <div>
@@ -202,6 +231,28 @@ export default function SettingsClient({ cmsData }: { cmsData: any }) {
                         <div>
                            <label className="block text-sm font-medium mb-2">Tech Stack (comma separated)</label>
                            <input type="text" name="techStack" value={formData.techStack} onChange={handleChange} className="input-premium w-full px-4 py-2.5 rounded-lg text-sm" placeholder="e.g. React, Node.js, Python" disabled={cmsData?.allowProfileEdit === false} />
+                        </div>
+
+                        <div className="pt-4 border-t" style={{ borderColor: "var(--border-soft)" }}>
+                           <h3 className="font-bold text-lg mb-4">Location</h3>
+                           <div className={cmsData?.allowProfileEdit === false ? "pointer-events-none opacity-60" : ""}>
+                             <LocationSelector 
+                               country={formData.country} 
+                               state={formData.state} 
+                               city={formData.city} 
+                               pincode={formData.pincode} 
+                               onCountryChange={val => setFormData(prev => ({ ...prev, country: val }))} 
+                               onStateChange={val => setFormData(prev => ({ ...prev, state: val }))} 
+                               onCityChange={val => setFormData(prev => ({ ...prev, city: val }))} 
+                               onPincodeChange={val => setFormData(prev => ({ ...prev, pincode: val }))} 
+                             />
+                           </div>
+                        </div>
+
+                        <div className="pt-4 border-t" style={{ borderColor: "var(--border-soft)" }}>
+                           <div className={cmsData?.allowProfileEdit === false ? "pointer-events-none opacity-60" : ""}>
+                             <LanguageSelector languages={formData.languages} onChange={val => setFormData(prev => ({ ...prev, languages: val }))} />
+                           </div>
                         </div>
 
                         <h3 className="font-bold text-lg pt-4 border-t border-bdr-soft">Social Links</h3>

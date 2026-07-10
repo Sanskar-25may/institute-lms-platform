@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+import PhoneInput, { isPossiblePhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 export default function AuthClient({ cmsData }: { cmsData: any }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -27,6 +29,12 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
     setErrorMsg("");
     
     if (!isLogin) {
+      if (!phoneNumber || !isPossiblePhoneNumber(phoneNumber)) {
+        setErrorMsg("Please enter a valid phone number.");
+        setIsLoading(false);
+        return;
+      }
+
       const signupRes = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -237,7 +245,13 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
                     {!isLogin && (
                        <div>
                           <label className="block text-sm font-medium mb-2">Phone Number</label>
-                          <input type="tel" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} className="input-premium w-full px-4 py-3 rounded-xl" placeholder="+1 (555) 000-0000" />
+                          <PhoneInput
+                            international
+                            defaultCountry="US"
+                            value={phoneNumber}
+                            onChange={(val) => setPhoneNumber(val?.toString() || "")}
+                            className="input-premium w-full px-4 py-3 rounded-xl phone-input-container"
+                          />
                        </div>
                     )}
                     

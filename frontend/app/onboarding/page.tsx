@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useSession } from "next-auth/react";
+import LocationSelector from "@/components/LocationSelector";
+import LanguageSelector from "@/components/LanguageSelector";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -23,6 +26,12 @@ export default function OnboardingPage() {
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [githubUrl, setGithubUrl] = useState("");
   const [portfolioUrl, setPortfolioUrl] = useState("");
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [languages, setLanguages] = useState<string[]>([]);
+  const [image, setImage] = useState("");
 
   const handleNext = () => {
     if (step === 1 && !role) return setErrorMsg("Please select a role.");
@@ -35,6 +44,12 @@ export default function OnboardingPage() {
       }
       if (role === "STUDENT" && lifeStage === "Current Student" && !degree.trim()) {
         return setErrorMsg("Please provide the degree you are pursuing.");
+      }
+      if (!country || !state) {
+        return setErrorMsg("Please select your Country and State.");
+      }
+      if (languages.length === 0) {
+        return setErrorMsg("Please select at least one language.");
       }
     }
     setErrorMsg("");
@@ -67,6 +82,12 @@ export default function OnboardingPage() {
           linkedinUrl,
           githubUrl,
           portfolioUrl,
+          country,
+          state,
+          city,
+          pincode,
+          languages,
+          image,
         }),
       });
 
@@ -253,6 +274,24 @@ export default function OnboardingPage() {
                 <label className="block text-sm font-medium mb-2">Tech Stack (comma separated)</label>
                 <input type="text" value={techStack} onChange={e => setTechStack(e.target.value)} className="input-premium w-full px-4 py-3 rounded-xl" placeholder="e.g. React, Node.js, Python" />
               </div>
+
+              <div className="pt-4 border-t" style={{ borderColor: "var(--border-soft)" }}>
+                <h2 className="text-xl font-bold mb-4">Location</h2>
+                <LocationSelector 
+                  country={country} 
+                  state={state} 
+                  city={city} 
+                  pincode={pincode} 
+                  onCountryChange={setCountry} 
+                  onStateChange={setState} 
+                  onCityChange={setCity} 
+                  onPincodeChange={setPincode} 
+                />
+              </div>
+
+              <div className="pt-4 border-t" style={{ borderColor: "var(--border-soft)" }}>
+                <LanguageSelector languages={languages} onChange={setLanguages} />
+              </div>
             </div>
           )}
 
@@ -260,7 +299,12 @@ export default function OnboardingPage() {
           {step === 4 && (
             <div className="animate-slide-in-right space-y-6">
               <h1 className="heading-font text-3xl font-bold mb-2">Your Profile</h1>
-              <p className="mb-8" style={{ color: "var(--text-secondary)" }}>Add your social links to connect with others.</p>
+              <p className="mb-8" style={{ color: "var(--text-secondary)" }}>Add a profile picture and social links to connect with others.</p>
+
+              <div>
+                <label className="block text-sm font-medium mb-4">Profile Picture</label>
+                <ImageUpload currentImage={image} onUploadSuccess={setImage} />
+              </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2">Short Bio</label>

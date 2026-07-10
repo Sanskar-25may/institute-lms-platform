@@ -4,6 +4,7 @@ import { getSiteContent } from "@/lib/cms";
 import { prisma } from "@/lib/prisma";
 import { UserFilters } from "@/components/admin/UserFilters";
 import { UserActionsRow } from "@/components/admin/UserActionsRow";
+import { Suspense } from "react";
 
 export default async function AdminUsersPage({ searchParams }: { searchParams: { search?: string, role?: string } }) {
   const cmsData = await getSiteContent("admin-users");
@@ -39,7 +40,9 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: {
           </div>
           
           <div className="flex flex-col md:flex-row gap-4 w-full justify-between mt-4">
-             <UserFilters />
+             <Suspense fallback={<div className="h-10 w-full animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg"></div>}>
+               <UserFilters />
+             </Suspense>
              <Link href="/admin/users/add" className="btn-primary px-4 py-2 rounded-lg text-sm font-bold flex items-center justify-center shrink-0">Add User</Link>
           </div>
        </div>

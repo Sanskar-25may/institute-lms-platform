@@ -8,11 +8,12 @@ import { Suspense } from "react";
 
 export const dynamic = 'force-dynamic';
 
-export default async function AdminUsersPage({ searchParams }: { searchParams: { search?: string, role?: string } }) {
+export default async function AdminUsersPage({ searchParams }: { searchParams: Promise<{ search?: string, role?: string }> | { search?: string, role?: string } }) {
   const cmsData = await getSiteContent("admin-users");
   
-  const search = searchParams?.search || "";
-  const role = searchParams?.role || "ALL";
+  const resolvedParams = await searchParams;
+  const search = resolvedParams?.search || "";
+  const role = resolvedParams?.role || "ALL";
 
   const where: any = {};
   

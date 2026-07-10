@@ -6,6 +6,8 @@ import { UserFilters } from "@/components/admin/UserFilters";
 import { UserActionsRow } from "@/components/admin/UserActionsRow";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminUsersPage({ searchParams }: { searchParams: { search?: string, role?: string } }) {
   const cmsData = await getSiteContent("admin-users");
   

@@ -8,6 +8,7 @@
 /* ── DARK THEME — "Obsidian Tech" ──────────────────────── */
 :root,
 [data-theme="dark"] {
+  color-scheme: dark;
   --bg-base:         #04070F;
   --bg-surface:      #080D1A;
   --bg-card:         #0C1220;
@@ -55,6 +56,7 @@
 
 /* ── LIGHT THEME — "Ivory Studio" ──────────────────────── */
 [data-theme="light"] {
+  color-scheme: light;
   --bg-base:         #F0EEFF;
   --bg-surface:      #F8F7FF;
   --bg-card:         #FFFFFF;
@@ -558,4 +560,19 @@ code, pre, .font-mono {
 }
 .phone-input-container .PhoneInputCountry {
   margin-right: 0.5rem;
+}
+
+/* Fix Dropdown visibility */
+select option {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.PhoneInputCountrySelect {
+  background-color: transparent;
+  color: var(--text-primary);
+}
+.PhoneInputCountrySelect option {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
 }

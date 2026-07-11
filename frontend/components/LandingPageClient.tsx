@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import LiveCodeEditor from "@/components/LiveCodeEditor";
 
 export default function LandingPageClient({ initialData = {} }: { initialData?: any }) {
   const { scrollY } = useScroll();
@@ -166,6 +167,9 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
           </div>
         </div>
       </section>
+
+      {/* Live Code Editor Section */}
+      <LiveCodeEditor />
 
       {/* 4. Features bento grid */}
       <section className="py-32 relative z-10">

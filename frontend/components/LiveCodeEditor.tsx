@@ -2,31 +2,52 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-const CODE_SNIPPET = `"use server";
-import { db } from "@/lib/db";
-import { courses, enrollments } from "@/lib/schema";
-import { eq, and } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+const CODE_SNIPPET = `// Advanced Systems Programming: Lock-Free Queue in Rust
+use std::sync::atomic::{AtomicPtr, Ordering};
+use std::ptr;
 
-export async function enrollInCourse(userId: string, courseId: string) {
-  // 1. Verify course exists & is published
-  const course = await db.query.courses.findFirst({
-    where: and(eq(courses.id, courseId), eq(courses.status, "PUBLISHED")),
-  });
+pub struct LockFreeQueue<T> {
+    head: AtomicPtr<Node<T>>,
+    tail: AtomicPtr<Node<T>>,
+}
 
-  if (!course) throw new Error("Course not found or inactive.");
+struct Node<T> {
+    data: Option<T>,
+    next: AtomicPtr<Node<T>>,
+}
 
-  // 2. Process enrollment securely on the edge
-  await db.insert(enrollments).values({
-    userId,
-    courseId,
-    enrolledAt: new Date(),
-  });
+impl<T> LockFreeQueue<T> {
+    pub fn push(&self, value: T) {
+        let new_node = Box::into_raw(Box::new(Node {
+            data: Some(value),
+            next: AtomicPtr::new(ptr::null_mut()),
+        }));
 
-  // 3. Revalidate dashboard cache instantly
-  revalidatePath("/student/dashboard");
-  
-  return { success: true, message: "Welcome to the course!" };
+        loop {
+            let tail = self.tail.load(Ordering::Acquire);
+            let next = unsafe { (*tail).next.load(Ordering::Acquire) };
+
+            if tail == self.tail.load(Ordering::Acquire) {
+                if next.is_null() {
+                    // Attempt to link the new node at the end of the queue
+                    if unsafe {
+                        (*tail).next.compare_exchange_weak(
+                            next, new_node, Ordering::Release, Ordering::Relaxed
+                        )
+                    }.is_ok() {
+                        let _ = self.tail.compare_exchange(
+                            tail, new_node, Ordering::Release, Ordering::Relaxed
+                        );
+                        return;
+                    }
+                } else {
+                    let _ = self.tail.compare_exchange(
+                        tail, next, Ordering::Release, Ordering::Relaxed
+                    );
+                }
+            }
+        }
+    }
 }`;
 
 export default function LiveCodeEditor() {
@@ -47,7 +68,7 @@ export default function LiveCodeEditor() {
           setIsTyping(true);
         }, 8000);
       }
-    }, 40); // 40ms per character
+    }, 15); // Faster typing for longer snippet
 
     return () => clearInterval(intervalId);
   }, []);
@@ -57,15 +78,13 @@ export default function LiveCodeEditor() {
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       // Keywords
-      .replace(/\b(import|from|const|let|var|await|async|if|return|new|export|function|throw)\b/g, '<span style="color: #c678dd">$1</span>')
-      // Strings (handle quotes safely)
-      .replace(/("[^"]*")/g, '<span style="color: #98c379">$1</span>')
+      .replace(/\b(use|pub|struct|impl|fn|let|loop|unsafe|if|else|return|mut)\b/g, '<span style="color: #c678dd">$1</span>')
+      // Types/Traits (Capitalized words)
+      .replace(/\b([A-Z][a-zA-Z0-9_]*)\b/g, '<span style="color: #e5c07b">$1</span>')
+      // Methods
+      .replace(/\b(push|into_raw|new|load|is_null|compare_exchange_weak|compare_exchange|is_ok)\b/g, '<span style="color: #61afef">$1</span>')
       // Comments
-      .replace(/(\/\/.*)/g, '<span style="color: #5c6370; font-style: italic">$1</span>')
-      // Functions/Methods
-      .replace(/\b(query|findFirst|insert|values|revalidatePath|Error)\b/g, '<span style="color: #61afef">$1</span>')
-      // Booleans and primitive classes
-      .replace(/\b(true|false|Date)\b/g, '<span style="color: #d19a66">$1</span>');
+      .replace(/(\/\/.*)/g, '<span style="color: #5c6370; font-style: italic">$1</span>');
       
     return { __html: html + (isTyping ? '<span class="animate-pulse" style="color: #528bff">|</span>' : '') };
   };
@@ -98,7 +117,7 @@ export default function LiveCodeEditor() {
             <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
             <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
           </div>
-          <div className="mx-auto text-xs text-[#858585] font-mono tracking-wider">actions.ts — CodersSpot</div>
+          <div className="mx-auto text-xs text-[#858585] font-mono tracking-wider">lockfree_queue.rs — CodersSpot</div>
         </div>
         
         {/* Code Area */}

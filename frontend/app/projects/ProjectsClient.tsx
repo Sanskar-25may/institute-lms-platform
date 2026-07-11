@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 
 export default function ProjectsClient({ initialData }: { initialData: any }) {
   const projects = initialData?.projects || [
@@ -29,7 +28,6 @@ export default function ProjectsClient({ initialData }: { initialData: any }) {
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen pt-24 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
@@ -101,7 +99,6 @@ export default function ProjectsClient({ initialData }: { initialData: any }) {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 
 export default function FacultyPortfolioClient({ faculty }: { faculty: any }) {
   const profile = faculty.profile || {};
@@ -11,7 +10,6 @@ export default function FacultyPortfolioClient({ faculty }: { faculty: any }) {
   
   return (
     <>
-      <Navbar />
       <div className="min-h-screen pt-24 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -101,7 +99,6 @@ export default function FacultyPortfolioClient({ faculty }: { faculty: any }) {
 
         </div>
       </div>
-      <Footer />
     </>
   );
 }

@@ -20,7 +20,7 @@ export default async function ReportsPage() {
                 <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>Export CSV report for February 2024</p>
              </div>
              <a 
-               href="data:text/csv;charset=utf-8,Date,Revenue,Transactions%0A2024-02-01,$1200,4%0A2024-02-02,$3400,10%0A" 
+               href="data:text/csv;charset=utf-8,Date,Revenue,Transactions%0A2024-02-01,₹1200,4%0A2024-02-02,₹3400,10%0A" 
                download="monthly_revenue_feb2024.csv"
                className="btn-secondary w-full py-2 rounded-lg text-sm font-bold text-center block"
              >
@@ -37,7 +37,7 @@ export default async function ReportsPage() {
                 <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>Instructor payout distribution report</p>
              </div>
              <a 
-               href="data:text/csv;charset=utf-8,Instructor,Email,Payout%0AMarcus Chen,marcus@example.com,$4200%0AAisha Verma,aisha@example.com,$6800%0A" 
+               href="data:text/csv;charset=utf-8,Instructor,Email,Payout%0AMarcus Chen,marcus@example.com,₹4200%0AAisha Verma,aisha@example.com,₹6800%0A" 
                download="payouts_distribution.csv"
                className="btn-secondary w-full py-2 rounded-lg text-sm font-bold text-center block"
              >

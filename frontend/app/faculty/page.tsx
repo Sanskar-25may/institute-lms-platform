@@ -36,7 +36,7 @@ export default async function FacultyDashboard() {
        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {[
              { label: "Active Students", value: "1,248", trend: "+12%", color: "var(--accent-primary)" },
-             { label: "Course Revenue", value: "$48,200", trend: "+8.4%", color: "var(--accent-success)" },
+             { label: "Course Revenue", value: "₹48,200", trend: "+8.4%", color: "var(--accent-success)" },
              { label: "Avg Rating", value: "4.8", trend: "+0.1", color: "var(--accent-warning)" },
              { label: "Completion Rate", value: "64%", trend: "+2%", color: "var(--accent-cyan)" }
           ].map((stat, i) => (
@@ -83,7 +83,7 @@ export default async function FacultyDashboard() {
                             <td><span className="badge-success px-2 py-1 rounded text-xs">Published</span></td>
                             <td>842</td>
                             <td>4.9</td>
-                            <td>$32k</td>
+                            <td>₹32k</td>
                          </tr>
                          <tr>
                             <td className="font-bold">Next.js App Router Masterclass</td>
@@ -97,7 +97,7 @@ export default async function FacultyDashboard() {
                             <td><span className="badge-success px-2 py-1 rounded text-xs">Published</span></td>
                             <td>406</td>
                             <td>4.7</td>
-                            <td>$16k</td>
+                            <td>₹16k</td>
                          </tr>
                       </tbody>
                    </table>

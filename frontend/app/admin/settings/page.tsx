@@ -38,7 +38,7 @@ export default async function AdminSettingsPage() {
               <div>
                 <label className="block text-xs font-bold mb-2 uppercase" style={{ color: 'var(--text-secondary)' }}>Global Currency</label>
                 <select className="input-premium w-full rounded-xl px-4 py-3 transition-colors">
-                  <option value="USD">USD ($)</option>
+                  <option value="INR">INR (₹)</option>
                   <option value="EUR">EUR (€)</option>
                   <option value="INR">INR (₹)</option>
                 </select>

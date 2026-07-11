@@ -7,9 +7,9 @@ export default function AdminTeachersPage() {
   const [search, setSearch] = useState("");
 
   const teachers = [
-    { id: 1, name: "Aisha Verma", email: "aisha@example.com", status: "Active", courses: 4, revenue: "$612K", initials: "AV", color: "from-fuchsia-500 to-pink-600" },
-    { id: 2, name: "Marcus Chen", email: "marcus@example.com", status: "Active", courses: 2, revenue: "$240K", initials: "MC", color: "from-fuchsia-500 to-pink-600" },
-    { id: 3, name: "Priya Nair", email: "priya@example.com", status: "Pending Approval", courses: 0, revenue: "$0", initials: "PN", color: "from-amber-500 to-orange-600" },
+    { id: 1, name: "Aisha Verma", email: "aisha@example.com", status: "Active", courses: 4, revenue: "₹612K", initials: "AV", color: "from-fuchsia-500 to-pink-600" },
+    { id: 2, name: "Marcus Chen", email: "marcus@example.com", status: "Active", courses: 2, revenue: "₹240K", initials: "MC", color: "from-fuchsia-500 to-pink-600" },
+    { id: 3, name: "Priya Nair", email: "priya@example.com", status: "Pending Approval", courses: 0, revenue: "₹0", initials: "PN", color: "from-amber-500 to-orange-600" },
   ];
 
   const filteredTeachers = teachers.filter(t => 

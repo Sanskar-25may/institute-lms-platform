@@ -15,7 +15,7 @@ export default async function CoursesCatalog() {
       rating: "4.9",
       level: "Intermediate",
       tags: ["React", "TypeScript", "Next.js"],
-      price: "$149",
+      price: "₹149",
       badge: "Bestseller",
       badgeClass: "badge-warning",
       color: "from-violet-500 to-fuchsia-500"
@@ -27,7 +27,7 @@ export default async function CoursesCatalog() {
       rating: "4.8",
       level: "Advanced",
       tags: ["Architecture", "Databases", "AWS"],
-      price: "$199",
+      price: "₹199",
       badge: "Hot",
       badgeClass: "badge-danger",
       color: "from-blue-500 to-cyan-500"
@@ -39,7 +39,7 @@ export default async function CoursesCatalog() {
       rating: "4.9",
       level: "Advanced",
       tags: ["Python", "TensorFlow", "MLOps"],
-      price: "$249",
+      price: "₹249",
       color: "from-emerald-500 to-teal-500"
     },
     {
@@ -49,7 +49,7 @@ export default async function CoursesCatalog() {
       rating: "4.7",
       level: "Beginner",
       tags: ["Figma", "Design Systems", "CSS"],
-      price: "$99",
+      price: "₹99",
       badge: "New",
       badgeClass: "badge-success",
       color: "from-amber-500 to-orange-500"
@@ -61,7 +61,7 @@ export default async function CoursesCatalog() {
       rating: "4.8",
       level: "Intermediate",
       tags: ["Node.js", "Redis", "Docker"],
-      price: "$129",
+      price: "₹129",
       color: "from-rose-500 to-pink-500"
     },
     {
@@ -71,7 +71,7 @@ export default async function CoursesCatalog() {
       rating: "4.9",
       level: "Intermediate",
       tags: ["React Native", "Mobile", "Expo"],
-      price: "$149",
+      price: "₹149",
       color: "from-indigo-500 to-blue-500"
     }
   ];

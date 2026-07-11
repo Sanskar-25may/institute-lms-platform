@@ -101,7 +101,7 @@ export default function CreateClient({ cmsData }: { cmsData: any }) {
                 <div>
                    <label className="block text-sm font-medium mb-2">Price (USD)</label>
                    <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold" style={{ color: 'var(--text-secondary)' }}>$</span>
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold" style={{ color: 'var(--text-secondary)' }}>₹</span>
                       <input type="number" className="input-premium w-full pl-8 pr-4 py-3 rounded-xl" placeholder="99.00" defaultValue="149.00" />
                    </div>
                 </div>

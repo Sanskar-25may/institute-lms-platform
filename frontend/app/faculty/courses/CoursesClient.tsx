@@ -6,9 +6,9 @@ export default function CoursesClient({ cmsData }: { cmsData: any }) {
   const [filter, setFilter] = useState("all");
 
   const courses = [
-    { id: "1", title: "Full-Stack React & TypeScript", status: "published", students: 842, rating: 4.9, revenue: "$32k" },
-    { id: "2", title: "Next.js App Router Masterclass", status: "draft", students: 0, rating: 0, revenue: "$0" },
-    { id: "3", title: "UI/UX for Developers", status: "published", students: 406, rating: 4.7, revenue: "$16k" },
+    { id: "1", title: "Full-Stack React & TypeScript", status: "published", students: 842, rating: 4.9, revenue: "₹32k" },
+    { id: "2", title: "Next.js App Router Masterclass", status: "draft", students: 0, rating: 0, revenue: "₹0" },
+    { id: "3", title: "UI/UX for Developers", status: "published", students: 406, rating: 4.7, revenue: "₹16k" },
   ];
 
   return (

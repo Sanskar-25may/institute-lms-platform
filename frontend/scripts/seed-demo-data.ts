@@ -44,7 +44,7 @@ async function main() {
     },
     "public-placements": {
       stats: [
-        { title: "Average Salary Increase", value: "+$42k", sub: "For students switching jobs", isActive: true },
+        { title: "Average Salary Increase", value: "+₹42k", sub: "For students switching jobs", isActive: true },
         { title: "Placement Rate", value: "94%", sub: "Within 6 months of graduation", isActive: true },
         { title: "Hiring Partners", value: "300+", sub: "Top tech companies globally", isActive: true }
       ],

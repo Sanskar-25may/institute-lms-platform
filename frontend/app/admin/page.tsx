@@ -18,7 +18,7 @@ export default async function AdminDashboard() {
        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {[
              { label: "Total Users", value: "24,592", trend: "+1.2k this month", color: "var(--accent-primary)", show: true },
-             { label: "MRR", value: "$284,000", trend: "+5.4%", color: "var(--accent-success)", show: cmsData?.showRevenue !== false },
+             { label: "MRR", value: "₹284,000", trend: "+5.4%", color: "var(--accent-success)", show: cmsData?.showRevenue !== false },
              { label: "Active Courses", value: "142", trend: "+12 new", color: "var(--accent-warning)", show: true },
              { label: "System Uptime", value: "99.99%", trend: "Healthy", color: "var(--accent-cyan)", show: true }
           ].filter(s => s.show).map((stat, i) => (

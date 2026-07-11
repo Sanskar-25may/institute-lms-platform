@@ -61,7 +61,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
                 
                 <div className="flex flex-wrap gap-4">
                    <Link href={`/checkout/${course_id}`} className="btn-primary px-8 py-4 rounded-xl text-lg flex items-center gap-2">
-                      Enroll Now — $149
+                      Enroll Now — ₹149
                    </Link>
                    <button className="btn-secondary px-8 py-4 rounded-xl text-lg flex items-center gap-2">
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" /></svg>
@@ -183,7 +183,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
        {/* Mobile Sticky CTA */}
        <div className="fixed bottom-0 left-0 right-0 p-4 border-t lg:hidden z-50 glass-strong" style={{ borderColor: 'var(--border-soft)' }}>
           <Link href={`/checkout/${course_id}`} className="btn-primary w-full py-4 rounded-xl text-center font-bold text-lg block">
-             Enroll Now — $149
+             Enroll Now — ₹149
           </Link>
        </div>
     </div>

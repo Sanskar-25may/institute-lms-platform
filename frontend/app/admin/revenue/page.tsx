@@ -6,9 +6,9 @@ export default function AdminRevenuePage() {
   const [activeTab, setActiveTab] = useState("payouts");
 
   const payouts = [
-    { id: 1, faculty: "Aisha Verma", amount: "$12,450.00", status: "Pending", method: "Bank Transfer", date: "Jul 1, 2026", initials: "AV", color: "from-fuchsia-500 to-pink-600" },
-    { id: 2, faculty: "Marcus Chen", amount: "$8,200.00", status: "Pending", method: "PayPal", date: "Jul 2, 2026", initials: "MC", color: "from-blue-500 to-cyan-500" },
-    { id: 3, faculty: "Priya Nair", amount: "$4,100.00", status: "Processed", method: "Bank Transfer", date: "Jun 15, 2026", initials: "PN", color: "from-emerald-500 to-teal-500" }
+    { id: 1, faculty: "Aisha Verma", amount: "₹12,450.00", status: "Pending", method: "Bank Transfer", date: "Jul 1, 2026", initials: "AV", color: "from-fuchsia-500 to-pink-600" },
+    { id: 2, faculty: "Marcus Chen", amount: "₹8,200.00", status: "Pending", method: "PayPal", date: "Jul 2, 2026", initials: "MC", color: "from-blue-500 to-cyan-500" },
+    { id: 3, faculty: "Priya Nair", amount: "₹4,100.00", status: "Processed", method: "Bank Transfer", date: "Jun 15, 2026", initials: "PN", color: "from-emerald-500 to-teal-500" }
   ];
 
   return (
@@ -26,18 +26,18 @@ export default function AdminRevenuePage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-[#131B2F] border border-bdr-soft p-6 rounded-2xl shadow-lg">
           <p className="text-sm font-medium text-txt-secondary mb-2">Gross Volume (30d)</p>
-          <h3 className="text-4xl font-extrabold text-txt-primary">$142,500</h3>
+          <h3 className="text-4xl font-extrabold text-txt-primary">₹142,500</h3>
         </div>
         <div className="bg-[#131B2F] border border-emerald-500/30 p-6 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.1)] relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-10">
             <svg className="w-24 h-24 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path><path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd"></path></svg>
           </div>
           <p className="text-sm font-medium text-emerald-400 mb-2 relative z-10">Platform Net Profit (20% fee)</p>
-          <h3 className="text-4xl font-extrabold text-txt-primary relative z-10">$28,500</h3>
+          <h3 className="text-4xl font-extrabold text-txt-primary relative z-10">₹28,500</h3>
         </div>
         <div className="bg-[#131B2F] border border-bdr-soft p-6 rounded-2xl shadow-lg">
           <p className="text-sm font-medium text-txt-secondary mb-2">Pending Payouts</p>
-          <h3 className="text-4xl font-extrabold text-rose-400">$20,650</h3>
+          <h3 className="text-4xl font-extrabold text-rose-400">₹20,650</h3>
         </div>
       </div>
 

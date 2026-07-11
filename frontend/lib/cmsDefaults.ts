@@ -318,7 +318,7 @@ export const CMS_SCHEMAS: PageSchema[] = [
         label: "Placement Stats",
         itemSchema: {
           title: { type: "string", label: "Stat Title", default: "Average Salary Increase" },
-          value: { type: "string", label: "Stat Value", default: "+$42k" },
+          value: { type: "string", label: "Stat Value", default: "+₹42k" },
           sub: { type: "string", label: "Subtext", default: "For students switching jobs" },
           isActive: { type: "boolean", label: "Show?", default: true }
         },

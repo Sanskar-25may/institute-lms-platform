@@ -580,7 +580,7 @@ select option {
 /* Shiny Dogtag Effect */
 @keyframes metallic-shine {
   0% { transform: translateX(-150%) skewX(-45deg); }
-  10%, 100% { transform: translateX(150%) skewX(-45deg); }
+  35%, 100% { transform: translateX(150%) skewX(-45deg); }
 }
 
 .gold-dogtag {
@@ -601,5 +601,5 @@ select option {
     rgba(255, 255, 255, 0) 100%
   );
   transform: translateX(-150%) skewX(-45deg);
-  animation: metallic-shine 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: metallic-shine 4.5s ease-in-out infinite;
 }

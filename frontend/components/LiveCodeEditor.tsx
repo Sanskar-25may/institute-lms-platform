@@ -73,7 +73,7 @@ export default function LiveCodeEditor() {
     return () => clearInterval(intervalId);
   }, []);
 
-  const highlightCode = (code: string) => {
+  const highlightCode = (code: string, isPhantom = false) => {
     let html = code
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
@@ -86,7 +86,7 @@ export default function LiveCodeEditor() {
       // Comments
       .replace(/(\/\/.*)/g, '<span style="color: #5c6370; font-style: italic">$1</span>');
       
-    return { __html: html + (isTyping ? '<span class="animate-pulse" style="color: #528bff">|</span>' : '') };
+    return { __html: html + (!isPhantom && isTyping ? '<span class="animate-pulse" style="color: #528bff">|</span>' : '') };
   };
 
   return (
@@ -122,7 +122,12 @@ export default function LiveCodeEditor() {
         
         {/* Code Area */}
         <div className="p-6 md:p-8 overflow-x-auto text-sm md:text-base font-mono leading-relaxed text-[#abb2bf] whitespace-pre text-left">
-          <div dangerouslySetInnerHTML={highlightCode(displayedCode)} />
+          <div className="grid">
+            {/* Phantom element to reserve exact space so the layout doesn't shift */}
+            <div className="invisible col-start-1 row-start-1" aria-hidden="true" dangerouslySetInnerHTML={highlightCode(CODE_SNIPPET, true)} />
+            {/* Real typing text overlay */}
+            <div className="col-start-1 row-start-1 pointer-events-auto" dangerouslySetInnerHTML={highlightCode(displayedCode, false)} />
+          </div>
         </div>
       </motion.div>
     </div>

@@ -232,6 +232,16 @@ export const CMS_SCHEMAS: PageSchema[] = [
         },
         default: []
       },
+      techStackHeading: { type: "string", label: "Tech Stack Heading", default: "Mastering the most in-demand technologies" },
+      techStackMarquee: {
+        type: "array",
+        label: "Tech Stack",
+        itemSchema: {
+          name: { type: "string", label: "Tech Name", default: "React" },
+          isActive: { type: "boolean", label: "Show?", default: true }
+        },
+        default: []
+      },
       features: {
         type: "array",
         label: "Features List",

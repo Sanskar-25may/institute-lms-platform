@@ -133,20 +133,34 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
              ))}
           </div>
           
+          <div className="text-center mt-16 mb-10 relative z-20">
+            <p className="text-sm font-bold uppercase tracking-widest drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>
+              {initialData.techStackHeading || "Mastering the most in-demand technologies"}
+            </p>
+          </div>
+
           {/* Tech Stack Marquee */}
-          <div className="flex animate-marquee whitespace-nowrap opacity-50 mt-8" style={{ animationDirection: 'reverse', animationDuration: '40s' }}>
+          <div className="flex animate-marquee whitespace-nowrap opacity-50" style={{ animationDirection: 'reverse', animationDuration: '40s' }}>
              {[1, 2].map((group) => (
                <div key={group} className="flex items-center gap-16 px-8 text-xl font-bold font-mono text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-primary), var(--accent-cyan))' }}>
-                  <span>React</span>
-                  <span>Next.js</span>
-                  <span>TypeScript</span>
-                  <span>Node.js</span>
-                  <span>PostgreSQL</span>
-                  <span>Docker</span>
-                  <span>AWS</span>
-                  <span>Redis</span>
-                  <span>TailwindCSS</span>
-                  <span>GraphQL</span>
+                  {(initialData.techStackMarquee && initialData.techStackMarquee.filter((t: any) => t.isActive !== false).length > 0) ? (
+                    initialData.techStackMarquee.filter((t: any) => t.isActive !== false).map((tech: any, i: number) => (
+                      <span key={i}>{tech.name}</span>
+                    ))
+                  ) : (
+                    <>
+                      <span>React</span>
+                      <span>Next.js</span>
+                      <span>TypeScript</span>
+                      <span>Node.js</span>
+                      <span>PostgreSQL</span>
+                      <span>Docker</span>
+                      <span>AWS</span>
+                      <span>Redis</span>
+                      <span>TailwindCSS</span>
+                      <span>GraphQL</span>
+                    </>
+                  )}
                </div>
              ))}
           </div>

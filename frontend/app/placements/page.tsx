@@ -39,11 +39,32 @@ export default async function PlacementsPage() {
            <h3 className="font-bold mb-10 text-xl" style={{ color: 'var(--text-secondary)' }}>Hiring Partners</h3>
            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
               {(cmsData?.companies && cmsData.companies.filter((c: any) => c.isActive !== false).length > 0) ? (
-                cmsData.companies.filter((c: any) => c.isActive !== false).map((company: any, i: number) => (
-                   <div key={i} className="h-20 flex items-center justify-center rounded-xl font-bold text-xl grayscale hover:grayscale-0 transition-all cursor-pointer" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-soft)' }}>
-                      {company.name}
-                   </div>
-                ))
+                cmsData.companies.filter((c: any) => c.isActive !== false).map((company: any, i: number) => {
+                   const getCompanyColors = (name: string) => {
+                     const n = name.toLowerCase();
+                     if (n.includes('google')) return { bg: '#ffffff', text: '#4285F4' };
+                     if (n.includes('amazon')) return { bg: '#232F3E', text: '#FF9900' };
+                     if (n.includes('microsoft')) return { bg: '#00A4EF', text: '#ffffff' };
+                     if (n.includes('meta') || n.includes('facebook')) return { bg: '#0668E1', text: '#ffffff' };
+                     if (n.includes('netflix')) return { bg: '#000000', text: '#E50914' };
+                     if (n.includes('apple')) return { bg: '#000000', text: '#ffffff' };
+                     if (n.includes('stripe')) return { bg: '#635BFF', text: '#ffffff' };
+                     if (n.includes('spotify')) return { bg: '#1DB954', text: '#ffffff' };
+                     return { bg: 'var(--text-primary)', text: 'var(--bg-base)' };
+                   };
+                   const colors = getCompanyColors(company.name);
+                   
+                   return (
+                     <div key={i} className="group h-20 relative flex items-center justify-center rounded-xl font-bold text-xl cursor-pointer overflow-hidden transition-transform hover:scale-105" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-soft)' }}>
+                        <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-100 group-hover:opacity-0" style={{ color: 'var(--text-secondary)' }}>
+                           {company.name}
+                        </div>
+                        <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 group-hover:opacity-100" style={{ background: colors.bg, color: colors.text }}>
+                           {company.name}
+                        </div>
+                     </div>
+                   );
+                })
               ) : (
                 <div className="col-span-2 md:col-span-5 text-center py-10 text-gray-500 italic border border-dashed rounded-3xl" style={{ borderColor: 'var(--border-soft)' }}>
                    No hiring partners provided in CMS

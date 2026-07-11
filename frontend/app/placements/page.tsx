@@ -40,27 +40,81 @@ export default async function PlacementsPage() {
            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
               {(cmsData?.companies && cmsData.companies.filter((c: any) => c.isActive !== false).length > 0) ? (
                 cmsData.companies.filter((c: any) => c.isActive !== false).map((company: any, i: number) => {
-                   const getCompanyColors = (name: string) => {
+                   const renderHoverContent = (name: string) => {
                      const n = name.toLowerCase();
-                     if (n.includes('google')) return { bg: '#ffffff', text: '#4285F4' };
-                     if (n.includes('amazon')) return { bg: '#232F3E', text: '#FF9900' };
-                     if (n.includes('microsoft')) return { bg: '#00A4EF', text: '#ffffff' };
-                     if (n.includes('meta') || n.includes('facebook')) return { bg: '#0668E1', text: '#ffffff' };
-                     if (n.includes('netflix')) return { bg: '#000000', text: '#E50914' };
-                     if (n.includes('apple')) return { bg: '#000000', text: '#ffffff' };
-                     if (n.includes('stripe')) return { bg: '#635BFF', text: '#ffffff' };
-                     if (n.includes('spotify')) return { bg: '#1DB954', text: '#ffffff' };
-                     return { bg: 'var(--text-primary)', text: 'var(--bg-base)' };
+                     if (n.includes('google')) {
+                       return (
+                         <div className="flex items-center justify-center w-full h-full bg-white font-sans text-[28px] font-medium tracking-tighter">
+                           <span className="text-[#4285F4]">G</span>
+                           <span className="text-[#EA4335]">o</span>
+                           <span className="text-[#FBBC05]">o</span>
+                           <span className="text-[#4285F4]">g</span>
+                           <span className="text-[#34A853]">l</span>
+                           <span className="text-[#EA4335]">e</span>
+                         </div>
+                       );
+                     }
+                     if (n.includes('amazon')) {
+                       return (
+                         <div className="flex flex-col items-center justify-center w-full h-full bg-white text-black relative">
+                           <span className="font-bold text-3xl tracking-tighter leading-none mt-2">amazon</span>
+                           <svg viewBox="0 0 100 25" className="w-16 h-4 text-[#FF9900] -mt-1" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round">
+                             <path d="M 5,5 Q 50,20 95,5" />
+                             <polyline points="85,2 95,5 88,15" strokeLinejoin="round" />
+                           </svg>
+                         </div>
+                       );
+                     }
+                     if (n.includes('microsoft')) {
+                       return (
+                         <div className="flex items-center justify-center w-full h-full bg-white gap-2 text-[#5E5E5E]">
+                           <div className="grid grid-cols-2 gap-[2px] w-[22px] h-[22px]">
+                             <div className="bg-[#F25022]"></div>
+                             <div className="bg-[#7FBA00]"></div>
+                             <div className="bg-[#00A4EF]"></div>
+                             <div className="bg-[#FFB900]"></div>
+                           </div>
+                           <span className="font-semibold text-[22px] tracking-tight">Microsoft</span>
+                         </div>
+                       );
+                     }
+                     if (n.includes('meta') || n.includes('facebook')) {
+                       return (
+                         <div className="flex items-center justify-center w-full h-full bg-[#041B49] text-white gap-2">
+                           <svg viewBox="0 0 100 60" className="h-8 w-12">
+                             <defs>
+                               <linearGradient id={`meta-grad-${i}`} x1="0" y1="0" x2="1" y2="0">
+                                 <stop offset="0%" stopColor="#0668E1" />
+                                 <stop offset="100%" stopColor="#c13584" />
+                               </linearGradient>
+                             </defs>
+                             <path d="M 28,30 C 15,10 5,30 28,30 C 15,50 5,30 28,30 L 72,30 C 85,10 95,30 72,30 C 85,50 95,30 72,30 Z" fill="none" stroke={`url(#meta-grad-${i})`} strokeWidth="12" strokeLinecap="round" strokeLinejoin="round"/>
+                           </svg>
+                           <span className="font-semibold text-2xl tracking-wide">Meta</span>
+                         </div>
+                       );
+                     }
+                     if (n.includes('netflix')) {
+                       return (
+                         <div className="flex items-center justify-center w-full h-full bg-black text-[#E50914] font-black text-[26px] tracking-widest uppercase">
+                           Netflix
+                         </div>
+                       );
+                     }
+                     return (
+                       <div className="flex items-center justify-center w-full h-full bg-white text-black font-bold text-xl">
+                         {name}
+                       </div>
+                     );
                    };
-                   const colors = getCompanyColors(company.name);
                    
                    return (
                      <div key={i} className="group h-20 relative flex items-center justify-center rounded-xl font-bold text-xl cursor-pointer overflow-hidden transition-transform hover:scale-105" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-soft)' }}>
                         <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-100 group-hover:opacity-0" style={{ color: 'var(--text-secondary)' }}>
                            {company.name}
                         </div>
-                        <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 group-hover:opacity-100" style={{ background: colors.bg, color: colors.text }}>
-                           {company.name}
+                        <div className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                           {renderHoverContent(company.name)}
                         </div>
                      </div>
                    );

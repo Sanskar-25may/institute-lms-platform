@@ -13,8 +13,8 @@ export default function EngineerPortfolioClient({ faculty }: { faculty: any }) {
       <div className="min-h-screen pt-24 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <Link href="/faculty" className="text-sm font-bold flex items-center gap-2 mb-12 hover:underline" style={{ color: 'var(--text-secondary)' }}>
-            &lt; Back to Faculty
+          <Link href="/engineers" className="text-sm font-bold flex items-center gap-2 mb-12 hover:underline" style={{ color: 'var(--text-secondary)' }}>
+            &lt; Back to Engineers
           </Link>
 
           {/* Hero Section */}

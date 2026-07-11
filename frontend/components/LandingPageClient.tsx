@@ -120,8 +120,8 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
           <div className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, var(--bg-card), transparent)' }}></div>
           
           <div className="flex animate-marquee whitespace-nowrap opacity-70 transition-all duration-500 hover:opacity-100">
-             {[1, 2].map((group) => (
-               <div key={group} className="flex items-center gap-16 px-8 text-2xl font-bold font-mono" style={{ color: 'var(--text-secondary)' }}>
+             {Array.from({ length: 20 }).map((_, group) => (
+               <div key={group} className="flex items-center gap-16 px-8 text-2xl font-bold font-mono shrink-0" style={{ color: 'var(--text-secondary)' }}>
                   {(initialData.marquee && initialData.marquee.filter((m: any) => m.isActive !== false).length > 0) ? (
                     initialData.marquee.filter((m: any) => m.isActive !== false).map((company: any, i: number) => (
                       <span key={i}>{company.name}</span>
@@ -141,8 +141,8 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
 
           {/* Tech Stack Marquee */}
           <div className="flex animate-marquee whitespace-nowrap opacity-50" style={{ animationDirection: 'reverse', animationDuration: '40s' }}>
-             {[1, 2].map((group) => (
-               <div key={group} className="flex items-center gap-16 px-8 text-xl font-bold font-mono text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-primary), var(--accent-cyan))' }}>
+             {Array.from({ length: 20 }).map((_, group) => (
+               <div key={group} className="flex items-center gap-16 px-8 text-xl font-bold font-mono text-transparent bg-clip-text shrink-0" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-primary), var(--accent-cyan))' }}>
                   {(initialData.techStackMarquee && initialData.techStackMarquee.filter((t: any) => t.isActive !== false).length > 0) ? (
                     initialData.techStackMarquee.filter((t: any) => t.isActive !== false).map((tech: any, i: number) => (
                       <span key={i}>{tech.name}</span>

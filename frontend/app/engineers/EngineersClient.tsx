@@ -39,7 +39,7 @@ export default function EngineersClient({ initialData, facultyList }: { initialD
                     </div>
                   )}
                   {faculty.profile?.experienceYears && (
-                    <div className="absolute bottom-4 right-4 px-4 py-1.5 rounded text-[11px] font-black uppercase tracking-widest shadow-xl border transform hover:scale-105 transition-transform" 
+                    <div className="gold-dogtag absolute bottom-4 right-4 px-4 py-1.5 rounded text-[11px] font-black uppercase tracking-widest shadow-xl border transform hover:scale-105 transition-transform" 
                          style={{ 
                            background: 'linear-gradient(135deg, #F9F295 0%, #E0AA3E 40%, #E0AA3E 60%, #B8860B 100%)', 
                            borderColor: '#FFF8DC', 

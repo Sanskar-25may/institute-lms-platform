@@ -39,7 +39,13 @@ export default function EngineersClient({ initialData, facultyList }: { initialD
                     </div>
                   )}
                   {faculty.profile?.experienceYears && (
-                    <div className="absolute bottom-4 right-4 px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md border shadow-lg" style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)', color: 'var(--accent-primary)' }}>
+                    <div className="absolute bottom-4 right-4 px-4 py-1.5 rounded text-[11px] font-black uppercase tracking-widest shadow-xl border transform hover:scale-105 transition-transform" 
+                         style={{ 
+                           background: 'linear-gradient(135deg, #F9F295 0%, #E0AA3E 40%, #E0AA3E 60%, #B8860B 100%)', 
+                           borderColor: '#FFF8DC', 
+                           color: '#332200',
+                           boxShadow: '0 4px 15px rgba(218, 165, 32, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.6)'
+                         }}>
                       {faculty.profile.experienceYears}+ Years Exp
                     </div>
                   )}

@@ -55,12 +55,12 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
 
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
             <Link href="/courses" className="btn-primary px-8 py-4 rounded-xl text-lg flex items-center justify-center gap-2">
-              Explore Courses
+              Explore Curriculums
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </Link>
-            <Link href="/auth" className="btn-secondary px-8 py-4 rounded-xl text-lg flex items-center justify-center gap-2 backdrop-blur-md">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              Watch Demo
+            <Link href="/projects" className="btn-secondary px-8 py-4 rounded-xl text-lg flex items-center justify-center gap-2 backdrop-blur-md">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+              View Alumni Projects
             </Link>
           </div>
 
@@ -132,6 +132,24 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
                </div>
              ))}
           </div>
+          
+          {/* Tech Stack Marquee */}
+          <div className="flex animate-marquee whitespace-nowrap opacity-50 mt-8" style={{ animationDirection: 'reverse', animationDuration: '40s' }}>
+             {[1, 2].map((group) => (
+               <div key={group} className="flex items-center gap-16 px-8 text-xl font-bold font-mono text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-primary), var(--accent-cyan))' }}>
+                  <span>React</span>
+                  <span>Next.js</span>
+                  <span>TypeScript</span>
+                  <span>Node.js</span>
+                  <span>PostgreSQL</span>
+                  <span>Docker</span>
+                  <span>AWS</span>
+                  <span>Redis</span>
+                  <span>TailwindCSS</span>
+                  <span>GraphQL</span>
+               </div>
+             ))}
+          </div>
         </div>
       </section>
 
@@ -191,8 +209,8 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
                    <p className="drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>Get instant access to all courses, projects, and the community.</p>
                  </div>
                  <div className="flex flex-col sm:flex-row gap-4 shrink-0 relative z-10">
-                    <Link href="/auth" className="btn-primary px-6 py-3 rounded-xl shadow-[0_0_20px_rgba(124,58,237,0.5)]">Start Free Trial</Link>
-                    <Link href="/courses" className="btn-secondary px-6 py-3 rounded-xl bg-[var(--bg-card)]">Browse Courses</Link>
+                    <Link href="/faculty" className="btn-primary px-6 py-3 rounded-xl shadow-[0_0_20px_rgba(124,58,237,0.5)]">Meet the Engineers</Link>
+                    <Link href="/community" className="btn-secondary px-6 py-3 rounded-xl bg-[var(--bg-card)]">Join the Community</Link>
                  </div>
               </motion.div>
            </div>
@@ -303,7 +321,7 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
             <p className="text-xl mb-10 drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>Join thousands of developers leveling up their careers.</p>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
                <Link href="/auth" className="btn-primary px-10 py-5 rounded-2xl text-xl inline-flex items-center gap-3 shadow-[0_0_30px_rgba(124,58,237,0.6)]">
-                  Start Your Free Trial
+                  Start Your Journey
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                </Link>
             </motion.div>

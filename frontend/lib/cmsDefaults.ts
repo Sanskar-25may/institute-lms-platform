@@ -42,7 +42,10 @@ export const CMS_SCHEMAS: PageSchema[] = [
           { id: "public-privacy", isHidden: false },
           { id: "public-terms", isHidden: false },
           { id: "public-cookie", isHidden: false },
-          { id: "public-refund", isHidden: false }
+          { id: "public-refund", isHidden: false },
+          { id: "public-projects", isHidden: false },
+          { id: "public-faculty", isHidden: false },
+          { id: "public-community", isHidden: false }
         ]
       },
       studentOrder: {
@@ -130,6 +133,73 @@ export const CMS_SCHEMAS: PageSchema[] = [
           name: { type: "string", label: "Link Text", default: "New Link" },
           href: { type: "string", label: "URL Path", default: "/" },
           isActive: { type: "boolean", label: "Is Active?", default: true }
+        },
+        default: []
+      }
+    }
+  },
+  {
+    id: "public-projects",
+    name: "Alumni Projects Page",
+    category: "public",
+    schema: {
+      heroTitle: { type: "string", label: "Hero Title", default: "Alumni Projects" },
+      heroSubtitle: { type: "text", label: "Hero Subtitle", default: "Explore production-grade applications built by our students. This is the portfolio you will graduate with." },
+      projects: {
+        type: "array",
+        label: "Projects List",
+        itemSchema: {
+          title: { type: "string", label: "Project Title", default: "Full-Stack AI LMS Platform" },
+          description: { type: "text", label: "Project Description", default: "A complete learning management system with AI integrations." },
+          githubLink: { type: "string", label: "GitHub URL", default: "https://github.com" },
+          demoVideoUrl: { type: "string", label: "Demo Video URL (YouTube embed or MP4)", default: "" },
+          image: { type: "string", label: "Fallback Image URL", default: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=800" },
+          techStack: { 
+            type: "array", 
+            label: "Tech Stack (Strings)", 
+            itemSchema: { tech: { type: "string", label: "Tech Name", default: "Next.js" } },
+            default: []
+          },
+          isActive: { type: "boolean", label: "Is Active?", default: true }
+        },
+        default: []
+      }
+    }
+  },
+  {
+    id: "public-faculty",
+    name: "Faculty Overview Page",
+    category: "public",
+    schema: {
+      heroTitle: { type: "string", label: "Hero Title", default: "Meet the Top 1% Engineers" },
+      heroSubtitle: { type: "text", label: "Hero Subtitle", default: "Learn directly from industry veterans who have built products scaling to millions of users. No influencers, just real engineers." }
+    }
+  },
+  {
+    id: "public-community",
+    name: "Community Page",
+    category: "public",
+    schema: {
+      onlineCount: { type: "string", label: "Members Online Text", default: "1,204" },
+      heroTitle: { type: "string", label: "Hero Title", default: "Join the Developer Network" },
+      heroSubtitle: { type: "text", label: "Hero Subtitle", default: "Your network is your net worth. Connect with thousands of ambitious engineers building the next generation of software." },
+      joinButtonText: { type: "string", label: "Join Button Text", default: "Join the Community" },
+      joinLink: { type: "string", label: "Join Link URL", default: "/auth" },
+      features: {
+        type: "array",
+        label: "Community Features",
+        itemSchema: {
+          title: { type: "string", label: "Feature Title", default: "Private Discord Server" },
+          description: { type: "text", label: "Feature Description", default: "Get 24/7 access to our private Discord..." },
+          icon: { type: "string", label: "Emoji Icon", default: "💬" }
+        },
+        default: []
+      },
+      members: {
+        type: "array",
+        label: "Types of Members",
+        itemSchema: {
+          roleName: { type: "string", label: "Role Name", default: "Frontend Developers" }
         },
         default: []
       }

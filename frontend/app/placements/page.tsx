@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSiteContent } from "@/lib/cms";
+import { FaMeta } from 'react-icons/fa6';
 
 export default async function PlacementsPage() {
   const cmsData = await getSiteContent("public-placements");
@@ -81,16 +82,16 @@ export default async function PlacementsPage() {
                      if (n.includes('meta') || n.includes('facebook')) {
                        return (
                          <div className="flex items-center justify-center w-full h-full bg-[#041B49] text-white gap-2">
-                           <svg viewBox="0 0 100 60" className="h-8 w-12">
+                           <svg width="0" height="0" className="absolute">
                              <defs>
                                <linearGradient id={`meta-grad-${i}`} x1="0" y1="0" x2="1" y2="0">
                                  <stop offset="0%" stopColor="#0668E1" />
                                  <stop offset="100%" stopColor="#c13584" />
                                </linearGradient>
                              </defs>
-                             <path d="M 28,30 C 15,10 5,30 28,30 C 15,50 5,30 28,30 L 72,30 C 85,10 95,30 72,30 C 85,50 95,30 72,30 Z" fill="none" stroke={`url(#meta-grad-${i})`} strokeWidth="12" strokeLinecap="round" strokeLinejoin="round"/>
                            </svg>
-                           <span className="font-semibold text-2xl tracking-wide">Meta</span>
+                           <FaMeta style={{ fill: `url(#meta-grad-${i})` }} className="text-4xl" />
+                           <span className="font-semibold text-3xl tracking-wide ml-1">Meta</span>
                          </div>
                        );
                      }

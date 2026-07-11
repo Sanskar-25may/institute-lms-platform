@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 
-export default function FacultyPortfolioClient({ faculty }: { faculty: any }) {
+export default function EngineerPortfolioClient({ faculty }: { faculty: any }) {
   const profile = faculty.profile || {};
   const courses = faculty.courses || [];
   

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 
-export default function FacultyClient({ initialData, facultyList }: { initialData: any, facultyList: any[] }) {
+export default function EngineersClient({ initialData, facultyList }: { initialData: any, facultyList: any[] }) {
   return (
     <>
       <div className="min-h-screen pt-24 pb-20">
@@ -71,7 +71,7 @@ export default function FacultyClient({ initialData, facultyList }: { initialDat
                   </div>
                   
                   <div className="mt-auto">
-                    <Link href={`/faculty/${faculty.id}`} className="inline-flex items-center gap-2 text-sm font-bold hover:gap-3 transition-all" style={{ color: 'var(--accent-primary)' }}>
+                    <Link href={`/engineers/${faculty.id}`} className="inline-flex items-center gap-2 text-sm font-bold hover:gap-3 transition-all" style={{ color: 'var(--accent-primary)' }}>
                       Know more <span>&gt;&gt;&gt;</span>
                     </Link>
                   </div>

@@ -1,15 +1,15 @@
-import FacultyPortfolioClient from "./FacultyPortfolioClient";
+import EngineerPortfolioClient from "./EngineerPortfolioClient";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
 
-export default async function FacultyPortfolioPage({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = await params;
+export default async function EngineerPortfolioPage({ params }: { params: { id: string } }) {
+  const { id } = await params;
   
   const faculty = await prisma.user.findUnique({
     where: { 
-      id: resolvedParams.id,
+      id: id,
       role: "INSTRUCTOR",
       isBlocked: false,
     },
@@ -25,5 +25,5 @@ export default async function FacultyPortfolioPage({ params }: { params: Promise
     notFound();
   }
 
-  return <FacultyPortfolioClient faculty={faculty} />;
+  return <EngineerPortfolioClient faculty={faculty} />;
 }

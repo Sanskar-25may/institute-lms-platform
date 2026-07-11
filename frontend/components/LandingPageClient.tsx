@@ -223,7 +223,7 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
                    <p className="drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>Get instant access to all courses, projects, and the community.</p>
                  </div>
                  <div className="flex flex-col sm:flex-row gap-4 shrink-0 relative z-10">
-                    <Link href="/faculty" className="btn-primary px-6 py-3 rounded-xl shadow-[0_0_20px_rgba(124,58,237,0.5)]">Meet the Engineers</Link>
+                    <Link href="/engineers" className="btn-primary px-6 py-3 rounded-xl shadow-[0_0_20px_rgba(124,58,237,0.5)]">Meet the Engineers</Link>
                     <Link href="/community" className="btn-secondary px-6 py-3 rounded-xl bg-[var(--bg-card)]">Join the Community</Link>
                  </div>
               </motion.div>

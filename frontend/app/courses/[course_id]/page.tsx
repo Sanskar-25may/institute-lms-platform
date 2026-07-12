@@ -145,25 +145,29 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
              <div className="col-span-1 space-y-8">
                 
                 {/* Instructor Card */}
-                <div className="p-6 rounded-[24px]" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
-                   <h3 className="font-bold mb-6 uppercase tracking-wider text-xs" style={{ color: 'var(--text-tertiary)' }}>Your Instructor</h3>
-                   <div className="flex items-center gap-4 mb-4">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center font-bold text-xl text-txt-primary shadow-lg">
-                         AV
-                      </div>
-                      <div>
-                         <div className="font-bold text-lg">Aisha Verma</div>
-                         <div className="text-sm font-medium" style={{ color: 'var(--accent-primary)' }}>Senior Staff Engineer</div>
-                      </div>
-                   </div>
-                   <div className="flex gap-4 text-sm font-medium mb-4 pb-4 border-b" style={{ borderColor: 'var(--border-soft)', color: 'var(--text-secondary)' }}>
-                      <div className="flex items-center gap-1"><svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg> 4.9 Instructor Rating</div>
-                      <div className="flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg> 32k Students</div>
-                   </div>
-                   <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                      Former Principal Engineer at Vercel. I specialize in teaching complex architecture concepts by breaking them down into digestible, project-based steps.
-                   </p>
-                </div>
+                 <div className="p-6 rounded-[24px]" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
+                    <h3 className="font-bold mb-6 uppercase tracking-wider text-xs" style={{ color: 'var(--text-tertiary)' }}>Your Instructor</h3>
+                    <Link href="/engineers" className="flex items-center gap-4 mb-4 group cursor-pointer">
+                       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center font-bold text-xl text-txt-primary shadow-lg group-hover:scale-105 transition-transform">
+                          AV
+                       </div>
+                       <div>
+                          <div className="font-bold text-lg group-hover:text-[var(--accent-primary)] transition-colors">Aisha Verma</div>
+                          <div className="text-sm font-medium" style={{ color: 'var(--accent-primary)' }}>Senior Staff Engineer</div>
+                          <div className="text-xs mt-1 flex items-center gap-1" style={{ color: 'var(--text-tertiary)' }}>
+                            View Profile
+                            <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+                          </div>
+                       </div>
+                    </Link>
+                    <div className="flex gap-4 text-sm font-medium mb-4 pb-4 border-b" style={{ borderColor: 'var(--border-soft)', color: 'var(--text-secondary)' }}>
+                       <div className="flex items-center gap-1"><svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg> 4.9 Instructor Rating</div>
+                       <div className="flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg> 32k Students</div>
+                    </div>
+                    <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                       Former Principal Engineer at Vercel. I specialize in teaching complex architecture concepts by breaking them down into digestible, project-based steps.
+                    </p>
+                 </div>
 
                 {/* Requirements */}
                 <div className="p-6 rounded-[24px]" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-soft)' }}>

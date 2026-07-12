@@ -98,7 +98,7 @@ export default function CoursesCatalogClient({ cmsData, courses }: { cmsData: an
                           <div className="mt-auto pt-4 border-t flex items-center justify-between" style={{ borderColor: 'var(--border-soft)' }}>
                              <span className="font-mono text-lg font-bold" style={{ color: 'var(--text-primary)' }}>{course.price}</span>
                              <span className="text-sm font-semibold flex items-center gap-1 group-hover:text-[var(--accent-primary)] transition-colors" style={{ color: 'var(--text-secondary)' }}>
-                                Enroll
+                                View More
                                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                              </span>
                           </div>

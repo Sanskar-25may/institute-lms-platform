@@ -4,12 +4,17 @@ import Link from "next/link";
 
 export default function CoursesClient({ cmsData }: { cmsData: any }) {
   const [filter, setFilter] = useState("all");
-
-  const courses = [
+  const [courses, setCourses] = useState([
     { id: "1", title: "Full-Stack React & TypeScript", status: "published", students: 842, rating: 4.9, revenue: "₹32k" },
     { id: "2", title: "Next.js App Router Masterclass", status: "draft", students: 0, rating: 0, revenue: "₹0" },
     { id: "3", title: "UI/UX for Developers", status: "published", students: 406, rating: 4.7, revenue: "₹16k" },
-  ];
+  ]);
+
+  const togglePublish = (id: string) => {
+    setCourses(prev => prev.map(c =>
+      c.id === id ? { ...c, status: c.status === "published" ? "draft" : "published" } : c
+    ));
+  };
 
   return (
     <div className="space-y-8 pb-20">
@@ -80,10 +85,19 @@ export default function CoursesClient({ cmsData }: { cmsData: any }) {
                    </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-2">
-                   <Link href="/faculty/courses/builder" className="btn-primary py-2 rounded-lg text-sm font-bold text-center">Edit Course</Link>
+                <div className="grid grid-cols-2 gap-2 mb-2">
+                   <Link href="/faculty/courses/builder" className="btn-primary py-2 rounded-lg text-sm font-bold text-center flex items-center justify-center gap-1">
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                      Edit Course
+                   </Link>
                    <Link href="/faculty/analytics" className="btn-secondary py-2 rounded-lg text-sm font-bold text-center">Analytics</Link>
                 </div>
+                <button
+                   onClick={() => togglePublish(course.id)}
+                   className={`w-full py-2 rounded-lg text-sm font-bold transition-all ${course.status === 'published' ? 'text-amber-500 border border-amber-500/40 hover:bg-amber-500/10' : 'text-emerald-500 border border-emerald-500/40 hover:bg-emerald-500/10'}`}
+                >
+                   {course.status === 'published' ? '⬇ Unpublish Course' : '🚀 Publish Course'}
+                </button>
              </div>
           ))}
        </div>

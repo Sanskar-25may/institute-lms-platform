@@ -130,11 +130,11 @@ export default function CreateClient({ cmsData }: { cmsData: any }) {
           <button 
              onClick={() => {
                 if (step < 3) setStep(step + 1);
-                else router.push("/faculty/courses/builder");
+                else router.push("/faculty/courses");
              }}
              className="btn-primary px-8 py-3 rounded-xl font-bold"
           >
-             {step === 3 ? "Create Course" : "Continue"}
+             {step === 3 ? "Create Course & Go to My Courses" : "Continue"}
           </button>
        </div>
     </div>

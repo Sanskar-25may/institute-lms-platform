@@ -1,6 +1,7 @@
 "use client";
 
 import { FieldSchema } from "@/lib/cmsDefaults";
+import ImageUploader from "./ImageUploader";
 
 interface DynamicFormProps {
   schema: Record<string, FieldSchema>;
@@ -36,6 +37,14 @@ export default function DynamicForm({ schema, data, onChange }: DynamicFormProps
                 value={val || ""}
                 onChange={(e) => handleChange(key, e.target.value)}
                 className="input-premium w-full min-h-[120px]"
+              />
+            )}
+
+            {field.type === "image" && (
+              <ImageUploader
+                value={val || ""}
+                onChange={(url) => handleChange(key, url)}
+                label={field.label}
               />
             )}
 

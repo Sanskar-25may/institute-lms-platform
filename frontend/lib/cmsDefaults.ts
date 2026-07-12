@@ -289,7 +289,7 @@ export const CMS_SCHEMAS: PageSchema[] = [
         itemSchema: {
           name: { type: "string", label: "Name", default: "John Doe" },
           role: { type: "string", label: "Role", default: "Instructor" },
-          imageUrl: { type: "string", label: "Image URL", default: "" },
+          imageUrl: { type: "image", label: "Photo", default: "" },
           isActive: { type: "boolean", label: "Is Active?", default: true }
         },
         default: []
@@ -341,7 +341,7 @@ export const CMS_SCHEMAS: PageSchema[] = [
           prev: { type: "string", label: "Before", default: "Junior Dev" },
           now: { type: "string", label: "After", default: "Software Engineer at Stripe" },
           quote: { type: "text", label: "Quote", default: "This course changed my life." },
-          imgUrl: { type: "string", label: "Image URL", default: "" },
+          imgUrl: { type: "image", label: "Student Photo", default: "" },
           isActive: { type: "boolean", label: "Show?", default: true }
         },
         default: []
@@ -362,7 +362,7 @@ export const CMS_SCHEMAS: PageSchema[] = [
           name: { type: "string", label: "Name", default: "Alex Chen" },
           role: { type: "string", label: "Role", default: "Frontend Engineer" },
           quote: { type: "text", label: "Quote", default: "This course was great." },
-          imgUrl: { type: "string", label: "Image URL", default: "" },
+          imgUrl: { type: "image", label: "Student Photo", default: "" },
           isActive: { type: "boolean", label: "Show?", default: true }
         },
         default: []
@@ -661,7 +661,7 @@ export const CMS_SCHEMAS: PageSchema[] = [
           title: { type: "string", label: "Title", default: "" },
           content: { type: "text", label: "Content Text", default: "" },
           codeSnippet: { type: "text", label: "Code Snippet", default: "" },
-          imageUrl: { type: "string", label: "Image URL", default: "" },
+          imageUrl: { type: "image", label: "Post Image", default: "" },
           videoUrl: { type: "string", label: "Video URL", default: "" },
           author: { type: "string", label: "Author Name", default: "Super Admin" },
           date: { type: "string", label: "Date", default: "Today" },

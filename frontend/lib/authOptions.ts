@@ -43,12 +43,17 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Missing credentials");
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+        const user = await prisma.user.findFirst({
+          where: {
+            OR: [
+              { email: credentials.email },
+              { phoneNumber: credentials.email }
+            ]
+          }
         });
 
         if (!user) {
-          throw new Error("User not found");
+          throw new Error("User not found with this email or phone number");
         }
 
         if (!user.passwordHash) {

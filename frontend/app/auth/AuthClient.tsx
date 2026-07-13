@@ -18,6 +18,7 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [pendingSignupVerification, setPendingSignupVerification] = useState<"none" | "choose" | "email" | "phone">("none");
+  const [signupVerifyMethod, setSignupVerifyMethod] = useState<"email" | "phone">("email");
   
   // New OTP States
   const [loginMethod, setLoginMethod] = useState<"password" | "emailOtp" | "phoneOtp">("password");
@@ -52,9 +53,7 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
         return;
       }
 
-      // Instead of creating the account immediately, we transition to verification choice
-      setPendingSignupVerification("choose");
-      setIsLoading(false);
+      await handleSendSignupOtp(signupVerifyMethod);
       return;
     }
 
@@ -363,10 +362,10 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
                      {errorMsg}
                    </div>
                  )}
-
+                 
                  <div className="flex bg-black/5 p-1 rounded-xl mb-6" style={{ background: 'var(--bg-surface)' }}>
-                    <button onClick={() => setIsLogin(true)} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${isLogin ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={isLogin ? {background: 'var(--bg-card)'} : {}}>Sign In</button>
-                    <button onClick={() => setIsLogin(false)} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${!isLogin ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={!isLogin ? {background: 'var(--bg-card)'} : {}}>Sign Up</button>
+                    <button onClick={() => { setIsLogin(true); setLoginMethod("password"); setPendingSignupVerification("none"); }} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${isLogin ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={isLogin ? {background: 'var(--bg-card)'} : {}}>Sign In</button>
+                    <button onClick={() => { setIsLogin(false); setLoginMethod("password"); setPendingSignupVerification("none"); }} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${!isLogin ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={!isLogin ? {background: 'var(--bg-card)'} : {}}>Sign Up</button>
                  </div>
 
                  <div className="space-y-4 mb-6">
@@ -427,14 +426,14 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
                             <button type="submit" disabled={isLoading || otpCode.length < 6} className="btn-primary w-full py-4 rounded-xl text-lg font-bold">
                               {isLoading ? "Verifying..." : "Verify & Create Account"}
                             </button>
-                            <button type="button" onClick={() => setPendingSignupVerification("choose")} className="text-sm mt-4 underline text-gray-500">Back to Options</button>
+                            <button type="button" onClick={() => setPendingSignupVerification("none")} className="text-sm mt-4 underline text-gray-500">Back to Signup</button>
                          </form>
                        )}
                     </div>
                  ) : (
                     <>
                        {/* Login Method Tabs */}
-                       {!otpSent && (
+                       {isLogin && !otpSent && (
                    <div className="flex bg-black/5 p-1 rounded-xl mb-6" style={{ background: 'var(--bg-surface)' }}>
                       <button onClick={() => setLoginMethod("password")} className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${loginMethod === "password" ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={loginMethod === "password" ? {background: 'var(--bg-card)'} : {}}>Password</button>
                       <button onClick={() => setLoginMethod("emailOtp")} className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${loginMethod === "emailOtp" ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={loginMethod === "emailOtp" ? {background: 'var(--bg-card)'} : {}}>Email OTP</button>
@@ -524,6 +523,36 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
                                 />
                              </div>
                           )}
+                          
+                          {!isLogin && (
+                              <div>
+                                 <label className="block text-sm font-medium mb-2">Preferred Verification Method</label>
+                                 <div className="flex gap-6 p-4 rounded-xl" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-soft)' }}>
+                                    <label className="flex items-center gap-2 cursor-pointer text-sm font-bold" style={{ color: 'var(--text-primary)' }}>
+                                       <input 
+                                          type="radio" 
+                                          name="signupVerifyMethod" 
+                                          value="email" 
+                                          checked={signupVerifyMethod === "email"} 
+                                          onChange={() => setSignupVerifyMethod("email")}
+                                          className="w-4 h-4 accent-[#7C3AED]"
+                                       />
+                                       Verify Email
+                                    </label>
+                                    <label className="flex items-center gap-2 cursor-pointer text-sm font-bold" style={{ color: 'var(--text-primary)' }}>
+                                       <input 
+                                          type="radio" 
+                                          name="signupVerifyMethod" 
+                                          value="phone" 
+                                          checked={signupVerifyMethod === "phone"} 
+                                          onChange={() => setSignupVerifyMethod("phone")}
+                                          className="w-4 h-4 accent-[#7C3AED]"
+                                       />
+                                       Verify Phone Number
+                                    </label>
+                                 </div>
+                              </div>
+                           )}
                           
                           <div id="recaptcha-container"></div>
                        </>

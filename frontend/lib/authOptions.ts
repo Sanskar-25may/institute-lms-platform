@@ -6,6 +6,8 @@ import bcrypt from "bcryptjs";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import { cookies } from "next/headers";
+import "@/lib/firebaseAdmin"; // Ensures it is initialized
+import { getAuth } from "firebase-admin/auth";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
@@ -69,6 +71,100 @@ export const authOptions: NextAuthOptions = {
           name: user.fullName,
           role: user.role,
         };
+      },
+    }),
+    CredentialsProvider({
+      id: "email-otp",
+      name: "Email OTP",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        otp: { label: "OTP", type: "text" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.otp) {
+          throw new Error("Missing email or OTP");
+        }
+
+        const otpRecord = await prisma.otpCode.findFirst({
+          where: { email: credentials.email },
+          orderBy: { createdAt: "desc" },
+        });
+
+        if (!otpRecord) throw new Error("No OTP requested");
+        if (otpRecord.code !== credentials.otp) throw new Error("Invalid OTP");
+        if (otpRecord.expiresAt < new Date()) throw new Error("OTP expired");
+
+        // Mark OTP as used by deleting it (or deleting all for this email)
+        await prisma.otpCode.deleteMany({ where: { email: credentials.email } });
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (!user) {
+          throw new Error("User not found");
+        }
+        if (user.isBlocked) {
+          throw new Error("Account blocked");
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.fullName,
+          role: user.role,
+        };
+      },
+    }),
+    CredentialsProvider({
+      id: "phone-otp",
+      name: "Phone OTP",
+      credentials: {
+        idToken: { label: "ID Token", type: "text" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.idToken) {
+          throw new Error("Missing ID token");
+        }
+
+        try {
+          const decodedToken = await getAuth().verifyIdToken(credentials.idToken);
+          const phoneNumber = decodedToken.phone_number;
+
+          if (!phoneNumber) {
+            throw new Error("Phone number not found in token");
+          }
+
+          let user = await prisma.user.findFirst({
+            where: { phoneNumber },
+          });
+
+          if (!user) {
+            // Check if we can link it or create a new user. 
+            // Since email is required in our DB, we'll create a placeholder email
+            user = await prisma.user.create({
+              data: {
+                phoneNumber,
+                email: `${phoneNumber}@phoneauth.local`,
+                role: "STUDENT",
+              },
+            });
+          }
+
+          if (user.isBlocked) {
+            throw new Error("Account blocked");
+          }
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.fullName || phoneNumber,
+            role: user.role,
+          };
+        } catch (error) {
+          console.error("Firebase auth error:", error);
+          throw new Error("Invalid phone token");
+        }
       },
     }),
   ],

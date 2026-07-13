@@ -6,6 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import PhoneInput, { isPossiblePhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { auth } from "@/lib/firebase";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 export default function AuthClient({ cmsData }: { cmsData: any }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +17,13 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  
+  // New OTP States
+  const [loginMethod, setLoginMethod] = useState<"password" | "emailOtp" | "phoneOtp">("password");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const [confirmationResult, setConfirmationResult] = useState<any>(null);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/student";
@@ -115,6 +124,96 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
     }
   };
 
+  const setupRecaptcha = () => {
+    if (!(window as any).recaptchaVerifier) {
+      (window as any).recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible',
+      });
+    }
+  };
+
+  const handleSendOtp = async () => {
+    setIsLoading(true);
+    setErrorMsg("");
+
+    try {
+      if (loginMethod === "emailOtp") {
+        if (!email) throw new Error("Please enter an email");
+        
+        const res = await fetch("/api/auth/send-email-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.message || "Failed to send OTP");
+        }
+        
+        setOtpSent(true);
+      } else if (loginMethod === "phoneOtp") {
+        if (!phoneNumber || !isPossiblePhoneNumber(phoneNumber)) {
+          throw new Error("Please enter a valid phone number");
+        }
+
+        setupRecaptcha();
+        const appVerifier = (window as any).recaptchaVerifier;
+        const result = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+        setConfirmationResult(result);
+        setOtpSent(true);
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "Something went wrong");
+      if ((window as any).recaptchaVerifier) {
+        (window as any).recaptchaVerifier.render().then((widgetId: any) => {
+          (window as any).grecaptcha.reset(widgetId);
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrorMsg("");
+
+    try {
+      let res;
+      if (loginMethod === "emailOtp") {
+        res = await signIn("email-otp", {
+          redirect: false,
+          email,
+          otp: otpCode,
+        });
+      } else if (loginMethod === "phoneOtp") {
+        if (!confirmationResult) throw new Error("No confirmation result");
+        
+        const result = await confirmationResult.confirm(otpCode);
+        const idToken = await result.user.getIdToken();
+        
+        res = await signIn("phone-otp", {
+          redirect: false,
+          idToken,
+        });
+      }
+
+      setIsLoading(false);
+
+      if (res?.error) {
+        setErrorMsg(res.error);
+      } else {
+        router.push(callbackUrl);
+        router.refresh();
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "Invalid OTP");
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex">
        {/* Left side (Visual) */}
@@ -193,7 +292,6 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
           </Link>
 
           <div className="max-w-md w-full animate-fade-in-up">
-          <div className="max-w-md w-full animate-fade-in-up">
               <div>
                  <div className="text-center mb-8">
                     <h2 className="heading-font text-3xl font-bold mb-2">
@@ -233,66 +331,116 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
                      <div className="w-full border-t border-gray-200" style={{ borderColor: 'var(--border-soft)' }}></div>
                    </div>
                    <div className="relative flex justify-center text-sm">
-                     <span className="px-2" style={{ background: 'var(--bg-base)', color: 'var(--text-secondary)' }}>Or continue with email</span>
+                     <span className="px-2" style={{ background: 'var(--bg-base)', color: 'var(--text-secondary)' }}>Or choose a sign-in method</span>
                    </div>
                  </div>
 
-                 <form onSubmit={handleSubmit} className="space-y-5">
-                    {!isLogin && (
-                       <div>
-                          <label className="block text-sm font-medium mb-2">Full Name</label>
-                          <input type="text" required={!isLogin} value={fullName} onChange={e => setFullName(e.target.value)} className="input-premium w-full px-4 py-3 rounded-xl" placeholder="Jane Doe" />
-                       </div>
-                    )}
-                    
-                    <div>
-                       <label className="block text-sm font-medium mb-2">Email</label>
-                       <input 
-                         type="email" 
-                         required 
-                         className="input-premium w-full px-4 py-3 rounded-xl" 
-                         placeholder="jane@example.com" 
-                         value={email}
-                         onChange={(e) => setEmail(e.target.value)}
-                       />
-                    </div>
+                 {/* Login Method Tabs */}
+                 {!otpSent && (
+                   <div className="flex bg-black/5 p-1 rounded-xl mb-6" style={{ background: 'var(--bg-surface)' }}>
+                      <button onClick={() => setLoginMethod("password")} className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${loginMethod === "password" ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={loginMethod === "password" ? {background: 'var(--bg-card)'} : {}}>Password</button>
+                      <button onClick={() => setLoginMethod("emailOtp")} className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${loginMethod === "emailOtp" ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={loginMethod === "emailOtp" ? {background: 'var(--bg-card)'} : {}}>Email OTP</button>
+                      <button onClick={() => setLoginMethod("phoneOtp")} className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${loginMethod === "phoneOtp" ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={loginMethod === "phoneOtp" ? {background: 'var(--bg-card)'} : {}}>Phone OTP</button>
+                   </div>
+                 )}
 
-                    {!isLogin && (
-                       <div>
-                          <label className="block text-sm font-medium mb-2">Phone Number</label>
-                          <PhoneInput
-                            international
-                            defaultCountry="US"
-                            value={phoneNumber}
-                            onChange={(val) => setPhoneNumber(val?.toString() || "")}
-                            className="input-premium w-full px-4 py-3 rounded-xl phone-input-container"
+                 <form onSubmit={otpSent ? handleVerifyOtp : (loginMethod === "password" ? handleSubmit : handleSendOtp)} className="space-y-5">
+                    {otpSent ? (
+                       <div className="animate-fade-in-up">
+                          <label className="block text-sm font-medium mb-2">Enter the 6-digit code</label>
+                          <input 
+                            type="text" 
+                            required 
+                            className="input-premium w-full px-4 py-3 rounded-xl text-center text-2xl tracking-widest font-bold" 
+                            placeholder="••••••" 
+                            value={otpCode}
+                            onChange={(e) => setOtpCode(e.target.value)}
+                            maxLength={6}
                           />
+                          <button type="button" onClick={() => setOtpSent(false)} className="mt-4 text-sm text-[var(--text-secondary)] hover:underline">
+                             Use a different method
+                          </button>
                        </div>
+                    ) : (
+                       <>
+                          {!isLogin && loginMethod === "password" && (
+                             <div>
+                                <label className="block text-sm font-medium mb-2">Full Name</label>
+                                <input type="text" required value={fullName} onChange={e => setFullName(e.target.value)} className="input-premium w-full px-4 py-3 rounded-xl" placeholder="Jane Doe" />
+                             </div>
+                          )}
+                          
+                          {(loginMethod === "password" || loginMethod === "emailOtp") && (
+                             <div>
+                                <label className="block text-sm font-medium mb-2">Email</label>
+                                <input 
+                                  type="email" 
+                                  required 
+                                  className="input-premium w-full px-4 py-3 rounded-xl" 
+                                  placeholder="jane@example.com" 
+                                  value={email}
+                                  onChange={(e) => setEmail(e.target.value)}
+                                />
+                             </div>
+                          )}
+
+                          {(!isLogin && loginMethod === "password") && (
+                             <div>
+                                <label className="block text-sm font-medium mb-2">Phone Number</label>
+                                <PhoneInput
+                                  international
+                                  defaultCountry="IN"
+                                  value={phoneNumber}
+                                  onChange={(val) => setPhoneNumber(val?.toString() || "")}
+                                  className="input-premium w-full px-4 py-3 rounded-xl phone-input-container"
+                                />
+                             </div>
+                          )}
+
+                          {loginMethod === "phoneOtp" && (
+                             <div>
+                                <label className="block text-sm font-medium mb-2">Phone Number</label>
+                                <PhoneInput
+                                  international
+                                  defaultCountry="IN"
+                                  value={phoneNumber}
+                                  onChange={(val) => setPhoneNumber(val?.toString() || "")}
+                                  className="input-premium w-full px-4 py-3 rounded-xl phone-input-container"
+                                />
+                             </div>
+                          )}
+                          
+                          {loginMethod === "password" && (
+                             <div>
+                                <div className="flex justify-between items-center mb-2">
+                                   <label className="block text-sm font-medium">Password</label>
+                                   {isLogin && <Link href="#" className="text-xs font-semibold hover:underline" style={{ color: 'var(--accent-primary)' }}>Forgot?</Link>}
+                                </div>
+                                <input 
+                                  type="password" 
+                                  required 
+                                  className="input-premium w-full px-4 py-3 rounded-xl" 
+                                  placeholder="••••••••" 
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                />
+                             </div>
+                          )}
+                          
+                          <div id="recaptcha-container"></div>
+                       </>
                     )}
-                    
-                    <div>
-                       <div className="flex justify-between items-center mb-2">
-                          <label className="block text-sm font-medium">Password</label>
-                          {isLogin && <Link href="#" className="text-xs font-semibold hover:underline" style={{ color: 'var(--accent-primary)' }}>Forgot?</Link>}
-                       </div>
-                       <input 
-                         type="password" 
-                         required 
-                         className="input-premium w-full px-4 py-3 rounded-xl" 
-                         placeholder="••••••••" 
-                         value={password}
-                         onChange={(e) => setPassword(e.target.value)}
-                       />
-                    </div>
 
                     <button type="submit" disabled={isLoading} className="btn-primary w-full py-4 rounded-xl text-lg font-bold flex justify-center items-center mt-6">
                        {isLoading ? (
                           <svg className="animate-spin h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                       ) : (isLogin ? "Continue to Dashboard" : "Create Account")}
+                       ) : (
+                          otpSent ? "Verify Code" : 
+                          (loginMethod === "password" ? (isLogin ? "Continue to Dashboard" : "Create Account") : "Send OTP Code")
+                       )}
                     </button>
                  </form>
               </div>
-          </div>
           </div>
        </div>
     </div>

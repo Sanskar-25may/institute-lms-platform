@@ -217,6 +217,19 @@ model SiteContent {
   @@map("site_content")
 }
 
+model OtpCode {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String?  @db.VarChar(255)
+  phone     String?  @db.VarChar(50)
+  code      String   @db.VarChar(10)
+  expiresAt DateTime @map("expires_at") @db.Timestamp()
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp()
+
+  @@index([email])
+  @@index([phone])
+  @@map("otp_codes")
+}
+
 model CareerGuidanceForm {
   id                     String   @id @default(uuid()) @db.Uuid
   firstName              String   @db.Text

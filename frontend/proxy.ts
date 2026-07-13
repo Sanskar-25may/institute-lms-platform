@@ -6,26 +6,35 @@ export default withAuth(
     const token = req.nextauth.token;
     const path = req.nextUrl.pathname;
 
-    // Allow access to auth page explicitly
-    if (path.startsWith("/auth")) {
+    if (!token) {
+      if (!path.startsWith("/auth")) {
+        return NextResponse.redirect(new URL("/auth", req.url));
+      }
       return NextResponse.next();
     }
 
-    if (!token) {
-      return NextResponse.redirect(new URL("/auth", req.url));
+    const role = token.role;
+    const onboarded = token.onboarded;
+
+    // Force onboarding if they haven't finished it (Admins are exempt)
+    if (!onboarded && role !== "ADMIN") {
+      if (!path.startsWith("/onboarding") && !path.startsWith("/auth")) {
+        return NextResponse.redirect(new URL("/onboarding", req.url));
+      }
+      return NextResponse.next();
     }
 
-    const role = token.role; // "STUDENT", "INSTRUCTOR", "ADMIN"
+    // If onboarded (or ADMIN), do not allow them to stay on /auth or /onboarding
+    if (path.startsWith("/auth") || path.startsWith("/onboarding")) {
+      if (role === "ADMIN") return NextResponse.redirect(new URL("/admin", req.url));
+      if (role === "INSTRUCTOR") return NextResponse.redirect(new URL("/faculty", req.url));
+      return NextResponse.redirect(new URL("/student", req.url));
+    }
 
     // Protect Admin routes
     if (path.startsWith("/admin") && role !== "ADMIN") {
       if (role === "INSTRUCTOR") return NextResponse.redirect(new URL("/faculty", req.url));
       return NextResponse.redirect(new URL("/student", req.url));
-    }
-
-    // Force onboarding if they haven't finished it (Admins are exempt)
-    if (!token.onboarded && role !== "ADMIN") {
-      return NextResponse.redirect(new URL("/onboarding", req.url));
     }
 
     // Protect Faculty routes
@@ -53,5 +62,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*", "/auth"],
+  matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*", "/auth", "/onboarding/:path*"],
 };

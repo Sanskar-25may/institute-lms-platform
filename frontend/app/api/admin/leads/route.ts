@@ -26,9 +26,10 @@ export async function GET(req: Request) {
         name: u.fullName || u.name || "N/A",
         email: u.email,
         phone: u.phoneNumber || "N/A",
-        status: "NEW", // Users don't have a lead status by default, or maybe ACTIVE
+        status: "NEW", 
         createdAt: u.createdAt,
-        details: "Account Creation"
+        details: "Account Creation",
+        rawData: u
       });
     });
 
@@ -39,10 +40,11 @@ export async function GET(req: Request) {
         source: `Contact Form ${c.source ? `(${c.source})` : ""}`,
         name: `${c.firstName} ${c.lastName}`.trim(),
         email: c.email,
-        phone: "N/A",
+        phone: c.phone || "N/A",
         status: c.status,
         createdAt: c.createdAt,
-        details: `Subject: ${c.subject}`
+        details: `Subject: ${c.subject}`,
+        rawData: c
       });
     });
 
@@ -56,7 +58,8 @@ export async function GET(req: Request) {
         phone: c.phone || "N/A",
         status: c.status,
         createdAt: c.createdAt,
-        details: `Degree: ${c.degree}, Location: ${c.location}`
+        details: `Degree: ${c.degree}, Location: ${c.location}`,
+        rawData: c
       });
     });
 

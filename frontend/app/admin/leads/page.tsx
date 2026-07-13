@@ -33,7 +33,7 @@ export default async function AdminLeadsPage() {
       source: `Contact Form ${c.source ? `(${c.source})` : ""}`,
       name: `${c.firstName} ${c.lastName}`.trim(),
       email: c.email,
-      phone: "N/A",
+      phone: c.phone || "N/A",
       status: c.status,
       createdAt: c.createdAt,
       details: `Subject: ${c.subject}`,

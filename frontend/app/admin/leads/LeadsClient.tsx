@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function LeadsClient({ initialLeads, cmsData }: { initialLeads: any[], cmsData: any }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [sourceFilter, setSourceFilter] = useState("ALL");
+  const [selectedLead, setSelectedLead] = useState<any>(null);
 
   const filteredLeads = initialLeads.filter(lead => {
     const matchesSearch = lead.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -78,7 +79,12 @@ export default function LeadsClient({ initialLeads, cmsData }: { initialLeads: a
                 </thead>
                 <tbody>
                    {filteredLeads.map((lead, i) => (
-                      <tr key={i} className="border-b last:border-0" style={{ borderColor: 'var(--border-soft)' }}>
+                      <tr 
+                         key={i} 
+                         className="border-b last:border-0 hover:bg-white/5 cursor-pointer transition-colors" 
+                         style={{ borderColor: 'var(--border-soft)' }}
+                         onClick={() => setSelectedLead(lead)}
+                      >
                          <td className="p-4">
                             <div className="font-bold text-sm">{lead.name}</div>
                             <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>{lead.details}</div>
@@ -104,6 +110,64 @@ export default function LeadsClient({ initialLeads, cmsData }: { initialLeads: a
              </table>
           </div>
        </div>
+
+       {/* Lead Details Modal */}
+       {selectedLead && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+             <div className="w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
+                
+                {/* Header */}
+                <div className="p-6 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-surface)' }}>
+                   <div>
+                      <h3 className="text-xl font-bold">{selectedLead.name}</h3>
+                      <p className="text-sm text-[var(--text-secondary)]">{selectedLead.source} • {new Date(selectedLead.createdAt).toLocaleString()}</p>
+                   </div>
+                   <button onClick={() => setSelectedLead(null)} className="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                   </button>
+                </div>
+
+                {/* Body */}
+                <div className="p-6 overflow-y-auto space-y-6">
+                   {/* Basic Contact Info */}
+                   <div className="grid grid-cols-2 gap-4">
+                      <div className="p-4 rounded-xl" style={{ background: 'var(--bg-base)' }}>
+                         <div className="text-xs font-bold text-[var(--text-secondary)] mb-1">Email</div>
+                         <div className="font-medium text-sm">{selectedLead.email}</div>
+                      </div>
+                      <div className="p-4 rounded-xl" style={{ background: 'var(--bg-base)' }}>
+                         <div className="text-xs font-bold text-[var(--text-secondary)] mb-1">Phone</div>
+                         <div className="font-medium text-sm">{selectedLead.phone}</div>
+                      </div>
+                   </div>
+
+                   {/* Raw Data Fields */}
+                   <div className="space-y-4">
+                      <h4 className="font-bold border-b pb-2" style={{ borderColor: 'var(--border-soft)' }}>Submitted Data</h4>
+                      <div className="grid grid-cols-1 gap-4">
+                         {Object.entries(selectedLead.rawData || {}).map(([key, value]) => {
+                            // Skip rendering these generic/repetitive keys
+                            if (["id", "createdAt", "updatedAt", "firstName", "lastName", "fullName", "email", "phone", "phoneNumber"].includes(key)) return null;
+                            if (!value) return null;
+                            
+                            return (
+                               <div key={key} className="text-sm">
+                                  <span className="font-bold text-[var(--text-secondary)] uppercase text-xs block mb-1">
+                                     {key.replace(/([A-Z])/g, ' $1').trim()}
+                                  </span>
+                                  <div className="p-3 rounded-xl bg-black/5 whitespace-pre-wrap" style={{ background: 'var(--bg-base)' }}>
+                                     {String(value)}
+                                  </div>
+                               </div>
+                            )
+                         })}
+                      </div>
+                   </div>
+                </div>
+
+             </div>
+          </div>
+       )}
     </div>
   );
 }

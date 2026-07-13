@@ -17,6 +17,7 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [pendingSignupVerification, setPendingSignupVerification] = useState<"none" | "choose" | "email" | "phone">("none");
   
   // New OTP States
   const [loginMethod, setLoginMethod] = useState<"password" | "emailOtp" | "phoneOtp">("password");
@@ -51,35 +52,9 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
         return;
       }
 
-      const signupRes = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, email, password, phoneNumber, role: "STUDENT" }),
-      });
-
-      if (!signupRes.ok) {
-        const data = await signupRes.json();
-        setErrorMsg(data.message || "Failed to create account");
-        setIsLoading(false);
-        return;
-      }
-      
-      // Auto-login after signup
-      const res = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
-
+      // Instead of creating the account immediately, we transition to verification choice
+      setPendingSignupVerification("choose");
       setIsLoading(false);
-
-      if (res?.error) {
-        setErrorMsg(res.error);
-      } else {
-        // Force redirect to onboarding for brand new accounts
-        router.push("/onboarding");
-        router.refresh();
-      }
       return;
     }
 
@@ -214,6 +189,89 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
     }
   };
 
+  const handleSendSignupOtp = async (type: "email" | "phone") => {
+    setIsLoading(true);
+    setErrorMsg("");
+    try {
+      if (type === "email") {
+        const res = await fetch("/api/auth/send-email-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.message || "Failed to send OTP");
+        }
+        setPendingSignupVerification("email");
+      } else {
+        setupRecaptcha();
+        const appVerifier = (window as any).recaptchaVerifier;
+        const result = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+        setConfirmationResult(result);
+        setPendingSignupVerification("phone");
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const executeFinalSignup = async () => {
+    const signupRes = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fullName, email, password, phoneNumber, role: "STUDENT" }),
+    });
+
+    if (!signupRes.ok) {
+      const data = await signupRes.json();
+      throw new Error(data.message || "Failed to create account");
+    }
+    
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (res?.error) {
+      throw new Error(res.error);
+    } else {
+      router.push("/onboarding");
+      router.refresh();
+    }
+  };
+
+  const handleVerifySignupOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrorMsg("");
+    try {
+      if (pendingSignupVerification === "email") {
+        const verifyRes = await fetch("/api/auth/verify-email-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, otp: otpCode }),
+        });
+        if (!verifyRes.ok) {
+          const data = await verifyRes.json();
+          throw new Error(data.message || "Invalid OTP");
+        }
+        await executeFinalSignup();
+      } else if (pendingSignupVerification === "phone") {
+        if (!confirmationResult) throw new Error("No confirmation result");
+        await confirmationResult.confirm(otpCode);
+        await executeFinalSignup();
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "Invalid OTP or Account creation failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex">
        {/* Left side (Visual) */}
@@ -335,8 +393,48 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
                    </div>
                  </div>
 
-                 {/* Login Method Tabs */}
-                 {!otpSent && (
+                 {pendingSignupVerification !== "none" ? (
+                    <div>
+                       {pendingSignupVerification === "choose" && (
+                         <div className="space-y-4 animate-fade-in-up text-center">
+                            <h3 className="text-xl font-bold mb-4">Verify Your Identity</h3>
+                            <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>Choose a method to verify your account. You can verify the other method later in your profile.</p>
+                            <button onClick={() => handleSendSignupOtp("email")} disabled={isLoading} className="btn-secondary w-full py-3 rounded-xl font-bold">
+                              Send Code via Email
+                            </button>
+                            <button onClick={() => handleSendSignupOtp("phone")} disabled={isLoading} className="btn-secondary w-full py-3 rounded-xl font-bold">
+                              Send Code via SMS
+                            </button>
+                            <button onClick={() => setPendingSignupVerification("none")} className="text-sm mt-4 underline text-gray-500">Back</button>
+                         </div>
+                       )}
+                       
+                       {(pendingSignupVerification === "email" || pendingSignupVerification === "phone") && (
+                         <form onSubmit={handleVerifySignupOtp} className="space-y-5 animate-fade-in-up text-center">
+                            <h3 className="text-xl font-bold mb-2">Enter Verification Code</h3>
+                            <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>
+                              Sent to {pendingSignupVerification === "email" ? email : phoneNumber}
+                            </p>
+                            <input
+                              type="text"
+                              maxLength={6}
+                              value={otpCode}
+                              onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                              placeholder="000000"
+                              className="input-premium w-full text-center text-3xl tracking-[1em] py-4 rounded-xl font-mono font-bold"
+                              required
+                            />
+                            <button type="submit" disabled={isLoading || otpCode.length < 6} className="btn-primary w-full py-4 rounded-xl text-lg font-bold">
+                              {isLoading ? "Verifying..." : "Verify & Create Account"}
+                            </button>
+                            <button type="button" onClick={() => setPendingSignupVerification("choose")} className="text-sm mt-4 underline text-gray-500">Back to Options</button>
+                         </form>
+                       )}
+                    </div>
+                 ) : (
+                    <>
+                       {/* Login Method Tabs */}
+                       {!otpSent && (
                    <div className="flex bg-black/5 p-1 rounded-xl mb-6" style={{ background: 'var(--bg-surface)' }}>
                       <button onClick={() => setLoginMethod("password")} className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${loginMethod === "password" ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={loginMethod === "password" ? {background: 'var(--bg-card)'} : {}}>Password</button>
                       <button onClick={() => setLoginMethod("emailOtp")} className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${loginMethod === "emailOtp" ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`} style={loginMethod === "emailOtp" ? {background: 'var(--bg-card)'} : {}}>Email OTP</button>
@@ -440,6 +538,8 @@ export default function AuthClient({ cmsData }: { cmsData: any }) {
                        )}
                     </button>
                  </form>
+                    </>
+                 )}
               </div>
           </div>
        </div>

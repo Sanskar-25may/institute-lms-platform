@@ -257,6 +257,7 @@ model ContactMessage {
   firstName String     @db.VarChar(100)
   lastName  String     @db.VarChar(100)
   email     String     @db.VarChar(255)
+  phone     String?    @db.VarChar(50)
   subject   String     @db.VarChar(255)
   message   String     @db.Text
   source    String?    @db.VarChar(100)

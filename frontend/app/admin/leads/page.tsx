@@ -22,7 +22,8 @@ export default async function AdminLeadsPage() {
       phone: u.phoneNumber || "N/A",
       status: "NEW", 
       createdAt: u.createdAt,
-      details: "Account Creation"
+      details: "Account Creation",
+      rawData: u
     });
   });
 
@@ -35,7 +36,8 @@ export default async function AdminLeadsPage() {
       phone: "N/A",
       status: c.status,
       createdAt: c.createdAt,
-      details: `Subject: ${c.subject}`
+      details: `Subject: ${c.subject}`,
+      rawData: c
     });
   });
 
@@ -48,7 +50,8 @@ export default async function AdminLeadsPage() {
       phone: c.phone || "N/A",
       status: c.status,
       createdAt: c.createdAt,
-      details: `Degree: ${c.degree}, Location: ${c.location}`
+      details: `Degree: ${c.degree}, Location: ${c.location}`,
+      rawData: c
     });
   });
 

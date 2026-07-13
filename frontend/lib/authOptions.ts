@@ -191,13 +191,7 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         
         // Check if user has completed onboarding (admins are always onboarded)
-        // Automatic Admin Upgrade for the main accounts
-        const superAdmins = ["codersspot97@gmail.com", "gsanskargkp25@gmail.com", "gsanskarnew25@gmail.com"];
-        if (superAdmins.includes(token.email as string)) {
-          token.role = "ADMIN";
-        }
-
-        if (token.role === "ADMIN") {
+        if (user.role === "ADMIN" || token.email === "codersspot97@gmail.com") {
            token.onboarded = true;
         } else {
            const profile = await prisma.userProfile.findUnique({ where: { userId: user.id } });
@@ -205,7 +199,16 @@ export const authOptions: NextAuthOptions = {
         }
       }
       
-      // Roles are purely determined by the database value now.
+      // HARD SECURITY CHECK: Only this specific email can ever be ADMIN.
+      // Even if someone hacks the database, NextAuth will forcefully downgrade them if their email doesn't match.
+      const superAdminEmail = "codersspot97@gmail.com"; 
+      if (token.email === superAdminEmail) {
+        token.role = "ADMIN";
+        token.onboarded = true;
+      } else if (token.role === "ADMIN") {
+        // If they are ADMIN in DB but not the super admin email, downgrade them to prevent unauthorized access
+        token.role = "STUDENT";
+      }
 
       return token;
     },

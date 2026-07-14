@@ -55,11 +55,13 @@ export default async function AboutPage() {
             {cmsData.team && cmsData.team.filter((t: any) => t.isActive !== false).length > 0 ? (
               cmsData.team.filter((t: any) => t.isActive !== false).map((person: any, i: number) => (
                 <div key={i} className="text-center group">
-                   <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4 flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-xs text-center" style={{ borderColor: 'var(--bg-surface)', color: 'var(--text-secondary)' }}>
+                   <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4 bg-gray-100 dark:bg-gray-800 relative" style={{ borderColor: 'var(--bg-surface)' }}>
                      {person.imageUrl ? (
                        <img src={person.imageUrl} alt={person.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                      ) : (
-                       <span className="p-4">No image from CMS</span>
+                       <div className="absolute inset-0 flex items-center justify-center text-xs text-center p-4" style={{ color: 'var(--text-secondary)' }}>
+                         <span>No image from CMS</span>
+                       </div>
                      )}
                    </div>
                    <h3 className="font-bold text-xl">{person.name || "No name from CMS"}</h3>

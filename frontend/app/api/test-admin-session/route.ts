@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/authOptions";
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    console.log("Testing admin session retrieval...");
-    const session = await getServerSession(authOptions);
+    console.log("Testing minimal session retrieval without firebase-admin...");
+    const session = await getServerSession({
+      providers: [],
+      secret: process.env.NEXTAUTH_SECRET || "dummy_secret"
+    });
     return NextResponse.json({ 
       success: true, 
       hasSession: !!session,

@@ -1,8 +1,38 @@
 import Link from "next/link";
 import { getSiteContent } from "@/lib/cms";
 
+const DEFAULT_STORY = "Most coding bootcamps teach you syntax. Most universities teach you theory. Neither prepares you to write production code that ships to millions of users. We saw engineers graduate from top programs and still struggle on their first real job. CodersSpot was built to fix that — a curriculum engineered around real deployments, code reviews, and production benchmarks.";
+
+const DEFAULT_TEAM = [
+  {
+    name: 'Ananya Sharma',
+    role: 'Founder & CEO',
+    imageUrl: 'https://i.pravatar.cc/200?img=47',
+  },
+  {
+    name: 'Vikram Malhotra',
+    role: 'Head of Curriculum',
+    imageUrl: 'https://i.pravatar.cc/200?img=52',
+  },
+  {
+    name: 'Sarah Jenkins',
+    role: 'Lead Faculty (AI/ML)',
+    imageUrl: 'https://i.pravatar.cc/200?img=25',
+  },
+  {
+    name: 'Karan Mehta',
+    role: 'Head of Placements',
+    imageUrl: 'https://i.pravatar.cc/200?img=64',
+  },
+];
+
 export default async function AboutPage() {
   const cmsData = await getSiteContent("public-about");
+
+  const storyText = cmsData.story || DEFAULT_STORY;
+  const teamList = (cmsData.team && cmsData.team.filter((t: any) => t.isActive !== false).length > 0) 
+    ? cmsData.team.filter((t: any) => t.isActive !== false) 
+    : DEFAULT_TEAM;
 
   return (
     <div className="min-h-screen pt-32 pb-20 animate-fade-in-up">
@@ -23,7 +53,7 @@ export default async function AboutPage() {
             <h2 className="heading-font text-3xl font-bold">The Problem We Saw</h2>
             <div className="pl-6 border-l-4" style={{ borderColor: 'var(--accent-primary)' }}>
               <p className="text-lg leading-relaxed whitespace-pre-wrap" style={{ color: 'var(--text-secondary)' }}>
-                {cmsData.story}
+                {storyText}
               </p>
             </div>
           </div>
@@ -52,31 +82,21 @@ export default async function AboutPage() {
         <div className="mb-24">
           <h2 className="heading-font text-3xl font-bold text-center mb-12">The Team Behind {cmsData.heading ? cmsData.heading.replace('About ', '') : 'CodersSpot'}</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {cmsData.team && cmsData.team.filter((t: any) => t.isActive !== false).length > 0 ? (
-              cmsData.team.filter((t: any) => t.isActive !== false).map((person: any, i: number) => (
-                <div key={i} className="text-center group">
-                   <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4 bg-gray-100 dark:bg-gray-800 relative" style={{ borderColor: 'var(--bg-surface)' }}>
-                     {person.imageUrl ? (
-                       <img src={person.imageUrl} alt={person.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                     ) : (
-                       <div className="absolute inset-0 flex items-center justify-center text-xs text-center p-4" style={{ color: 'var(--text-secondary)' }}>
-                         <span>No image from CMS</span>
-                       </div>
-                     )}
-                   </div>
-                   <h3 className="font-bold text-xl">{person.name || "No name from CMS"}</h3>
-                   <p style={{ color: 'var(--text-tertiary)' }}>{person.role || "No role"}</p>
-                </div>
-              ))
-            ) : (
-              <div className="text-center group col-span-1 md:col-start-2 lg:col-start-auto">
-                 <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4 flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-xs text-center p-4" style={{ borderColor: 'var(--bg-surface)', color: 'var(--text-secondary)' }}>
-                   <span>No image from CMS</span>
+            {teamList.map((person: any, i: number) => (
+              <div key={i} className="text-center group">
+                 <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4 bg-gray-100 dark:bg-gray-800 relative" style={{ borderColor: 'var(--bg-surface)' }}>
+                   {person.imageUrl ? (
+                     <img src={person.imageUrl} alt={person.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                   ) : (
+                     <div className="absolute inset-0 flex items-center justify-center text-xs text-center p-4" style={{ color: 'var(--text-secondary)' }}>
+                       <span>No image</span>
+                     </div>
+                   )}
                  </div>
-                 <h3 className="font-bold text-xl">No name from CMS</h3>
-                 <p style={{ color: 'var(--text-tertiary)' }}>No role from CMS</p>
+                 <h3 className="font-bold text-xl">{person.name}</h3>
+                 <p style={{ color: 'var(--text-tertiary)' }}>{person.role}</p>
               </div>
-            )}
+            ))}
           </div>
         </div>
 

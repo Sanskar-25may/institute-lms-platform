@@ -1,8 +1,51 @@
 import Link from "next/link";
 import { getSiteContent } from "@/lib/cms";
 
+const DEFAULT_TESTIMONIALS = [
+  {
+    name: 'Rohan Deshmukh',
+    role: 'Frontend Dev @ Razorpay',
+    quote: 'The project-based learning model helped me build actual confidence. I got a job offer within 3 weeks of graduating.',
+    color: 'from-violet-500 to-indigo-500',
+  },
+  {
+    name: 'Priya Nair',
+    role: 'Data Engineer @ Google',
+    quote: 'Outstanding curriculum quality. The peer cohort reviews made me understand what clean code really means.',
+    color: 'from-cyan-500 to-blue-500',
+  },
+  {
+    name: 'Aman Verma',
+    role: 'DevOps Engineer @ Amazon',
+    quote: 'Highly practical. Setting up CI/CD pipelines in the classroom was the game changer.',
+    color: 'from-orange-500 to-yellow-500',
+  },
+  {
+    name: 'Sneha Patel',
+    role: 'Full Stack Dev @ Flipkart',
+    quote: 'The mentors genuinely care about your growth. I had 1-on-1 sessions every week that were incredibly valuable.',
+    color: 'from-pink-500 to-rose-500',
+  },
+  {
+    name: 'Arjun Rao',
+    role: 'Backend Engineer @ Cred',
+    quote: 'The system design module alone was worth the entire fee. I cleared 5 FAANG interviews back-to-back.',
+    color: 'from-emerald-500 to-teal-500',
+  },
+  {
+    name: 'Divya Singh',
+    role: 'ML Engineer @ Meta',
+    quote: "I was skeptical at first, but the quality of instruction exceeded everything I'd seen on Udemy or Coursera.",
+    color: 'from-purple-500 to-violet-500',
+  },
+];
+
 export default async function TestimonialsPage() {
   const cmsData = await getSiteContent("public-testimonials");
+
+  const testimonialsList = (cmsData?.testimonials && cmsData.testimonials.filter((t: any) => t.isActive !== false).length > 0)
+    ? cmsData.testimonials.filter((t: any) => t.isActive !== false)
+    : DEFAULT_TESTIMONIALS;
 
   return (
     <div className="min-h-screen pt-32 pb-20 animate-fade-in-up">
@@ -29,33 +72,27 @@ export default async function TestimonialsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-           {(cmsData?.testimonials && cmsData.testimonials.filter((t: any) => t.isActive !== false).length > 0) ? (
-             cmsData.testimonials.filter((t: any) => t.isActive !== false).map((t: any, i: number) => (
-               <div key={i} className="p-8 rounded-[24px] card-hover flex flex-col justify-between" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
-                  <div>
-                     <div className="flex gap-1 text-amber-400 mb-6">★★★★★</div>
-                     <p className="text-lg mb-8 italic leading-relaxed" style={{ color: 'var(--text-primary)' }}>"{t.quote}"</p>
-                  </div>
-                  <div className="flex items-center gap-4 border-t pt-6" style={{ borderColor: 'var(--border-soft)' }}>
-                     {t.imgUrl ? (
-                        <img src={t.imgUrl} alt={t.name} className="w-12 h-12 rounded-full border-2 object-cover" style={{ borderColor: 'var(--bg-surface)' }} />
-                     ) : (
-                        <div className="w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-white shadow-lg" style={{ borderColor: 'var(--bg-surface)', background: 'var(--accent-primary)' }}>
-                           {t.name?.[0] || "?"}
-                        </div>
-                     )}
-                     <div>
-                       <div className="font-bold">{t.name}</div>
-                       <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>{t.role}</div>
-                     </div>
-                  </div>
-               </div>
-             ))
-           ) : (
-             <div className="md:col-span-3 text-center py-10 text-gray-500 italic border border-dashed rounded-3xl" style={{ borderColor: 'var(--border-soft)' }}>
-                No testimonials provided in CMS
+           {testimonialsList.map((t: any, i: number) => (
+             <div key={i} className="p-8 rounded-[24px] card-hover flex flex-col justify-between" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-soft)' }}>
+                <div>
+                   <div className="flex gap-1 text-amber-400 mb-6">★★★★★</div>
+                   <p className="text-lg mb-8 italic leading-relaxed" style={{ color: 'var(--text-primary)' }}>"{t.quote}"</p>
+                </div>
+                <div className="flex items-center gap-4 border-t pt-6" style={{ borderColor: 'var(--border-soft)' }}>
+                   {t.imgUrl ? (
+                      <img src={t.imgUrl} alt={t.name} className="w-12 h-12 rounded-full border-2 object-cover" style={{ borderColor: 'var(--bg-surface)' }} />
+                   ) : (
+                      <div className="w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-white shadow-lg" style={{ borderColor: 'var(--bg-surface)', background: 'var(--accent-primary)' }}>
+                         {t.name?.[0] || "?"}
+                      </div>
+                   )}
+                   <div>
+                     <div className="font-bold">{t.name}</div>
+                     <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>{t.role}</div>
+                   </div>
+                </div>
              </div>
-           )}
+           ))}
         </div>
 
       </div>

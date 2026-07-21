@@ -1,32 +1,13 @@
+import Link from "next/link";
+import Image from "next/image";
 import { getSiteContent } from "@/lib/cms";
-import { getCourses } from "@/app/actions";
+
 import CoursesCatalogClient from "./CoursesCatalogClient";
 
 export default async function CoursesCatalog() {
   const cmsData = await getSiteContent("public-courses");
-  
-  let dbCourses: any[] = [];
-  try {
-    dbCourses = await getCourses();
-  } catch (e) {
-    console.error("Failed to fetch courses from DB:", e);
-  }
 
-  // Format database courses to match cards layout
-  const formattedDbCourses = dbCourses.map((c: any) => ({
-    id: c.id,
-    title: c.title,
-    instructor: c.faculty?.fullName || "Aisha Verma",
-    rating: "4.9",
-    level: c.difficulty || "Intermediate",
-    tags: c.tags || ["Web Development"],
-    price: `₹${c.price || 149}`,
-    badge: c.badge || "",
-    badgeClass: "badge-primary",
-    color: "from-violet-500 to-indigo-500"
-  }));
-
-  const fallbackCourses = [
+  const courses = [
     {
       id: "full-stack-react",
       title: "Full-Stack React & TypeScript",
@@ -95,17 +76,5 @@ export default async function CoursesCatalog() {
     }
   ];
 
-  // Merge database courses with fallbacks to always show 6 courses
-  const coursesList: any[] = [...formattedDbCourses];
-  if (coursesList.length < 6) {
-    const existingTitles = new Set(coursesList.map(c => c.title.toLowerCase()));
-    for (const fb of fallbackCourses) {
-      if (coursesList.length >= 6) break;
-      if (!existingTitles.has(fb.title.toLowerCase())) {
-        coursesList.push(fb);
-      }
-    }
-  }
-
-  return <CoursesCatalogClient cmsData={cmsData} courses={coursesList} />;
+  return <CoursesCatalogClient cmsData={cmsData} courses={courses} />;
 }

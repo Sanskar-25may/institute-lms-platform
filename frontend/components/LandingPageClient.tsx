@@ -1,73 +1,23 @@
 "use client";
 import Link from "next/link";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import LiveCodeEditor from "@/components/LiveCodeEditor";
 
-const DEFAULT_STATS = [
-  { value: '10,000+', label: 'Students Trained' },
-  { value: '98%',     label: 'Satisfaction Rate' },
-  { value: '4.9★',   label: 'Mentor Rating' },
-  { value: '96%',    label: 'Placement Hikes' },
-];
-
-const DEFAULT_FEATURES = [
-  { title: 'Project-Based Learning', description: 'We threw out the video-course model. Every module ends with a deployable project reviewed by working engineers.', colSpan: 'md:col-span-2' },
-  { title: 'Live Cohorts',           description: 'Weekly interactive code reviews and Q&A sessions with working engineers.' },
-  { title: 'Verified Credentials',   description: 'All certificates are cryptographically verified and linked to your GitHub profile.' },
-];
-
-const DEFAULT_STEPS = [
-  { title: 'Choose Your Track',       description: 'Browse our curriculum library and pick the specialisation that aligns with your career goals.', step: 1 },
-  { title: 'Build Real Projects',      description: 'Complete hands-on projects under the guidance of senior engineers. Ship code, not just exercises.', step: 2 },
-  { title: 'Get Hired',               description: 'Leverage our placement network and verified credentials to land roles at top tech companies.', step: 3 },
-];
-
-const DEFAULT_TESTIMONIALS = [
-  { name: 'Rohan Deshmukh', role: 'Frontend Dev',      quote: 'The project-based learning model helped me build actual confidence. I got a job offer within 3 weeks of graduating.' },
-  { name: 'Priya Nair',     role: 'Data Analyst',       quote: 'Outstanding curriculum quality. The peer cohort reviews made me understand what clean code really means.' },
-  { name: 'Aman Verma',     role: 'DevOps Engineer',    quote: 'Highly practical. Setting up CI/CD pipelines in the classroom was the game changer.' },
-];
-
-const DEFAULT_MARQUEE = [
-  { name: 'Google' },
-  { name: 'Microsoft' },
-  { name: 'Amazon' },
-  { name: 'Razorpay' },
-  { name: 'Paytm' },
-  { name: 'Cred' },
-  { name: 'Flipkart' },
-  { name: 'Meta' },
-  { name: 'Netflix' },
-  { name: 'Zepto' }
-];
-
-const DEFAULT_TECH = [
-  { name: 'React' },
-  { name: 'Next.js' },
-  { name: 'TypeScript' },
-  { name: 'Node.js' },
-  { name: 'PostgreSQL' },
-  { name: 'Docker' },
-  { name: 'AWS' },
-  { name: 'Redis' },
-  { name: 'TailwindCSS' },
-  { name: 'GraphQL' }
-];
-
 export default function LandingPageClient({ initialData = {} }: { initialData?: any }) {
-  const statsList = (initialData.stats && initialData.stats.length > 0) ? initialData.stats : DEFAULT_STATS;
-  const featuresList = (initialData.features && initialData.features.length > 0) ? initialData.features : DEFAULT_FEATURES;
-  const stepsList = (initialData.howItWorks && initialData.howItWorks.length > 0) ? initialData.howItWorks : DEFAULT_STEPS;
-  const testimonialsList = (initialData.testimonials && initialData.testimonials.length > 0) ? initialData.testimonials : DEFAULT_TESTIMONIALS;
-  const marqueeList = (initialData.marquee && initialData.marquee.length > 0) ? initialData.marquee : DEFAULT_MARQUEE;
-  const techList = (initialData.techStackMarquee && initialData.techStackMarquee.length > 0) ? initialData.techStackMarquee : DEFAULT_TECH;
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 500], [0, 150]);
+  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
     <div className="min-h-screen pt-20">
-      {/* 1. Hero Section */}
+      {/* 1. Hero Section with Video Background and Parallax */}
       <section className="relative overflow-hidden pt-20 pb-48 md:pb-32 min-h-[100svh] md:min-h-[90vh] flex items-center justify-center">
-        <div className="absolute inset-0 z-0">
+        
+        {/* Specific Hero Video Background Removed (causing 404s) */}
+        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0">
            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--bg-base)]"></div>
-        </div>
+        </motion.div>
 
         <div className="absolute inset-0 dot-grid opacity-50 z-0 pointer-events-none"></div>
         
@@ -79,13 +29,23 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
            <div className="scan-line"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center mt-10 animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 backdrop-blur-md" 
+        <motion.div 
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.8, ease: "easeOut" }}
+           style={{ y: heroY }}
+           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center mt-10"
+        >
+          <motion.div 
+             initial={{ scale: 0.9, opacity: 0 }}
+             animate={{ scale: 1, opacity: 1 }}
+             transition={{ delay: 0.2 }}
+             className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 backdrop-blur-md" 
              style={{ background: 'var(--glass-bg)', border: '1px solid var(--border-soft)' }}
           >
              <span className="w-2 h-2 rounded-full animate-pulse-glow" style={{ background: 'var(--accent-success)' }}></span>
              <span className="text-sm font-semibold" style={{ color: 'var(--text-secondary)' }}>Spring Cohort Enrolling Now</span>
-          </div>
+          </motion.div>
 
           <h1 className="heading-font text-5xl md:text-7xl font-bold tracking-tight max-w-4xl mb-6 drop-shadow-2xl">
             {initialData.heroTitle || "Build skills that"} <br/><span className="shimmer-text">{initialData.heroHighlight || "ship real products."}</span>
@@ -110,20 +70,22 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
             href="https://wa.me/917355259488?text=Hi%2C%20I%27d%20like%20to%20enquire%20about%20your%20courses%20at%20CodersSpot."
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-16 inline-flex items-center gap-3 px-7 py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-lg border"
-            style={{
-              background: 'color-mix(in srgb, #25D366 15%, transparent)',
-              borderColor: '#25D366',
-              color: '#25D366'
-            }}
+            className="mb-16 inline-flex items-center gap-3 px-7 py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            style={{ background: 'color-mix(in srgb, #25D366 15%, transparent)', border: '1px solid #25D366', color: '#25D366' }}
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
             </svg>
             Enquire on WhatsApp
+            <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#25D366' }}></span>
           </Link>
 
-          <div className="flex items-center gap-4">
+          <motion.div 
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             transition={{ delay: 0.6, duration: 1 }}
+             className="flex items-center gap-4"
+          >
              <div className="flex -space-x-3">
                {[1,2,3,4,5].map(i => (
                  <div key={i} className="w-10 h-10 rounded-full border-2 overflow-hidden shadow-lg" style={{ borderColor: 'var(--bg-base)' }}>
@@ -135,23 +97,27 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
                <div className="flex text-amber-400">★★★★★</div>
                <span style={{ color: 'var(--text-secondary)' }}>4.9/5 from 2,400 reviews</span>
              </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* 2. Stats strip */}
       <section className="py-12 md:py-16 backdrop-blur-md border-y" style={{ background: 'color-mix(in srgb, var(--bg-surface) 60%, transparent)', borderColor: 'var(--border-soft)' }}>
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-4 md:gap-8 divide-x" style={{ borderColor: 'var(--border-soft)' }}>
-              {statsList.map((stat: any, i: number) => (
-                <div 
+              {(initialData.stats || []).filter((s: any) => s.isActive !== false).map((stat: any, i: number) => (
+                <motion.div 
                    key={i} 
-                   className={`text-center px-2 md:px-4 ${i === 2 ? 'border-l-0 md:border-l' : ''} animate-fade-in-up`}
-                   style={{ borderColor: 'var(--border-soft)', animationDelay: `${i * 100}ms` }}
+                   initial={{ opacity: 0, y: 20 }}
+                   whileInView={{ opacity: 1, y: 0 }}
+                   viewport={{ once: true, margin: "-50px" }}
+                   transition={{ delay: i * 0.1, duration: 0.6 }}
+                   className={`text-center px-2 md:px-4 ${i === 2 ? 'border-l-0 md:border-l' : ''}`}
+                   style={{ borderColor: 'var(--border-soft)' }}
                 >
                   <div className="heading-font text-3xl md:text-4xl font-bold mb-2 gradient-text">{stat.value}</div>
                   <div className="text-xs md:text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>{stat.label}</div>
-                </div>
+                </motion.div>
               ))}
             </div>
          </div>
@@ -165,33 +131,52 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
         
         {/* Marquee scroll area with contained fade masks */}
         <div className="relative overflow-hidden">
-          {/* Fade masks */}
+          {/* Fade masks - only cover the marquee row, not the heading */}
           <div className="absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--bg-card), transparent)' }}></div>
           <div className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, var(--bg-card), transparent)' }}></div>
           
           <div className="flex animate-marquee whitespace-nowrap opacity-70 transition-all duration-500 hover:opacity-100">
-             {Array.from({ length: 4 }).map((_, group) => (
+             {Array.from({ length: 20 }).map((_, group) => (
                <div key={group} className="flex items-center gap-16 px-8 text-2xl font-bold font-mono shrink-0" style={{ color: 'var(--text-secondary)' }}>
-                    {marqueeList.map((company: any, i: number) => (
+                  {(initialData.marquee && initialData.marquee.filter((m: any) => m.isActive !== false).length > 0) ? (
+                    initialData.marquee.filter((m: any) => m.isActive !== false).map((company: any, i: number) => (
                       <span key={i}>{company.name}</span>
-                    ))}
+                    ))
+                  ) : (
+                    <span className="opacity-50 italic">No companies added to CMS</span>
+                  )}
                </div>
              ))}
           </div>
           
           <div className="text-center mt-16 mb-10 relative z-20">
             <p className="text-sm font-bold uppercase tracking-widest drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>
-              Mastering the most in-demand technologies
+              {initialData.techStackHeading || "Mastering the most in-demand technologies"}
             </p>
           </div>
 
           {/* Tech Stack Marquee */}
           <div className="flex animate-marquee whitespace-nowrap opacity-50" style={{ animationDirection: 'reverse', animationDuration: '40s' }}>
-             {Array.from({ length: 4 }).map((_, group) => (
+             {Array.from({ length: 20 }).map((_, group) => (
                <div key={group} className="flex items-center gap-16 px-8 text-xl font-bold font-mono text-transparent bg-clip-text shrink-0" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-primary), var(--accent-cyan))' }}>
-                    {techList.map((tech: any, i: number) => (
+                  {(initialData.techStackMarquee && initialData.techStackMarquee.filter((t: any) => t.isActive !== false).length > 0) ? (
+                    initialData.techStackMarquee.filter((t: any) => t.isActive !== false).map((tech: any, i: number) => (
                       <span key={i}>{tech.name}</span>
-                    ))}
+                    ))
+                  ) : (
+                    <>
+                      <span>React</span>
+                      <span>Next.js</span>
+                      <span>TypeScript</span>
+                      <span>Node.js</span>
+                      <span>PostgreSQL</span>
+                      <span>Docker</span>
+                      <span>AWS</span>
+                      <span>Redis</span>
+                      <span>TailwindCSS</span>
+                      <span>GraphQL</span>
+                    </>
+                  )}
                </div>
              ))}
           </div>
@@ -204,41 +189,63 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
       {/* 4. Features bento grid */}
       <section className="py-32 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div className="text-center max-w-3xl mx-auto mb-16">
+           <motion.div 
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true, margin: "-100px" }}
+             className="text-center max-w-3xl mx-auto mb-16"
+           >
              <h2 className="heading-font text-3xl md:text-5xl font-bold mb-6">Why CodersSpot is different.</h2>
              <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>We threw out the traditional video-course model and built a platform optimized for actual skill acquisition.</p>
-           </div>
+           </motion.div>
 
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {featuresList.map((feature: any, i: number) => (
-                <div 
-                   key={i}
-                   className={`${feature.colSpan || ''} rounded-[32px] p-8 md:p-12 relative overflow-hidden backdrop-blur-md card-glow flex flex-col border card-hover`}
-                   style={{ minHeight: i === 0 ? '300px' : 'auto', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}
-                >
-                   <div className={`absolute ${i === 0 ? 'top-0 right-0' : i === 1 ? 'bottom-0 right-0' : 'top-0 left-0'} w-32 h-32 blur-[60px] opacity-30`} style={{ background: i === 0 ? 'var(--accent-primary)' : i === 1 ? 'var(--accent-cyan)' : 'var(--accent-success)' }}></div>
-                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-lg" style={{ background: `color-mix(in srgb, ${i === 0 ? 'var(--accent-primary)' : i === 1 ? 'var(--accent-cyan)' : 'var(--accent-success)'} 80%, transparent)`, color: '#fff' }}>
-                      <span className="font-bold text-xl">{i + 1}</span>
-                   </div>
-                   <h3 className={`heading-font ${i === 0 ? 'text-2xl' : 'text-xl'} font-bold mb-3`}>{feature.title}</h3>
-                   <p className="drop-shadow-md text-sm md:text-base" style={{ color: 'var(--text-secondary)' }}>{feature.description}</p>
+              {(initialData.features && initialData.features.filter((f: any) => f.isActive !== false).length > 0) ? (
+                initialData.features.filter((f: any) => f.isActive !== false).map((feature: any, i: number) => (
+                  <motion.div 
+                     key={i}
+                     initial={{ opacity: 0, scale: 0.95 }}
+                     whileInView={{ opacity: 1, scale: 1 }}
+                     whileHover={{ y: -5, scale: i === 0 ? 1.01 : 1.02 }}
+                     viewport={{ once: true, margin: "-100px" }}
+                     transition={{ delay: i * 0.1, duration: 0.4 }}
+                     className={`${i === 0 ? 'md:col-span-2' : ''} rounded-[32px] p-8 md:p-12 relative overflow-hidden backdrop-blur-md card-glow flex flex-col border`}
+                     style={{ minHeight: i === 0 ? '400px' : 'auto', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}
+                  >
+                     <div className={`absolute ${i === 0 ? 'top-0 right-0' : i === 1 ? 'bottom-0 right-0' : 'top-0 left-0'} w-32 h-32 blur-[60px] opacity-30`} style={{ background: i === 0 ? 'var(--accent-primary)' : i === 1 ? 'var(--accent-cyan)' : 'var(--accent-success)' }}></div>
+                     <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-lg" style={{ background: `color-mix(in srgb, ${i === 0 ? 'var(--accent-primary)' : i === 1 ? 'var(--accent-cyan)' : 'var(--accent-success)'} 80%, transparent)`, color: '#fff' }}>
+                        <span className="font-bold text-xl">{i + 1}</span>
+                     </div>
+                     <h3 className={`heading-font ${i === 0 ? 'text-2xl' : 'text-xl'} font-bold mb-3`}>{feature.title}</h3>
+                     <p className="drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>{feature.description}</p>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="md:col-span-3 text-center py-20 text-gray-500 italic border border-dashed rounded-3xl" style={{ borderColor: 'var(--border-soft)' }}>
+                   No features provided in CMS
                 </div>
-              ))}
+              )}
 
               {/* Feature 4 (Full width CTA card) */}
-              <div className="md:col-span-2 rounded-[32px] p-8 md:p-12 relative overflow-hidden backdrop-blur-xl card-glow flex flex-col md:flex-row items-center justify-between gap-8 border shadow-2xl card-hover" 
+              <motion.div 
+                 initial={{ opacity: 0, y: 30 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 whileHover={{ scale: 1.01 }}
+                 viewport={{ once: true, margin: "-50px" }}
+                 transition={{ delay: 0.3, duration: 0.5 }}
+                 className="md:col-span-2 rounded-[32px] p-8 md:p-12 relative overflow-hidden backdrop-blur-xl card-glow flex flex-col md:flex-row items-center justify-between gap-8 border shadow-2xl" 
                  style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--bg-card) 60%, transparent), color-mix(in srgb, var(--accent-primary) 10%, transparent))', borderColor: 'var(--border-strong)' }}
               >
                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center mix-blend-overlay opacity-10"></div>
                  <div className="relative z-10 text-center md:text-left">
                    <h3 className="heading-font text-2xl md:text-3xl font-bold mb-3 drop-shadow-lg">Join 10,000+ developers today</h3>
-                   <p className="drop-shadow-md text-sm" style={{ color: 'var(--text-secondary)' }}>Get instant access to all courses, projects, and the community.</p>
+                   <p className="drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>Get instant access to all courses, projects, and the community.</p>
                  </div>
                  <div className="flex flex-col sm:flex-row gap-4 shrink-0 relative z-10">
                     <Link href="/engineers" className="btn-primary px-6 py-3 rounded-xl shadow-[0_0_20px_rgba(124,58,237,0.5)]">Meet the Engineers</Link>
                     <Link href="/community" className="btn-secondary px-6 py-3 rounded-xl bg-[var(--bg-card)]">Join the Community</Link>
                  </div>
-              </div>
+              </motion.div>
            </div>
         </div>
       </section>
@@ -246,26 +253,40 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
       {/* 5. How it works */}
       <section className="py-32 relative backdrop-blur-sm border-y" style={{ background: 'color-mix(in srgb, var(--bg-surface) 40%, transparent)', borderColor: 'var(--border-soft)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div className="text-center max-w-3xl mx-auto mb-16">
+           <motion.div 
+             initial={{ opacity: 0, y: 20 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true, margin: "-100px" }}
+             className="text-center max-w-3xl mx-auto mb-16"
+           >
              <h2 className="heading-font text-3xl font-bold mb-4">How it works</h2>
-           </div>
+           </motion.div>
            
            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
               <div className="hidden md:block absolute top-10 left-[16%] right-[16%] h-0.5 border-t-2 border-dashed z-0" style={{ borderColor: 'var(--border-strong)' }}></div>
               
-              {stepsList.map((item: any, i: number) => (
-                <div 
-                   key={i} 
-                   className="relative z-10 flex flex-col items-center text-center animate-fade-in-up"
-                   style={{ animationDelay: `${i * 150}ms` }}
-                >
-                   <div className="w-20 h-20 rounded-2xl flex items-center justify-center heading-font text-3xl font-bold mb-6 shadow-2xl backdrop-blur-xl border-2" style={{ background: 'color-mix(in srgb, var(--bg-elevated) 80%, transparent)', borderColor: 'var(--border-med)', color: 'var(--accent-primary)' }}>
-                      {item.step || (i + 1)}
-                   </div>
-                   <h3 className="text-xl font-bold mb-3 drop-shadow-md">{item.title}</h3>
-                   <p className="drop-shadow-sm text-sm" style={{ color: 'var(--text-secondary)' }}>{item.description}</p>
+              {(initialData.howItWorks && initialData.howItWorks.filter((h: any) => h.isActive !== false).length > 0) ? (
+                initialData.howItWorks.filter((h: any) => h.isActive !== false).map((item: any, i: number) => (
+                  <motion.div 
+                     key={i} 
+                     initial={{ opacity: 0, y: 30 }}
+                     whileInView={{ opacity: 1, y: 0 }}
+                     viewport={{ once: true, margin: "-50px" }}
+                     transition={{ delay: i * 0.2 }}
+                     className="relative z-10 flex flex-col items-center text-center"
+                  >
+                     <div className="w-20 h-20 rounded-2xl flex items-center justify-center heading-font text-3xl font-bold mb-6 shadow-2xl backdrop-blur-xl border-2" style={{ background: 'color-mix(in srgb, var(--bg-elevated) 80%, transparent)', borderColor: 'var(--border-med)', color: 'var(--accent-primary)' }}>
+                        {item.step || (i + 1)}
+                     </div>
+                     <h3 className="text-xl font-bold mb-3 drop-shadow-md">{item.title}</h3>
+                     <p className="drop-shadow-sm" style={{ color: 'var(--text-secondary)' }}>{item.description}</p>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="md:col-span-3 text-center py-10 text-gray-500 italic">
+                   No "How It Works" steps added in CMS
                 </div>
-              ))}
+              )}
            </div>
         </div>
       </section>
@@ -278,47 +299,66 @@ export default function LandingPageClient({ initialData = {} }: { initialData?: 
            </div>
            
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {testimonialsList.map((t: any, i: number) => (
-                <div 
-                   key={i} 
-                   className="p-8 rounded-[24px] shadow-xl backdrop-blur-md border card-hover flex flex-col justify-between" 
-                   style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)' }}
-                >
-                   <div>
+              {(initialData.testimonials && initialData.testimonials.filter((t: any) => t.isActive !== false).length > 0) ? (
+                initialData.testimonials.filter((t: any) => t.isActive !== false).map((t: any, i: number) => (
+                  <motion.div 
+                     key={i} 
+                     initial={{ opacity: 0, scale: 0.95 }}
+                     whileInView={{ opacity: 1, scale: 1 }}
+                     whileHover={{ y: -5, scale: 1.02 }}
+                     viewport={{ once: true, margin: "-100px" }}
+                     transition={{ delay: i * 0.15 }}
+                     className="p-8 rounded-[24px] shadow-xl backdrop-blur-md border card-hover" 
+                     style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)' }}
+                  >
                      <div className="flex gap-1 text-amber-400 mb-6 drop-shadow-md">★★★★★</div>
-                     <p className="text-base md:text-lg mb-8 italic drop-shadow-sm" style={{ color: 'var(--text-primary)' }}>"{t.quote}"</p>
-                   </div>
-                   <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white shadow-lg flex-shrink-0" style={{ background: 'var(--accent-primary)' }}>{t.name?.[0] || "?"}</div>
-                      <div>
-                        <div className="font-bold drop-shadow-md">{t.name}</div>
-                        <div className="text-sm drop-shadow-sm" style={{ color: 'var(--text-secondary)' }}>{t.role || "Developer"}</div>
-                      </div>
-                   </div>
+                     <p className="text-lg mb-8 italic drop-shadow-sm" style={{ color: 'var(--text-primary)' }}>"{t.quote}"</p>
+                     <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white shadow-lg" style={{ background: 'var(--accent-primary)' }}>{t.name?.[0] || "?"}</div>
+                        <div>
+                          <div className="font-bold drop-shadow-md">{t.name}</div>
+                          <div className="text-sm drop-shadow-sm" style={{ color: 'var(--text-secondary)' }}>{t.role}</div>
+                        </div>
+                     </div>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="md:col-span-3 text-center py-10 text-gray-500 italic border border-dashed rounded-3xl" style={{ borderColor: 'var(--border-soft)' }}>
+                   No testimonials provided in CMS
                 </div>
-              ))}
+              )}
            </div>
         </div>
       </section>
 
-      {/* 7. Final CTA */}
+      {/* 7. Final CTA with Parallax Background */}
       <section className="relative overflow-hidden text-center border-t py-40" style={{ borderColor: 'var(--border-soft)' }}>
+         {/* Dynamic scrolling background image */}
+         <motion.div 
+            style={{ y: useTransform(scrollY, [0, 4000], [0, 600]) }}
+            className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-top opacity-20 dark:opacity-30 mix-blend-luminosity z-0"
+         ></motion.div>
+         
          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-base)] via-transparent to-[var(--bg-base)] z-0"></div>
          <div className="absolute inset-0 dot-grid opacity-30 z-0"></div>
 
-         <div 
+         <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
             className="relative z-10 max-w-3xl mx-auto px-4 p-12 rounded-[40px] backdrop-blur-xl border shadow-2xl"
             style={{ background: 'color-mix(in srgb, var(--bg-card) 60%, transparent)', borderColor: 'var(--glass-border)' }}
          >
             <h2 className="heading-font text-4xl md:text-6xl font-bold mb-6 drop-shadow-2xl">Ready to build the future?</h2>
             <p className="text-xl mb-10 drop-shadow-md" style={{ color: 'var(--text-secondary)' }}>Join thousands of developers leveling up their careers.</p>
-            <div className="inline-block hover:scale-105 transition-transform duration-200">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
                <Link href="/auth" className="btn-primary px-10 py-5 rounded-2xl text-xl inline-flex items-center gap-3 shadow-[0_0_30px_rgba(124,58,237,0.6)]">
                   Start Your Journey
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                </Link>
-            </div>
-         </div>
+            </motion.div>
+         </motion.div>
       </section>
 
     </div>

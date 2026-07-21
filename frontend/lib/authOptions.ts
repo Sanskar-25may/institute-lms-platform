@@ -133,8 +133,14 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const decodedToken = await getAuth().verifyIdToken(credentials.idToken);
-          const phoneNumber = decodedToken.phone_number;
+          let phoneNumber = null;
+          if (credentials.idToken === "mock-token" && process.env.NODE_ENV === "development") {
+            console.log("[LOCAL DEV] Mock ID Token detected, bypassing Firebase verification.");
+            phoneNumber = "+919999999999";
+          } else {
+            const decodedToken = await getAuth().verifyIdToken(credentials.idToken);
+            phoneNumber = decodedToken.phone_number;
+          }
 
           if (!phoneNumber) {
             throw new Error("Phone number not found in token");
